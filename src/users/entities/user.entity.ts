@@ -30,7 +30,7 @@ export class User{
 
     @OneToMany(
         ()=>Snippet,
-        (snippet)=>snippet.users
+        (snippet)=>snippet.user
     )
     snippet!: Snippet[]
 

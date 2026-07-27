@@ -47,10 +47,8 @@ export class AuthService{
 
         //compare password 
         const inputPassword=loginDto.password;
-    
 
         const isPasswordCorrect=await bcrypt.compare(inputPassword,user.password);
-
 
         //if password doesnt matched return error
         if(!isPasswordCorrect){

@@ -1,3 +1,4 @@
+//this class is for extracting the jwt token and verify whether it matches or not the existing user.
 import {
   CanActivate,
   ExecutionContext,

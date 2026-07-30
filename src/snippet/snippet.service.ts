@@ -10,6 +10,10 @@ import { randomUUID } from "crypto";
 import { ShareTokenResDTO } from "./dto/share-token-response";
 import { ConfigService } from "@nestjs/config";
 import { NumericType } from "typeorm/driver/mongodb/typings.js";
+import { share, throwError } from "rxjs";
+import { error } from "console";
+import { TokenExpiredError } from "@nestjs/jwt";
+import { ShareToken } from "./entities/snippet-shareToken";
 
 @Injectable()
 export class SnippetService {
@@ -21,6 +25,9 @@ export class SnippetService {
 
         @InjectRepository(SnippetVersions)
         private readonly snippetVersionRepo: Repository<SnippetVersions>,
+
+        @InjectRepository(ShareToken)
+        private readonly shareTokenRepo: Repository<ShareToken>,
 
         private readonly userService: UserService,
 
@@ -464,29 +471,36 @@ export class SnippetService {
         }
 
         if (snippetFound.user.id !== userId) {
-            throw new NotFoundException("You are allowed to generate share link for this toke ")
+            throw new ForbiddenException("You are allowed to generate share link for this toke ")
         }
 
         const port = this.configService.get<number>('port');
 
         const expiryTime = new Date()
-
         expiryTime.setMinutes(expiryTime.getMinutes() + 10);
-        snippetFound.expiryTime = expiryTime;
 
         const token = randomUUID();
-        snippetFound.shareToken = token;
+
+        const shareToken = new ShareToken();
+
+        shareToken.token = token;
+        shareToken.targetId = snippetFound.id
+        shareToken.type = "SNIPPET"
+        shareToken.expiryTime = expiryTime;
+
+        await this.shareTokenRepo.save(shareToken);
 
         const response = new ShareTokenResDTO();
-        response.expiresAt = expiryTime;
+        response.expiresAt = shareToken.expiryTime;
         response.token = token;
-        response.url = "http://localhost:${port}/snippet/"+token;
+        response.url = `http://localhost:${port}/${token}`;
 
         return response;
 
     }
 
-    async generateTokenBySnippetVersionId(snippetId,versionId: number, userId: number){
+    //generate token by version id
+    async generateTokenBySnippetVersionId(snippetId: number, versionId: number, userId: number) {
 
         const user = await this.userService.findByUserId(userId);
 
@@ -498,13 +512,13 @@ export class SnippetService {
             where: {
                 id: snippetId,
 
-                snippetVersion:{
-                    id:versionId
+                snippetVersion: {
+                    id: versionId
                 }
             },
             relations: {
                 user: true,
-                snippetVersion:true,
+                snippetVersion: true,
             }
         });
 
@@ -517,24 +531,80 @@ export class SnippetService {
         }
 
         const port = this.configService.get<number>('port');
-
         const expiryTime = new Date()
-
         expiryTime.setMinutes(expiryTime.getMinutes() + 10);
-        snippetFound.expiryTime = expiryTime;
 
         const token = randomUUID();
-        snippetFound.shareToken = token;
+
+        const shareToken = new ShareToken();
+
+        shareToken.token = token;
+        shareToken.targetId = versionId
+        shareToken.type = "SNIPPET_VERSION"
+        shareToken.expiryTime = expiryTime;
+
+        await this.shareTokenRepo.save(shareToken);
 
         const response = new ShareTokenResDTO();
-        response.expiresAt = expiryTime;
+        response.expiresAt = shareToken.expiryTime;
         response.token = token;
-        response.url = "http://localhost:${port}/snippet/"+token;
+        response.url = `http://localhost:${port}/${token}`;
 
         return response;
 
+
     }
-    
+
+    //get the snippet by the token
+    async getSharedSnippetByToken(token: string) {
+        const snippetFound = await this.snippetRepo.findOne({
+            where: {
+                shareToken: token
+            },
+            relations: {
+                snippetVersion: true
+            }
+        })
+
+        const snippetVersionFound = await this.snippetVersionRepo.findOne({
+            where: {
+                shareToken: token
+            },
+            relations: {
+                snippet: true
+            }
+        })
+
+        if (!snippetVersionFound) {
+            throw new NotFoundException("No snippet cant be found with the given token")
+        }
+
+        if (!snippetFound) {
+            throw new NotFoundException("No snippet cant be found with the given token")
+        }
+        const expirytime = snippetFound.expiryTime;
+        const currentTime = new Date();
+
+        if (expirytime < currentTime) {
+            throw new ForbiddenException("token expired")
+        }
+
+        const response = new SnippetResponseDTO;
+
+        response.id = snippetFound.id;
+        response.title = snippetFound.title;
+        response.description = snippetFound.description;
+        response.code = snippetFound.code;
+        response.language = snippetFound.language;
+        response.tags = snippetFound.tag;
+        response.shareToken = snippetFound.shareToken;
+        response.versions = snippetFound.snippetVersion.length;
+        response.createdAt = snippetFound.createdAt;
+        response.updatedAt = snippetFound.updatedAt;    
+
+        return response;
+    }
+
 
 
 

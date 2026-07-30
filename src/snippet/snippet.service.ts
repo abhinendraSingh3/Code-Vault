@@ -9,6 +9,7 @@ import { SnippetVersions } from "./entities/snippet-versions-entities";
 import { randomUUID } from "crypto";
 import { ShareTokenResDTO } from "./dto/share-token-response";
 import { ConfigService } from "@nestjs/config";
+import { NumericType } from "typeorm/driver/mongodb/typings.js";
 
 @Injectable()
 export class SnippetService {
@@ -483,9 +484,57 @@ export class SnippetService {
 
         return response;
 
+    }
 
+    async generateTokenBySnippetVersionId(snippetId,versionId: number, userId: number){
+
+        const user = await this.userService.findByUserId(userId);
+
+        if (!user) {
+            throw new NotFoundException("User not found")
+        }
+
+        const snippetFound = await this.snippetRepo.findOne({
+            where: {
+                id: snippetId,
+
+                snippetVersion:{
+                    id:versionId
+                }
+            },
+            relations: {
+                user: true,
+                snippetVersion:true,
+            }
+        });
+
+        if (!snippetFound) {
+            throw new NotFoundException("cannot find the particular snippet with the ID")
+        }
+
+        if (snippetFound.user.id !== userId) {
+            throw new NotFoundException("You are allowed to generate share link for this toke ")
+        }
+
+        const port = this.configService.get<number>('port');
+
+        const expiryTime = new Date()
+
+        expiryTime.setMinutes(expiryTime.getMinutes() + 10);
+        snippetFound.expiryTime = expiryTime;
+
+        const token = randomUUID();
+        snippetFound.shareToken = token;
+
+        const response = new ShareTokenResDTO();
+        response.expiresAt = expiryTime;
+        response.token = token;
+        response.url = "http://localhost:${port}/snippet/"+token;
+
+        return response;
 
     }
+    
 
 
 

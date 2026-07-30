@@ -13,7 +13,7 @@ export class SnippetResponseDTO{
 
     tags!: string[];
 
-    shareToken!: number;
+    shareToken!: string;
 
     versions!: number;
 

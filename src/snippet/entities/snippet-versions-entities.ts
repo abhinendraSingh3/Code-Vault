@@ -25,7 +25,7 @@ export class SnippetVersions{
     tag!: string[];
 
     @Column({unique: true})
-    shareToken!: number;
+    shareToken!: string;
 
     @Column({unique:true})
     versions!: number;
@@ -39,11 +39,6 @@ export class SnippetVersions{
     @UpdateDateColumn()
     updatedAt!: Date;
 
-    @ManyToOne(
-        ()=>User,
-        (user)=>user.snippet 
-    )
-    user!: User;
 
     @ManyToOne(
         ()=>Snippet,

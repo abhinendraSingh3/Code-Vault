@@ -63,10 +63,18 @@ export class SnippetController{
     }
 
     //share any snippetVersion variable
-    async generateTokenBySnippetVersionId(@Param('id') snippetId: number,@Req() req: AuthRequest):Promise<ShareTokenResDTO>{
-        return this.snippetService.generateTokenBySnippetVersionId(snippetId, req.user.userId);
+    @Get('token/:snippetid/:versionId')
+    async generateTokenBySnippetVersionId(@Param('snippetId') snippetId: number,@Param('versionId') versionId: number, @Req() req: AuthRequest):Promise<ShareTokenResDTO>{
+        return this.snippetService.generateTokenBySnippetVersionId(snippetId,versionId, req.user.userId);
 
     }
+
+    @Get(':token')
+    async getSharedSnippetByToken(@Param('token') token: string): Promise<SnippetResponseDTO>{
+        return this.snippetService.getSharedSnippetByToken(token);
+    }
+
+
 
 
 

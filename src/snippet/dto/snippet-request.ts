@@ -8,7 +8,7 @@ export class SnippetReqDTO{
 
     //in text the long description of code can be there
     @Column({nullable: false, type: 'text'})
-    descrption!: string
+    description!: string
 
     @Column({nullable: false, type: 'text'})
     code!: string

@@ -25,7 +25,7 @@ export class Snippet{
     tag!: string[];
 
     @Column({unique: true})
-    shareToken!: number;
+    shareToken!: string;
 
     @CreateDateColumn()
     expiryTime!: Date;
@@ -38,8 +38,7 @@ export class Snippet{
 
     @ManyToOne(
         ()=>User,
-        (user)=>user.snippet 
-
+        (user)=>user.snippet
     )
     user!: User;
 

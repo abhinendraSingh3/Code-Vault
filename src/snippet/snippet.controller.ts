@@ -1,8 +1,9 @@
-import { Controller, Req,Post, Body, Param,Get, ParseIntPipe } from "@nestjs/common";
+import { Controller, Req,Post, Body, Param,Get, ParseIntPipe, Delete } from "@nestjs/common";
 import { SnippetService } from "./snippet.service";
 import { SnippetReqDTO } from "./dto/snippet-request";
 import type { AuthRequest } from "../auth/interfaces/auth-request.interface";
 import { SnippetResponseDTO } from "./dto/snippet-response";
+import { ShareTokenResDTO } from "./dto/share-token-response";
 
 
 @Controller('snippet')
@@ -29,7 +30,44 @@ export class SnippetController{
 
     }
     @Post(':id')
-    async updateSnippet(@Req() req: AuthRequest, @Param('id',ParseIntPipe) snippetId: number):Promise<SnippetResponseDTO>{
-        return this.snippetService.updateSnippet(req.user.userName, snippetId)
+    async updateSnippet(@Req() req: AuthRequest, @Param('id',ParseIntPipe) snippetId: number, @Body() snippetData: SnippetReqDTO):Promise<SnippetResponseDTO>{
+        return this.snippetService.updateSnippet(req.user.userName, snippetId, snippetData)
     }
+
+    @Delete(':id')
+    async deleteSnippet(@Req() req: AuthRequest, @Param('id', ParseIntPipe) snippetID: number): Promise <string>{
+        return this.snippetService.deleteSnippet(req.user.userName, snippetID);
+    }
+
+    @Get('search/language/:lang')
+    async getByLanguage(@Param('lang') language: string, @Req() req:AuthRequest): Promise<SnippetResponseDTO[]>{
+        return this.snippetService.getByLanguage(language,req.user.userId);
+
+    }
+
+    @Get('search/title/:title')
+    async getByTitle(@Param('title') title: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]>{
+        return this.snippetService.getByTitle(title, req.user.userId);
+    }
+
+    @Get('search/:anyKeyword')
+    async getByTitleOrLanguage(@Param('anyKeyword') anyKeyword: string,@Req() req: AuthRequest): Promise <SnippetResponseDTO[]>{
+        return this.snippetService.getByAnykeyword(anyKeyword, req.user.userId)
+    }
+    
+    //share any snippet
+    @Get('token/:id')
+    async generateTokenBySnippetId(@Param('id') snippetId: number,@Req() req: AuthRequest):Promise<ShareTokenResDTO>{
+        return this.snippetService.generateTokenBySnippetId(snippetId, req.user.userId);
+
+    }
+
+    //share any snippetVersion variable
+    async generateTokenBySnippetVersionId(@Param('id') snippetId: number,@Req() req: AuthRequest):Promise<ShareTokenResDTO>{
+        return this.snippetService.generateTokenBySnippetVersionId(snippetId, req.user.userId);
+
+    }
+
+
+
 }

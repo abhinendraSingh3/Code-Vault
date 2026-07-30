@@ -20,6 +20,13 @@ export class UserService{
         const newUser=this.userRepo.create(userData)
         return this.userRepo.save(newUser);
     }
+    async findByUserId(userId:number){
+        return await this.userRepo.findOne({
+            where:{
+                id:userId
+            }
+        });
+    }
 
 
 }

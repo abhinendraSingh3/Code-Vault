@@ -1,33 +1,34 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, BeforeInsert, BeforeUpdate, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "../../users/entities/user.entity"
 import { Snippet } from "./snippet-entities";
 
 @Entity()
-export class SnippetVersions{
+export class SnippetVersions {
 
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({nullable: false, type: 'varchar'})
+    @Column({ nullable: false, type: 'varchar' })
     title!: string;
 
     //in text the long description of code can be there
-    @Column({nullable: false, type: 'text'})
+    @Column({ nullable: false, type: 'text' })
     description!: string
 
-    @Column({nullable: false, type: 'text'})
+    @Column({ nullable: false, type: 'text' })
     code!: string
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     language!: string;
+
 
     @Column('simple-array')
     tag!: string[];
 
-    @Column({unique: true})
+    @Column({ unique: true, nullable: true })
     shareToken!: string;
 
-    @Column({unique:true})
+    @Column({ unique: true })
     versions!: number;
 
     @CreateDateColumn()
@@ -41,8 +42,8 @@ export class SnippetVersions{
 
 
     @ManyToOne(
-        ()=>Snippet,
-        (originalSnippet)=>originalSnippet.snippetVersion
+        () => Snippet,
+        (originalSnippet) => originalSnippet.snippetVersion
     )
     snippet!: Snippet;
 

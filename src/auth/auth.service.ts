@@ -58,7 +58,7 @@ export class AuthService{
         //generate jwt token 
         const payload={ 
             userId: user.id,
-            username: user.userName,
+            userName: user.userName,
             email: user.email
         }
         

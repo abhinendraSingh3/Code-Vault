@@ -13,7 +13,11 @@ export class UserService{
     ){}
 
     async findByUsername(userName: string){
-        return await this.userRepo.findOneBy({userName});
+        return await this.userRepo.findOne({
+            where:{
+                userName:userName
+            }
+        });
     }
 
     async createUser(userData: Partial<User>):Promise<User> {

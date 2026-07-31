@@ -3,17 +3,16 @@ import { SnippetReqDTO } from "./dto/snippet-request";
 import { UserService } from "../users/users.services";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Snippet } from "./entities/snippet-entities";
-import { Repository } from "typeorm";
+import { ILike, Not, Repository } from "typeorm";
 import { SnippetResponseDTO } from "./dto/snippet-response";
 import { SnippetVersions } from "./entities/snippet-versions-entities";
 import { randomUUID } from "crypto";
 import { ShareTokenResDTO } from "./dto/share-token-response";
 import { ConfigService } from "@nestjs/config";
-import { NumericType } from "typeorm/driver/mongodb/typings.js";
-import { share, throwError } from "rxjs";
-import { error } from "console";
-import { TokenExpiredError } from "@nestjs/jwt";
 import { ShareToken } from "./entities/snippet-shareToken";
+import { SnippetSumamryDTO } from "./dto/snippet-summary";
+import { User } from "../users/entities/user.entity";
+import { error } from "console";
 
 @Injectable()
 export class SnippetService {
@@ -31,7 +30,7 @@ export class SnippetService {
 
         private readonly userService: UserService,
 
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
 
     ) { }
 
@@ -46,10 +45,26 @@ export class SnippetService {
         }
 
         const snippetCreated = this.snippetRepo.create({
+
             ...reqBody,
             user: foundUser,
         })
-        return this.snippetRepo.save(snippetCreated);
+        await this.snippetRepo.save(snippetCreated);
+
+        const response = new SnippetResponseDTO()
+
+        response.id = snippetCreated.id
+        response.title = snippetCreated.title
+        response.description = snippetCreated.description
+        response.code = snippetCreated.code
+        response.language = snippetCreated.language
+        response.tags = snippetCreated.tag
+        response.shareToken = snippetCreated.shareToken
+        response.versions = 0
+        response.createdAt = snippetCreated.createdAt
+        response.updatedAt = snippetCreated.updatedAt
+
+        return response;
     }
 
     //-------------get snippet by ID-------------------
@@ -108,13 +123,19 @@ export class SnippetService {
     }
 
     //find all the snippets
-    async getAllSnippets(userName: string): Promise<SnippetResponseDTO[]> {
+    async getAllSnippets(userName: string) {
 
         const userFound = this.userService.findByUsername(userName);
 
         const snippetsFound = await this.snippetRepo.find({
+            where: {
+                user: {
+                    userName: userName
+                }
+            },
             relations: {
-                user: true
+                user: true,
+                snippetVersion: true
             }
         })
 
@@ -124,6 +145,7 @@ export class SnippetService {
 
         return await Promise.all(snippetsFound.map(async (snippet) => {
             const response = new SnippetResponseDTO()
+
             const snippetId = snippet.id;
 
             const versionCount = await this.snippetVersionRepo.count({
@@ -283,49 +305,64 @@ export class SnippetService {
 
         await this.snippetRepo.remove(snippetFound);
 
-        return "user Delete Successfully";
+        return "Snippet Delete Successfully";
 
 
     }
 
     //-------------get by langauge-----------------------
-    async getByLanguage(language: string, userId) {
+    async getByLanguage(language: string, userId: number) {
+
         const user = await this.userService.findByUserId(userId);
 
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
+    console.log(user);
+    
         const snippetsFound = await this.snippetRepo.find({
             where: [
                 {
                     user: {
                         id: userId
                     },
-                    language: language
+                    language: ILike(language)
                 },
                 {
                     user: {
                         id: userId
                     },
                     snippetVersion: {
-                        language: language
+                        language: ILike(language)
                     }
-
                 }
-
             ],
             relations: {
-                user: true,
                 snippetVersion: true
             }
+        });
 
-        })
 
-        return snippetsFound.map((snippet) => {
+        if (snippetsFound.length === 0) {
+            throw new NotFoundException("Snippet Not Found");
+        }
+
+
+        return snippetsFound.map(snippet => {
+
             const response = new SnippetResponseDTO();
 
             response.id = snippet.id;
             response.title = snippet.title;
             response.description = snippet.description;
             response.code = snippet.code;
-            response.language = snippet.language;
+
+            response.language =
+                snippet.language.toLowerCase() === language.toLowerCase()
+                    ? snippet.language
+                    : language;
+
             response.tags = snippet.tag;
             response.shareToken = snippet.shareToken;
             response.versions = snippet.snippetVersion.length;
@@ -333,9 +370,7 @@ export class SnippetService {
             response.updatedAt = snippet.updatedAt;
 
             return response;
-
         });
-
     }
 
     //getby title
@@ -352,17 +387,20 @@ export class SnippetService {
                     user: {
                         id: userId
                     },
-                    title: title
+                    title: ILike(title)
                 },
                 {
                     user: {
                         id: userId
                     },
                     snippetVersion: {
-                        title: title
+                        title: ILike(title)
                     }
                 }
-            ]
+            ],
+            relations:{
+                snippetVersion:true
+            }
         })
 
         return snippetsFound.map((snippet) => {
@@ -398,20 +436,20 @@ export class SnippetService {
                     user: {
                         id: userId
                     },
-                    language: anyKeyword
+                    language: ILike (`%${anyKeyword}%`)
                 },
                 {
                     user: {
                         id: userId
                     },
-                    title: anyKeyword
+                    title: ILike(`%${anyKeyword}%`)
                 },
                 {
                     user: {
                         id: userId
                     },
                     snippetVersion: {
-                        language: anyKeyword
+                        language: ILike(`%${anyKeyword}%`)
                     }
                 },
                 {
@@ -419,7 +457,7 @@ export class SnippetService {
                         id: userId
                     },
                     snippetVersion: {
-                        title: anyKeyword
+                        title: ILike(`%${anyKeyword}%`)
                     }
                 }
             ],
@@ -429,6 +467,12 @@ export class SnippetService {
             }
 
         })
+
+        if(snippetFound.length==0){
+            throw new NotFoundException("No Code Snippet Found")
+        }
+
+        
 
         return snippetFound.map((snippet) => {
             const response = new SnippetResponseDTO();
@@ -449,7 +493,7 @@ export class SnippetService {
         });
     }
 
-    //generate token by SnippitID
+    //generate token by SnippetID
     async generateTokenBySnippetId(snippetId: number, userId: number) {
         const user = await this.userService.findByUserId(userId);
 
@@ -489,11 +533,12 @@ export class SnippetService {
         shareToken.expiryTime = expiryTime;
 
         await this.shareTokenRepo.save(shareToken);
+        console.log(shareToken)
 
         const response = new ShareTokenResDTO();
         response.expiresAt = shareToken.expiryTime;
         response.token = token;
-        response.url = `http://localhost:${port}/${token}`;
+        response.url = `http://localhost:${port}/snippet/getSnippet/${token}`;
 
         return response;
 
@@ -503,7 +548,8 @@ export class SnippetService {
     async generateTokenBySnippetVersionId(snippetId: number, versionId: number, userId: number) {
 
         const user = await this.userService.findByUserId(userId);
-
+        
+        
         if (!user) {
             throw new NotFoundException("User not found")
         }
@@ -548,7 +594,7 @@ export class SnippetService {
         const response = new ShareTokenResDTO();
         response.expiresAt = shareToken.expiryTime;
         response.token = token;
-        response.url = `http://localhost:${port}/${token}`;
+        response.url = `http://localhost:${port}/snippet/getSnippet/${token}`;
 
         return response;
 
@@ -557,62 +603,192 @@ export class SnippetService {
 
     //get the snippet by the token
     async getSharedSnippetByToken(token: string) {
+        
+        
+        const shareToken = await this.shareTokenRepo.findOne({
+            where: {
+                token: token
+            }
+        })
+
+        if (!shareToken) {
+            throw new NotFoundException("No Snippet Found")
+        }
+        console.log("expiry time: ",shareToken.expiryTime.getTime());
+        console.log("current time: ",Date.now());
+        
+        
+        if(Date.now()>shareToken.expiryTime.getTime()){
+            throw new UnauthorizedException("Share Link has expired")
+        }
+
+        if (shareToken.type === "SNIPPET") {
+            const snippetId = shareToken.targetId;
+
+            const snippetFound = await this.snippetRepo.findOne({
+                where: {
+                    id: snippetId
+                },
+                relations: {
+                    snippetVersion: true
+                }
+            })
+
+            if (!snippetFound) {
+                throw new NotFoundException("snippet not found")
+            }
+
+            const response = new SnippetResponseDTO();
+
+            response.id = snippetFound.id;
+            response.title = snippetFound.title;
+            response.description = snippetFound.description;
+            response.code = snippetFound.code;
+            response.language = snippetFound.language;
+            response.tags = snippetFound.tag;
+            response.shareToken = snippetFound.shareToken;
+            response.versions = snippetFound.snippetVersion.length;
+            response.createdAt = snippetFound.createdAt;
+            response.updatedAt = snippetFound.updatedAt;
+
+            return response;
+        }
+
+        else if (shareToken.type === "SNIPPET_VERSION") {
+            const snippetVersionId = shareToken.targetId;
+
+            const snippetFound = await this.snippetVersionRepo.findOne({
+                where: {
+                    id: snippetVersionId
+                },
+                relations: {
+                    snippet: true
+                }
+            })
+
+            if (!snippetFound) {
+                throw new NotFoundException("snippet not found")
+            }
+
+            const response = new SnippetResponseDTO();
+
+            response.id = snippetFound.id;
+            response.title = snippetFound.title;
+            response.description = snippetFound.description;
+            response.code = snippetFound.code;
+            response.language = snippetFound.language;
+            response.tags = snippetFound.tag;
+            response.shareToken = snippetFound.shareToken;
+            response.createdAt = snippetFound.createdAt;
+            response.updatedAt = snippetFound.updatedAt;
+
+            return response;
+        }
+
+        return "Not Found"
+
+
+    }
+
+    //get snippet versions summary
+    async getSnippetsVersions(snippetId: number, userId: number) {
+        const user = await this.userService.findByUserId(userId);
+
+        if (!user) {
+            throw new NotFoundException("User not found")
+        }
+
         const snippetFound = await this.snippetRepo.findOne({
             where: {
-                shareToken: token
+                id: snippetId
             },
             relations: {
                 snippetVersion: true
             }
         })
 
-        const snippetVersionFound = await this.snippetVersionRepo.findOne({
+        if (!snippetFound) {
+            throw new NotFoundException("Snippet Not Found")
+        }
+
+        return snippetFound.snippetVersion.map((version) => {
+
+            const response = new SnippetSumamryDTO();
+
+            response.title = version.title;
+            response.versionNumber = version.versions;
+            response.createdAt = version.createdAt;
+
+            return response;
+        });
+
+    }
+
+    //get snippet by Id & Version Number
+    async getSnippetByIdAndVersionNumber(
+        snippetId: number,
+        versionNumber: number,
+        userId: number) {
+
+        const user = await this.userService.findByUserId(userId);
+
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
+
+        const snippetFound = await this.snippetRepo.findOne({
             where: {
-                shareToken: token
+                id: snippetId
             },
             relations: {
-                snippet: true
+                user: true,
+                snippetVersion: true
             }
-        })
+        });
 
-        if (!snippetVersionFound) {
-            throw new NotFoundException("No snippet cant be found with the given token")
-        }
 
         if (!snippetFound) {
-            throw new NotFoundException("No snippet cant be found with the given token")
-        }
-        const expirytime = snippetFound.expiryTime;
-        const currentTime = new Date();
-
-        if (expirytime < currentTime) {
-            throw new ForbiddenException("token expired")
+            throw new NotFoundException("Snippet Not Found");
         }
 
-        const response = new SnippetResponseDTO;
 
-        response.id = snippetFound.id;
-        response.title = snippetFound.title;
-        response.description = snippetFound.description;
-        response.code = snippetFound.code;
-        response.language = snippetFound.language;
-        response.tags = snippetFound.tag;
-        response.shareToken = snippetFound.shareToken;
-        response.versions = snippetFound.snippetVersion.length;
-        response.createdAt = snippetFound.createdAt;
-        response.updatedAt = snippetFound.updatedAt;    
+        if (snippetFound.user.id !== userId) {
+            throw new ForbiddenException(
+                "You cannot access this snippet"
+            );
+        }
+
+
+        const versionFound = snippetFound.snippetVersion.find(
+            (version) => version.versions === versionNumber
+        );
+
+
+        if (!versionFound) {
+            throw new NotFoundException(
+                "Version not found"
+            );
+        }
+
+
+        const response = new SnippetResponseDTO();
+
+        response.id = versionFound.id;
+        response.title = versionFound.title;
+        response.description = versionFound.description;
+        response.code = versionFound.code;
+        response.language = versionFound.language;
+        response.tags = versionFound.tag;
+        response.shareToken = versionFound.shareToken;
+        response.versions = versionFound.versions;
+        response.createdAt = versionFound.createdAt;
+        response.updatedAt = versionFound.updatedAt;
+
 
         return response;
     }
 
 
 
-
-
-
 }
-
-
-
-
-

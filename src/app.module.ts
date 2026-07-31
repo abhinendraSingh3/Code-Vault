@@ -8,18 +8,32 @@ import { Snippet } from './snippet/entities/snippet-entities';
 import { UsersModule } from './users/users.module';
 import { SnippetModule } from './snippet/snippet.module';
 import { AuthModule } from './auth/auth.module';
+import { log } from 'console';
+import { SnippetVersions } from './snippet/entities/snippet-versions-entities';
+import { ShareToken } from './snippet/entities/snippet-shareToken';
 
 @Module({
+  
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // ConfigService now usable anywhere, no need to re-import ConfigModule
     }),
-
+    
+    
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+    
 
       useFactory: (configService: ConfigService) => { 
+        console.log("Host",configService.get<string>('DB_HOST'));
+        console.log("port",parseInt(configService.get<string>('DB_PORT')?? '5432', 10));
+        console.log("username",configService.get<string>('DB_USERNAME'));
+        console.log("password",configService.get<string>('DB_PASSWORD'));
+        console.log("DB Name",configService.get<string>('DB_NAME'));
+        
+
+        
         return{
         type: 'postgres',
         host: configService.get<string>('DB_HOST'),
@@ -28,7 +42,7 @@ import { AuthModule } from './auth/auth.module';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'), 
 
-        entities: [User, Snippet], 
+        entities: [User, Snippet,SnippetVersions,ShareToken], 
         synchronize: true, // dev only — auto-creates tables from entities
         }
         

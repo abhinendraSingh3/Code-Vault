@@ -1,0 +1,126 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000;
+    overflow:hidden;      /* Makes the page non-scrollable */
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.first-section,
+.second-section,
+.third-section{
+    width:260px;
+}
+
+.first-section{
+    position:fixed;
+    left:0;
+    top:0;
+    width:260px;
+    height:100vh;
+    background:#0d111c;
+    border-right:1px solid #22273a;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    padding:20px;
+}
+
+/* Top */
+
+.first-section{
+    display:flex;
+}
+
+#main-title{
+    font-size:28px;
+    font-weight:bold;
+    color:white;
+}
+
+#close{
+    position:absolute;
+    right:20px;
+    top:22px;
+    cursor:pointer;
+    font-size:22px;
+    color:white;
+}
+
+/* Second Section */
+
+.second-section{
+    display:flex;
+    flex-direction:column;
+    margin-top:30px;
+    gap:12px;
+}
+
+#new-snippet{
+    width:100%;
+    height:48px;
+    border:none;
+    border-radius:10px;
+    background:#6b4dff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+#new-snippet:hover{
+    background:#7f65ff;
+}
+
+.second-section a,
+.third-section a{
+    text-decoration:none;
+    color:white;
+    font-size:16px;
+    padding:12px 15px;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.second-section a:hover,
+.third-section a:hover{
+    background:#22273a;
+}
+
+#dashboard{
+    background:#26245d;
+}
+
+/* Third Section */
+
+.third-section{
+    margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    border-top:1px solid #22273a;
+    padding-top:20px;
+}
+
+#profile-pic{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:gray;
+    margin-top:20px;
+}
+
+#userName{
+    color:white;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+#email{
+    color:#8b8b8b;
+    font-size:14px;
+}

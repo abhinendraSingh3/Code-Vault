@@ -3,6 +3,7 @@ import { SignupDto } from "./dto/signup.dto";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "./dto/loginRequest.dto";
 import { AuthGuard } from "./jwt.auth.guard";
+import { ForgetPasswordDto } from "./dto/forgetPassword.dto";
 
 @Controller('auth')
 export class AuthController{
@@ -19,10 +20,16 @@ export class AuthController{
         return this.authService.loginRequest(loginDto);
     }
 
+
     @UseGuards(AuthGuard)
     @Get('profile')
     getProfile(@Request() req){
         return req.userId;
+    }
+
+        @Post('resetpassword')
+    async passwordRest(@Body() passwordData: ForgetPasswordDto ){
+        return this.authService.passwordReset(passwordData.newPassword, passwordData.confirmNewPassword)
     }
  
 

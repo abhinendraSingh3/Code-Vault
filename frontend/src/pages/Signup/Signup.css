@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    background: #070b14;
+}
+
+.signup-Body {
+    min-height: 100vh;
+    width: 100%;
+    background: radial-gradient(circle at top left, rgba(90, 65, 255, .18), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(90, 65, 255, .12), transparent 35%),
+                #070b14;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Logo */
+
+.siteName {
+    position: absolute;
+    top: 25px;
+    left: 40px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.siteName::before {
+    content: "</> ";
+    color: #7d5cff;
+}
+
+/* Card */
+
+.registration-body {
+    width: 470px;
+    background: #141b25;
+    border: 1px solid #2b3440;
+    border-radius: 16px;
+    padding: 25px 30px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,.35);
+}
+
+/* Heading */
+
+.title-form {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#main-create {
+    color: white;
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+#sub-main-create {
+    color: #9099a8;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Form */
+
+#form {
+    display: flex;
+    flex-direction: column;
+}
+
+#form label {
+    color: white;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#form input {
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #313c4c;
+    background: #1b2430;
+    color: white;
+    padding: 0 14px;
+    outline: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+#form input::placeholder {
+    color: #7c8795;
+}
+
+#form input:focus {
+    border-color: #6f54ff;
+    box-shadow: 0 0 6px rgba(111,84,255,.4);
+}
+
+/* Button */
+
+#create-account {
+    margin-top: 22px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background: #6d4cff;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+#create-account:hover {
+    background: #7d63ff;
+}
+
+/* Login */
+
+.already-account {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+#existing-account {
+    color: #9ba5b3;
+    font-size: 14px;
+}
+
+.already-account a {
+    color: #7d63ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.already-account a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+
+@media (max-width: 550px) {
+
+    .registration-body {
+        width: 92%;
+        padding: 20px;
+    }
+
+    .siteName {
+        left: 20px;
+        top: 20px;
+        font-size: 22px;
+    }
+
+    #main-create {
+        font-size: 24px;
+    }
+}

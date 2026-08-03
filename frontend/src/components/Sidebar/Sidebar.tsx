@@ -9,11 +9,11 @@ import "./Sidebar.css"
 
 const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
 
-
     return (
+        
         //  In React, you don't manually "apply CSS properties." Instead, you change the className based on the state.
         <>
-            <div className={isOpen ? "sidebarOpen" : "sidebar"}>
+            <div className={isOpen ? "sidebar open" : "sidebar"}>
                 <div className="first-section">
                     <h1 id="main-title"> CodeSnap</h1>
                     <p id='close' onClick={()=>setIsOpen(false)}>X</p>

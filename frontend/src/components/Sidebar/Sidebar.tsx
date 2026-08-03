@@ -1,51 +1,54 @@
 import "./Sidebar.css"
 
-const Sidebar=()=>{
+//setIsOpen is the function to set the value of the isOpen; thats why we have used the value like that. so we are passing the state from the dashboard till here as the prop and use it here
 
-    const [open, setOpen]=useState(false);
+ type SidebarProps = {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-    const changeStateSideBar=()=>{
-        if(open==false){
-            //apply the css property of close
-        }
-    }
+const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
+
 
     return (
+        //  In React, you don't manually "apply CSS properties." Instead, you change the className based on the state.
         <>
-        <div className="first-section">
-            <h1 id="main-title"> CodeSnap</h1>
-            <p id='close' onChange={changeStateSideBar}>X</p>
-        </div> 
+            <div className={isOpen ? "sidebarOpen" : "sidebar"}>
+                <div className="first-section">
+                    <h1 id="main-title"> CodeSnap</h1>
+                    <p id='close' onClick={()=>setIsOpen(false)}>X</p>
+                </div>
 
-        <div className="second-section">
-            <button id="new-snippet">+ New Snippet</button>
-            <a href="/Dashboard" id="dashboard">Dashboard</a>
+                <div className="second-section">
+                    <button id="new-snippet">+ New Snippet</button>
+                    <a href="/Dashboard" id="dashboard">Dashboard</a>
 
-            <a href="/AllSnippets" id="all-Snippets">All Snippets</a>
+                    <a href="/AllSnippets" id="all-Snippets">All Snippets</a>
 
-            <a href="/SearchAny" id="seach-any">Search</a>
+                    <a href="/SearchAny" id="seach-any">Search</a>
 
-            <a href="/ByLanguage" id="by-language">By language</a>
+                    <a href="/ByLanguage" id="by-language">By language</a>
 
-            <a href="/ByTitle" id="by-title">By Title</a>
+                    <a href="/ByTitle" id="by-title">By Title</a>
 
-            <a href="/SharedWme" id="shared-w-me">Share with me</a>
+                    <a href="/SharedWme" id="shared-w-me">Share with me</a>
 
-            <a href="/MyShares" id="my-shares">My Shares</a>
+                    <a href="/MyShares" id="my-shares">My Shares</a>
 
-            <a href="/AllVersions" id="all-versions">All Versions</a>
-        </div>
-        <div className="third-section">
-            <a href="/Profile" id="profile">Profile</a>
+                    <a href="/AllVersions" id="all-versions">All Versions</a>
+                </div>
+                <div className="third-section">
+                    <a href="/Profile" id="profile">Profile</a>
 
-            <a href="/Settings" id="setting">Settings</a>
+                    <a href="/Settings" id="setting">Settings</a>
 
-            {/* data will be inserted later from the backend */}
-            <img src="${profile}" id="profile-pic" alt="profilePic"/>
-            <p id="userName">{}</p>
-            <p id="email">{}</p>
-            
-        </div>    
+                    {/* data will be inserted later from the backend */}
+                    <img src="${profile}" id="profile-pic" alt="profilePic" />
+                    <p id="userName">{ }</p>
+                    <p id="email">{ }</p>
+
+                </div>
+            </div>
         </>
     )
 }

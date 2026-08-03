@@ -29,7 +29,7 @@ export class AuthController{
 
         @Post('resetpassword')
     async passwordRest(@Body() passwordData: ForgetPasswordDto ){
-        return this.authService.passwordReset(passwordData.newPassword, passwordData.confirmNewPassword)
+        return this.authService.passwordReset(passwordData.newPassword, passwordData.confirmNewPassword, passwordData.mail)
     }
  
 

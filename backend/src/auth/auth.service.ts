@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "./../users/users.services";
 import { SignupDto } from "./dto/signup.dto";
 import * as bcrypt from 'bcrypt';
@@ -6,6 +6,8 @@ import { ResponseDto } from "./dto/response.dto";
 import { LoginDto } from "./dto/loginRequest.dto";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { ForgetPasswordDto } from "./dto/forgetPassword.dto";
+import { NotFoundError } from "rxjs";
 
 
 @Injectable()
@@ -68,6 +70,29 @@ export class AuthService{
 
         //return jwt token
         return {accessToken}
+
+
+    }
+
+    async passwordReset(password: string, confirmPassword: string, email:string){
+
+        if(password!== confirmPassword){
+            throw new BadRequestException("Passwords do not match")
+        }
+
+        const emailConfirmed=await this.userService.findUserByEmail(email);
+
+        if(!emailConfirmed){
+            throw new NotFoundException("Cant find any user with the given mail")
+        }
+
+        //generate token
+        //send the token to the mail 
+
+        const hashedPassword=await bcrypt.hash(password,10);
+
+        const user=this.userService.find
+
 
 
     }

@@ -1,13 +1,17 @@
 import "./Sidebar.css"
+import { useNavigate } from "react-router-dom"
 
 //setIsOpen is the function to set the value of the isOpen; thats why we have used the value like that. so we are passing the state from the dashboard till here as the prop and use it here
-
  type SidebarProps = {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
+
+    const navigate= useNavigate();
+
+    
 
     return (
         
@@ -20,12 +24,13 @@ const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
                 </div>
 
                 <div className="second-section">
-                    <button id="new-snippet">+ New Snippet</button>
-                    <a href="/Dashboard" id="dashboard">Dashboard</a>
+                    <button id="new-snippet" onClick={()=>navigate('/createSnippet')}>+ New Snippet</button>
 
-                    <a href="/AllSnippets" id="all-Snippets">All Snippets</a>
+                    <a href="/Dashboard"id="dashboard">Dashboard</a>
 
-                    <a href="/SearchAny" id="seach-any">Search</a>
+                    <a href="/allSnippets" id="all-Snippets">All Snippets</a>
+
+                    <a href="/searchany" id="seach-any">Search</a>
 
                     <a href="/ByLanguage" id="by-language">By language</a>
 
@@ -35,7 +40,7 @@ const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
 
                     <a href="/MyShares" id="my-shares">My Shares</a>
 
-                    <a href="/AllVersions" id="all-versions">All Versions</a>
+                    <a href="/allVersions" id="all-versions">All Versions</a>
                 </div>
                 <div className="third-section">
                     <a href="/Profile" id="profile">Profile</a>

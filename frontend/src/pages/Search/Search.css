@@ -1,0 +1,178 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100vh;
+
+    overflow:hidden; /* the page itself never scrolls — only .resultCard does */
+
+    background:#000;
+    color:#fff;
+    font-family:Arial, Helvetica, sans-serif;
+
+    display:flex;
+    flex-direction:column;
+}
+
+
+/* =========================================
+   HEADER (heading + search bar)
+========================================= */
+
+.first-section{
+    flex-shrink:0; /* keeps this fixed-height, never squeezed by the scrolling list below */
+
+    padding:24px 24px 0 24px;
+}
+
+.headings{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+
+    margin-bottom:18px;
+}
+
+#main-heading{
+    font-size:22px;
+    font-weight:700;
+}
+
+#desc-main{
+    font-size:13px;
+    color:#8b8b8b;
+}
+
+.search{
+    position:relative;
+}
+
+#search{
+
+    width:100%;
+    height:46px;
+
+    background:#111827;
+    border:1px solid #22273a;
+    border-radius:12px;
+
+    color:#fff;
+    font-size:13px;
+
+    padding:0 44px 0 40px; /* room for the icon on the left, circle on the right */
+}
+
+#search::placeholder{
+    color:#6b7280;
+}
+
+/* decorative search icon — no icon element exists in the JSX for this */
+.search::before{
+    content:"🔍";
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+
+    font-size:13px;
+    opacity:0.6;
+
+    pointer-events:none;
+}
+
+/* decorative placeholder for the outlined circle on the right of the input.
+   Purely visual for now — if it's meant to clear the search or show a
+   loading state, it needs a real button/element in the JSX instead. */
+.search::after{
+    content:"";
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+
+    width:16px;
+    height:16px;
+
+    border:1.5px solid #6b7280;
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
+
+/* =========================================
+   RESULTS SECTION
+========================================= */
+
+.second-sec{
+    flex:1;
+    min-height:0; /* required so the child can actually shrink and scroll instead of overflowing the flex column */
+
+    display:flex;
+    flex-direction:column;
+
+    padding:24px;
+    padding-top:18px;
+}
+
+#result-show{
+    flex-shrink:0;
+
+    font-size:16px;
+    font-weight:700;
+
+    margin-bottom:14px;
+}
+
+.resultCard{
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto; /* the actual scrollable area */
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    padding-right:4px; /* keeps card content clear of the scrollbar */
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media(max-width:768px){
+
+.first-section,
+.second-sec{
+    padding:20px;
+}
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:480px){
+
+.first-section,
+.second-sec{
+    padding:16px;
+}
+
+#main-heading{
+    font-size:19px;
+}
+
+#result-show{
+    font-size:14px;
+}
+
+}

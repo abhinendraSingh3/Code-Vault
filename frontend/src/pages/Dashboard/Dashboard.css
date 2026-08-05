@@ -38,11 +38,13 @@ html,body{
 /* Sidebar open */
 
 .dashboard-all.sidebar-expanded{
-
     margin-left:260px;
 
-    width:calc(100% - 260px);
-
+    width:calc(100% - 260px); /* FIX: was width:100% + margin-left:260px, which pushed
+                                  the right edge 260px past the viewport. Everything on
+                                  the right (search box, later table columns, action
+                                  icons) was getting silently clipped by the body's
+                                  overflow-x:hidden instead of causing a scrollbar. */
 }
 
 
@@ -107,6 +109,12 @@ html,body{
 
     margin-bottom:35px;
 
+    /* FIX: #expand-sidebar is position:fixed at top:20/left:20 at EVERY breakpoint,
+       but this clearance used to only exist inside the 768px mobile media query.
+       Above 768px (sidebar collapsed), the heading rendered directly behind the
+       button. Applying it unconditionally here fixes it at every width. */
+    margin-top:55px;
+
 }
 
 
@@ -121,7 +129,7 @@ html,body{
 
 #dash-heading{
 
-    font-size:clamp(28px,4vw,48px);
+    font-size:clamp(22px,3vw,34px);
 
 }
 
@@ -175,6 +183,26 @@ html,body{
 
     object-fit:cover;
 
+    flex-shrink:0;
+
+}
+
+
+/* FIX: keep the avatar image and its label glued together as one unit,
+   no matter how .right-profile-section itself wraps/stacks. Without this,
+   the photo and the "Profile" text were being treated as separate flex
+   items and stretched independently at narrow widths, which is what was
+   producing the large empty gap under the search bar on mobile. */
+.profile-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-shrink:0;
+
 }
 
 
@@ -214,7 +242,7 @@ html,body{
 
 .total-snippets h2{
 
-    font-size:18px;
+    font-size:15px;
 
 }
 
@@ -223,9 +251,11 @@ html,body{
 
     margin-top:10px;
 
-    font-size:34px;
+    font-size:26px;
 
     font-weight:700;
+
+    min-height:1.2em; /* FIX: keeps card height stable even if the count is briefly empty/loading */
 
 }
 
@@ -254,7 +284,7 @@ html,body{
 
 .last-upper h2{
 
-    font-size:28px;
+    font-size:20px;
 
 }
 
@@ -290,6 +320,38 @@ html,body{
 
     margin-top:20px;
 
+    position:relative; /* FIX: needed to anchor the scroll-hint fade below */
+
+    -webkit-overflow-scrolling:touch;
+
+}
+
+
+/* FIX: visual cue that the table has more columns off-screen.
+   Purely decorative fade on the right edge of the wrapper; it doesn't
+   block clicks and disappears once scrolled to the end (see JS note below). */
+.table-wrapper::after{
+
+    content:"";
+
+    position:sticky;
+
+    top:0;
+
+    right:0;
+
+    display:block;
+
+    width:24px;
+
+    height:100%;
+
+    margin-left:-24px;
+
+    pointer-events:none;
+
+    background:linear-gradient(to right, transparent, rgba(0,0,0,0.6));
+
 }
 
 
@@ -316,12 +378,18 @@ html,body{
 
     border-bottom:1px solid #22273a;
 
+    font-size:14px;
+
 }
 
 
 .snippet-table th{
 
     color:#999;
+
+    font-size:12px;
+
+    letter-spacing:0.3px;
 
 }
 
@@ -349,9 +417,15 @@ html,body{
 
 
 .dashboard-all{
+    min-height:100vh;
+    background:#000;
+    color:#fff;
 
-    padding:20px;
+    padding:30px;
 
+    transition:margin-left .3s ease;
+
+    overflow:hidden;
 }
 
 
@@ -398,6 +472,8 @@ html,body{
 
     width:100%;
 
+    justify-content:space-between; /* FIX: search bar and profile info share the row sensibly instead of stretching separately */
+
 }
 
 
@@ -433,27 +509,24 @@ html,body{
 
 
 
-.upper-section{
-
-    margin-top:55px;
-
-}
-
-
-
 .right-profile-section{
 
     flex-direction:column;
 
     align-items:stretch;
 
+    gap:12px; /* FIX: was inheriting 15px only implicitly; keeping it explicit avoids drift */
+
 }
 
 
 
-.profile-photo{
+.profile-info{
 
-    align-self:flex-end;
+    align-self:flex-end; /* FIX: moved the align-self here (from .profile-photo) so the
+                             photo + label move together instead of only the photo
+                             floating right while the label stayed left, which was
+                             part of what created the odd empty space */
 
 }
 
@@ -522,7 +595,7 @@ html,body{
 
 #dash-heading{
 
-    font-size:26px;
+    font-size:22px;
 
 }
 
@@ -538,7 +611,7 @@ html,body{
 
 .total-snippets p{
 
-    font-size:28px;
+    font-size:22px;
 
 }
 
@@ -546,7 +619,7 @@ html,body{
 
 .last-upper h2{
 
-    font-size:22px;
+    font-size:18px;
 
 }
 
@@ -565,14 +638,14 @@ html,body{
 
 #dash-heading{
 
-    font-size:22px;
+    font-size:19px;
 
 }
 
 
 .total-snippets p{
 
-    font-size:24px;
+    font-size:19px;
 
 }
 

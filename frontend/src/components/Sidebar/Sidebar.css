@@ -25,6 +25,17 @@ body{
     display:flex;
     flex-direction:column;
 
+    overflow-y:auto; /* FIX: without this, a nav list taller than the viewport (short
+                         laptop screens, landscape mobile) would get clipped with no
+                         way to reach the bottom links since body itself has
+                         overflow:hidden */
+
+    z-index:10000; /* FIX: sidebar had no z-index at all, so depending on DOM order it
+                       could render underneath the fixed #expand-sidebar button
+                       (z-index:9999) in dashboard.css once opened. Setting this
+                       higher guarantees the sidebar always sits on top of that
+                       button when it slides in. */
+
     transition:left .3s ease;
 }
 
@@ -35,7 +46,7 @@ body{
 /* Header */
 
 .first-section{
-    padding:20px;
+    padding:16px 20px;
     border-bottom:1px solid #22273a;
 
     display:flex;
@@ -45,29 +56,29 @@ body{
 
 #main-title{
     color:white;
-    font-size:28px;
+    font-size:20px;
     font-weight:bold;
 }
 
 #close{
     color:white;
     cursor:pointer;
-    font-size:22px;
+    font-size:18px;
 }
 
 /* Navigation */
 
 .second-section{
-    padding:20px 15px;
+    padding:16px 15px;
 
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:8px;
 }
 
 #new-snippet{
     width:100%;
-    height:48px;
+    height:42px;
 
     border:none;
     border-radius:10px;
@@ -75,17 +86,19 @@ body{
     background:#6b4dff;
     color:white;
 
-    font-size:16px;
+    font-size:14px;
     cursor:pointer;
 
-    margin-bottom:15px;
+    margin-bottom:12px;
 }
 
 .second-section a{
     color:white;
     text-decoration:none;
 
-    padding:12px 15px;
+    font-size:14px;
+
+    padding:10px 15px;
 
     border-radius:10px;
 
@@ -106,21 +119,23 @@ body{
 
     margin-top:auto;
 
-    padding:20px;
+    padding:16px 20px;
 
     border-top:1px solid #22273a;
 
     display:flex;
     flex-direction:column;
 
-    gap:10px;
+    gap:8px;
 }
 
 .third-section a{
     color:white;
     text-decoration:none;
 
-    padding:12px 15px;
+    font-size:14px;
+
+    padding:10px 15px;
 
     border-radius:10px;
 
@@ -132,19 +147,46 @@ body{
 }
 
 #profile-pic{
-    width:55px;
-    height:55px;
+    width:42px;
+    height:42px;
     border-radius:50%;
     background:gray;
-    margin-top:20px;
+    margin-top:16px;
+
+    flex-shrink:0; /* FIX: prevents the avatar from getting squeezed if the username/email
+                      text next to it (if inline) is long */
 }
 
 #userName{
     color:white;
     font-weight:bold;
+    font-size:14px;
 }
 
 #email{
     color:#888;
-    font-size:14px;
+    font-size:12px;
+}
+
+
+/* =========================================
+   SMALL SCREENS
+========================================= */
+
+@media(max-width:350px){
+
+.sidebar{
+    width:220px;
+    left:-220px;
+}
+
+#main-title{
+    font-size:17px;
+}
+
+#profile-pic{
+    width:36px;
+    height:36px;
+}
+
 }

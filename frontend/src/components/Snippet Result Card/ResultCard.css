@@ -1,0 +1,156 @@
+.main-body{
+
+    position:relative;
+
+    width:100%;
+    max-width:680px;
+
+    background:#111827;
+    border:1px solid #22273a;
+    border-radius:14px;
+
+    padding:16px 60px 16px 50px; /* right space for the eye button, left space for the icon */
+
+    margin-bottom:12px;
+
+    color:#fff;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+/* decorative icon before the title, since there's no icon element in the JSX */
+.main-body::before{
+    content:"⧉";
+    position:absolute;
+    top:16px;
+    left:14px;
+
+    width:26px;
+    height:26px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#5b3a1e;
+    color:#f5a35c;
+    border-radius:6px;
+
+    font-size:13px;
+}
+
+
+/* =========================================
+   TEXT BLOCK (title / description / updated)
+========================================= */
+
+.first-ele{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+
+    padding-right:70px; /* keeps text from running under the language tag */
+}
+
+#title-snippet{
+    font-size:14px;
+    font-weight:700;
+}
+
+#desciption-snippet{
+    font-size:12px;
+    color:#9ca3af;
+}
+
+#updating-details{
+    font-size:11px;
+    color:#6b7280;
+}
+
+
+/* =========================================
+   LANGUAGE TAG (top-right corner)
+========================================= */
+
+.language-details{
+    position:absolute;
+    top:16px;
+    right:16px;
+}
+
+#language-details{
+
+    display:inline-block;
+
+    padding:3px 10px;
+
+    border-radius:8px;
+
+    font-size:11px;
+    font-weight:600;
+
+    background:#152a4a; /* default TypeScript-style color; swap per language as needed */
+    color:#5aa9ff;
+}
+
+
+/* =========================================
+   OPEN (EYE) BUTTON — vertically centered on the right
+========================================= */
+
+.open-btn{
+    position:absolute;
+    right:16px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+#result-open{
+
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:transparent;
+    border:1px solid #22273a;
+    border-radius:50%;
+
+    color:#fff;
+    cursor:pointer;
+
+    font-size:0; /* hides the literal "Open" text — see note above about fixing this in the JSX instead */
+}
+
+#result-open::before{
+    content:"👁";
+    font-size:14px;
+}
+
+#result-open:hover{
+    background:#202845;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:480px){
+
+.main-body{
+    padding:14px 50px 14px 44px;
+}
+
+.first-ele{
+    padding-right:0;
+}
+
+.language-details{
+    position:static;
+    margin-top:8px;
+}
+
+}

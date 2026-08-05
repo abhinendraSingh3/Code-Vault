@@ -1,0 +1,574 @@
+/* ============================
+   RESET
+============================ */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    background:#000;
+    color:#fff;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow:hidden;                 /* page never scrolls */
+}
+
+
+/* ============================
+   MAIN BODY  (fills the viewport, no card/border)
+============================ */
+
+.main-body{
+
+    width:100%;
+    height:100dvh;
+
+    padding:clamp(16px, 3vw, 40px) clamp(20px, 4vw, 60px);
+
+    display:flex;
+    flex-direction:column;
+
+    gap:clamp(14px, 2vh, 26px);
+
+    background:#000;
+}
+
+
+/* ============================
+   HEADING
+============================ */
+
+.main-heading{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    flex-shrink:0;
+}
+
+#new-snippet-title{
+    font-size:clamp(20px, 2.6vw, 30px);
+    font-weight:700;
+    line-height:1.2;
+}
+
+#new-descripton{
+    font-size:clamp(12px, 1.4vw, 14px);
+    color:#8b8b8b;
+}
+
+
+/* ============================
+   UNIVERSAL FIELD STYLE
+   (catches any input/select/textarea even if IDs don't match below —
+   prevents unstyled/white browser-default fields)
+============================ */
+
+input[type="text"],
+input[type="search"],
+input:not([type]),
+select,
+textarea{
+
+    width:100%;
+
+    min-height:44px;
+
+    outline:none;
+
+    border-radius:10px;
+
+    background:#0d0f1a;
+
+    color:#fff;
+
+    padding:0 15px;
+
+    font-size:14px;
+
+    font-family:inherit;
+
+    border:1px solid #22273a;
+
+    appearance:none;
+
+    transition:border-color .15s ease;
+}
+
+input::placeholder,
+textarea::placeholder{
+
+    color:#7c7c7c;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:#6b4dff;
+}
+
+
+/* ============================
+   SECOND SECTION (Title / Language)
+============================ */
+
+.second-sec{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:22px;
+
+    flex-shrink:0;
+}
+
+.second-sec label{
+
+    display:block;
+
+    font-size:13px;
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    color:#e5e5e5;
+}
+
+#snippet-title,
+#snippet-language{
+
+    width:100%;
+
+    height:clamp(38px, 5.2vh, 46px);
+
+    outline:none;
+
+    border-radius:10px;
+
+    background:#0d0f1a;
+
+    color:white;
+
+    padding:0 15px;
+
+    font-size:14px;
+
+    border:1px solid #22273a;
+
+    appearance:none;
+
+    transition:border-color .15s ease;
+}
+
+/* If your Language field is a native <select>, this adds the arrow.
+   If it's a plain <input> with your own icon element inside a wrapper,
+   delete this rule — your icon markup handles it instead. */
+select#snippet-language{
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c7c7c7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 15px center;
+    padding-right:38px;
+    cursor:pointer;
+}
+
+#snippet-title:focus,
+#snippet-language:focus{
+
+    border-color:#6b4dff;
+}
+
+#snippet-title::placeholder{
+
+    color:#7c7c7c;
+}
+
+
+/* ============================
+   CODE EDITOR
+============================ */
+
+.third-sec{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    flex:1;
+    min-height:0;
+}
+
+.editor-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    flex-shrink:0;
+}
+
+#code{
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+.editor-controls{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+#editor-theme{
+
+    height:38px;
+
+    padding:0 14px;
+
+    border:1px solid #22273a;
+
+    border-radius:8px;
+
+    background:#0d0f1a;
+
+    color:#e5e5e5;
+
+    font-size:13px;
+
+    outline:none;
+
+    cursor:pointer;
+}
+
+#editor-big{
+
+    width:38px;
+
+    height:38px;
+
+    flex-shrink:0;
+
+    border:1px solid #22273a;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    background:#0d0f1a;
+
+    color:white;
+
+    font-size:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:background .15s ease, border-color .15s ease;
+}
+
+#editor-big:hover{
+
+    background:#161a2b;
+
+    border-color:#3a4160;
+}
+
+/* Monaco mounts here — this div is what shrinks/grows, editor scrolls internally, page does not */
+
+#editor-mount{
+
+    width:100%;
+
+    flex:1;
+    min-height:60px;
+
+    border-radius:12px;
+
+    overflow:auto;
+
+    border:1px solid #22273a;
+
+    background:#0d0f1a;
+
+    padding:14px 0;
+}
+
+#editor-mount pre{
+
+    font-family:"Courier New", Courier, monospace;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+    white-space:pre;
+}
+
+#editor-mount .ln{
+
+    display:inline-block;
+
+    width:28px;
+
+    text-align:right;
+
+    margin-right:16px;
+
+    color:#5b6178;
+
+    user-select:none;
+}
+
+.tok-kw{ color:#c586c0; }
+.tok-fn{ color:#dcdcaa; }
+.tok-obj{ color:#4ec9b0; }
+.tok-str{ color:#ce9178; }
+
+
+/* ============================
+   DESCRIPTION
+============================ */
+
+.fourth-sec{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    flex-shrink:0;
+}
+
+.fourth-sec label{
+
+    font-size:13px;
+    font-weight:600;
+    color:#e5e5e5;
+}
+
+#description-input{
+
+    width:100%;
+
+    height:clamp(50px, 9vh, 80px);
+
+    resize:none;
+
+    padding:14px 15px;
+
+    outline:none;
+
+    border-radius:10px;
+
+    background:#0d0f1a;
+
+    color:white;
+
+    border:1px solid #22273a;
+
+    font-size:14px;
+
+    font-family:inherit;
+
+    transition:border-color .15s ease;
+}
+
+#description-input:focus{
+
+    border-color:#6b4dff;
+}
+
+#description-input::placeholder{
+
+    color:#7b7b7b;
+}
+
+
+/* ============================
+   BUTTONS
+============================ */
+
+.fifth{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:14px;
+
+    flex-shrink:0;
+}
+
+#cancle-btn{
+
+    min-width:110px;
+
+    height:42px;
+
+    padding:0 20px;
+
+    border:1px solid #333;
+
+    background:transparent;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    transition:background .15s ease, border-color .15s ease;
+}
+
+#cancle-btn:hover{
+
+    background:#111111;
+
+    border-color:#555;
+}
+
+#save{
+
+    min-width:150px;
+
+    height:42px;
+
+    padding:0 20px;
+
+    border:none;
+
+    background:#6b4dff;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:background .15s ease;
+}
+
+#save:hover{
+
+    background:#7c5cff;
+}
+
+
+/* ============================
+   TABLET  (<=760px)
+============================ */
+
+@media (max-width:760px){
+
+.second-sec{
+
+    grid-template-columns:1fr;
+
+    gap:12px;
+}
+
+}
+
+
+/* ============================
+   MOBILE  (<=560px)
+============================ */
+
+@media (max-width:560px){
+
+.main-body{
+
+    gap:12px;
+}
+
+.fifth{
+
+    flex-direction:column-reverse;
+}
+
+#cancle-btn,
+#save{
+
+    width:100%;
+}
+
+.editor-controls{
+
+    gap:6px;
+}
+
+#editor-theme{
+
+    font-size:12px;
+
+    padding:0 10px;
+    height:34px;
+}
+
+#editor-big{
+
+    width:34px;
+    height:34px;
+}
+
+}
+
+
+/* ============================
+   SHORT VIEWPORTS
+   (landscape phones, small laptop windows —
+   drop non-essential copy so the form still fits with no scroll)
+============================ */
+
+@media (max-height:640px){
+
+.main-body{
+
+    gap:8px;
+}
+
+#new-descripton{
+
+    display:none;
+}
+
+#description-input{
+
+    height:clamp(36px, 6vh, 50px);
+}
+
+}
+
+@media (max-height:460px){
+
+.fourth-sec{
+
+    display:none;
+}
+
+}

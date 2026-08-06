@@ -1,0 +1,42 @@
+.tags-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    background: #111827; /* Dark navy/slate container */
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+
+    padding: 14px 20px;
+    color: #ffffff;
+
+    cursor: default;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+/* Subtle hover effect for interactive feel */
+/* .tags-body:hover {
+    background: #1f2937;
+    border-color: #374151;
+} */
+
+/* Language Title (Left side) */
+#tags-textArea {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f3f4f6;
+    margin: 0;
+}
+
+/* Occurrence Badge/Count (Right side) */
+#tags-occurence {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #9ca3af;
+    background: #1e293b;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin: 0;
+}

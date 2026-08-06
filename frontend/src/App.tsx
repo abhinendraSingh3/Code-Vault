@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard/Dashboard"
 import CreateSnippet from "./pages/CreateSnippet/CreateSnippet"
 import AllSnippets from "./pages/AllSnippets/AllSnippets"
 import Search from "./pages/Search/Search"
+import SearchByLang from "./pages/Search By Languages/SearchByLan"
+import SearchByTitle from "./pages/Search By Title/SearchByTitle"
 
 function App() {
 
@@ -19,6 +21,8 @@ function App() {
         <Route path="/createSnippet" element={<CreateSnippet/>}></Route>
         <Route path="/allsnippets" element={<AllSnippets/>}></Route>
         <Route path="/searchany" element={<Search/>}></Route>
+        <Route path="/searchbylanguage" element={<SearchByLang/>}></Route>
+        <Route path="/searchByTitle" element={<SearchByTitle/>}></Route>
       </Routes>
      
     </BrowserRouter>

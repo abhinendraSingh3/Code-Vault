@@ -32,9 +32,9 @@ const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
 
                     <a href="/searchany" id="seach-any">Search</a>
 
-                    <a href="/ByLanguage" id="by-language">By language</a>
+                    <a href="/searchbylanguage" id="by-language">By language</a>
 
-                    <a href="/ByTitle" id="by-title">By Title</a>
+                    <a href="/searchByTitle" id="by-title">By Title</a>
 
                     <a href="/SharedWme" id="shared-w-me">Share with me</a>
 

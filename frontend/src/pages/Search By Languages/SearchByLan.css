@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.SearchByLang-container {
+    width: 100%;
+    height: 100vh;
+    background: #0b1120;
+    color: white;
+    padding: 40px 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: hidden; /* Prevent the whole page from scrolling */
+}
+
+.SearchByLang-first-section {
+    width: 100%;
+    max-width: 900px;
+    flex-shrink: 0;
+}
+
+/* ===========================
+   Heading
+=========================== */
+
+.SearchByLang-headings {
+  margin-bottom: 28px;
+}
+
+#SearchByLang-main-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+#SearchByLang-desc-main {
+  color: #9ca3af;
+  font-size: 1rem;
+}
+
+/* ===========================
+   Search Input
+=========================== */
+
+.SearchByLang-input-wrapper {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.SearchByLang-input-wrapper::before {
+  content: "🔍";
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  opacity: .7;
+}
+
+#SearchByLang {
+  width: 100%;
+  height: 60px;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  color: white;
+  font-size: 1rem;
+  padding: 0 55px;
+  outline: none;
+  transition: .25s;
+}
+
+#SearchByLang:focus {
+  border-color: #3b82f6;
+}
+
+#SearchByLang::placeholder {
+  color: #6b7280;
+}
+
+/* ===========================
+   Tags Section (Scrollable)
+=========================== */
+
+.SearchByLang-tags {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 32px;
+    flex-shrink: 0;
+}
+
+.SearchByLang-tags-bodyarea {
+    width: 100%;
+    max-height: 180px;         /* Sets max height for tags container */
+    overflow-y: auto;          /* Enables vertical scroll when tags overflow */
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    padding-right: 6px;        /* Spacing for scrollbar */
+}
+
+/* Custom Scrollbar for Tags Area */
+
+
+/* ===========================
+   Results Section
+=========================== */
+
+.SearchByLang-second-sec {
+    width: 100%;
+    max-width: 900px;
+
+    flex: 1;              /* Take the remaining height */
+    overflow-y: auto;     /* Enable vertical scrolling */
+    padding-right: 8px;   /* Space for scrollbar */
+}
+
+/* Custom Scrollbar for Results Area */
+
+#SearchByLang-result-show {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+#SearchByLang-result-show span {
+  color: white;
+}
+
+.SearchByLang-resultCardList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 768px) {
+
+  .SearchByLang-container {
+    padding: 30px 16px;
+  }
+
+  #SearchByLang-main-heading {
+    font-size: 1.8rem;
+  }
+
+  #SearchByLang-result-show {
+    font-size: 1.2rem;
+  }
+
+  #SearchByLang {
+    height: 56px;
+  }
+
+  .SearchByLang-tags-bodyarea {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    max-height: 150px;
+  }
+
+}

@@ -1,22 +1,22 @@
-import "./ResultCard.css"
-const ResultCard=()=>{
+import "./ResultCard.css";
+
+const ResultCard = () => {
     return (
-        <>
-        <div className="main-body">
-            <div className="first-ele">
-                <p id="title-snippet">Data from backend{}</p>
-                <p id="desciption-snippet">Data from the backend{}</p>
-                <p id="updating-details">Updated {} ago</p>
+        <div className="resultcard-main-body">
+            <div className="resultcard-card-left">
+                <div className="resultcard-card-icon">⚡</div>
+                <div className="resultcard-card-text">
+                    <p id="resultcard-title-snippet">React useFetch Hook</p>
+                    <p id="resultcard-desciption-snippet">Custom hook for data fetching in React</p>
+                    <p id="resultcard-updating-details">Updated 5 hours ago</p>
+                </div>
             </div>
-            <div className="language-details">
-                <p id="language-details">BackendData{}</p>
-            </div>
-            <div className="open-btn">
-                <button id="result-open">Open</button>
+            <div className="resultcard-card-right">
+                <span className="resultcard-language-badge">TypeScript</span>
+                <button id="resultcard-result-open" aria-label="View">Open</button>
             </div>
         </div>
-        </>
-    )
-}
+    );
+};
 
-export default ResultCard
+export default ResultCard;

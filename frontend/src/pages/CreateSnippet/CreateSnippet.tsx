@@ -52,6 +52,7 @@ const CreateSnippet = () => {
                 <div className="third-sec">
                     <p id="code">Code</p>
                     <button id="editor-big" onClick={handleBigScreen}>⛶</button>
+                    
                     <Editor
                         height="280px"
                         width="100%"

@@ -1,0 +1,315 @@
+/* ------------------ MAIN ------------------ */
+
+body {
+    margin: 0;
+    background: #090b12;
+    color: white;
+    font-family: Inter, sans-serif;
+}
+
+.snippetDetails-back {
+    padding: 20px 40px 0;
+}
+
+#snippetDetails-back-btn {
+    background: none;
+    border: none;
+    color: #b3b3b3;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#snippetDetails-back-btn:hover {
+    color: white;
+}
+
+/* ------------------ HEADER ------------------ */
+
+.snippetDetails-first {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+}
+
+#snippetDetails-title {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+}
+
+#snippetDetails-description {
+    color: #9c9c9c;
+    margin-top: 8px;
+}
+
+.snippetDetails-rightSide {
+    display: flex;
+    gap: 15px;
+}
+
+#snippetDetails-edit,
+#snippetDetails-Delete {
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#snippetDetails-edit {
+    background: #1d2330;
+    color: white;
+}
+
+#snippetDetails-edit:hover {
+    background: #2d3548;
+}
+
+#snippetDetails-Delete {
+    background: #dc4f57;
+    color: white;
+}
+
+#snippetDetails-Delete:hover {
+    background: #c53f47;
+}
+
+/* ------------------ BODY ------------------ */
+
+.snippetDetails-secondTab {
+    display: flex;
+    gap: 25px;
+    padding: 0 40px 30px;
+}
+
+.snippetDetails-leftSide {
+    flex: 3;
+}
+
+.snippetsDetails-rightSide {
+    flex: 1;
+}
+
+/* ------------------ TABS ------------------ */
+
+.snippetDetails-tabs {
+    display: flex;
+    gap: 25px;
+    border-bottom: 1px solid #2c2c38;
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    color: #9d9d9d;
+    font-size: 17px;
+    padding: 16px 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab:hover {
+    color: white;
+}
+
+.active {
+    color: white;
+}
+
+.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 3px;
+    background: #8b5cf6;
+    border-radius: 20px;
+}
+
+/* ------------------ LEFT CONTENT ------------------ */
+
+.snippetDetails-left-content {
+    margin-top: 20px;
+}
+
+.snippetDetail-code {
+    position: relative;
+}
+
+#snippetDetail-codeMax {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: rgba(25, 25, 25, 0.9);
+    color: white;
+
+    cursor: pointer;
+
+    z-index: 9999;      /* Very important */
+}
+
+/* ------------------ VERSIONS ------------------ */
+
+.snippetDetail-versions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    max-height: 500px;   /* Adjust as needed */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 8px;
+}
+
+
+/* ------------------ SHARE ------------------ */
+
+.snippetDetail-share {
+    background: #121826;
+    border: 1px solid #262d39;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+#snippetDetailShare-headingH2 {
+    margin: 0;
+}
+
+#snippetDetailShare-subheading {
+    color: #9b9b9b;
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+.snippetDetail-btn {
+    margin: 25px 0;
+}
+
+#snippetDetail-generate {
+    width: 100%;
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+#snippetDetail-generate:hover {
+    background: #7447dc;
+}
+
+.shareSnippet-Details {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#display-shareContent {
+    width: 100%;
+    background: #1b2230;
+    border: 1px solid #2c3545;
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+#copyBtn {
+    background: #1d2330;
+    border: none;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ------------------ RIGHT PANEL ------------------ */
+
+.snippetDetailsRight-first,
+.snippetDetailsRight-second {
+    background: #121826;
+    border: 1px solid #262d39;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.snippetDetailsRight-second {
+    margin-top: 20px;
+}
+
+#snippetDetailsRight-detail,
+#snippetDetailsRight-Actions {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 0;
+}
+
+#snippetDetailsRight-language,
+#snippetDetailsRight-createdAtHeading,
+#snippetDetailsRight-updatedAt-heading,
+#snippetDetailsRight-versions-heading {
+    color: #9a9a9a;
+    margin-bottom: 3px;
+    margin-top: 18px;
+}
+
+#snippetDetailsRight-languageUsed,
+#snippetDetailsRight-createdAt,
+#snippetDetailsRight-updatedAt,
+#snippetDetailsRight-version-details {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+/* ------------------ ACTIONS ------------------ */
+
+#snippetDetails-copyCode {
+    width: 100%;
+    background: #1d2330;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#snippetDetails-copyCode:hover {
+    background: #2a3245;
+}
+
+/* ------------------ RESPONSIVE ------------------ */
+
+@media (max-width: 950px) {
+
+    .snippetDetails-secondTab {
+        flex-direction: column;
+    }
+
+    .snippetDetails-first {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .snippetDetails-rightSide {
+        width: 100%;
+    }
+
+    #snippetDetails-edit,
+    #snippetDetails-Delete {
+        flex: 1;
+    }
+}

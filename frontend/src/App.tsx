@@ -7,6 +7,7 @@ import AllSnippets from "./pages/AllSnippets/AllSnippets"
 import Search from "./pages/Search/Search"
 import SearchByLang from "./pages/Search By Languages/SearchByLan"
 import SearchByTitle from "./pages/Search By Title/SearchByTitle"
+import SnippetDetails from "./components/SnippetDetails/SnippetDetails"
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/searchany" element={<Search/>}></Route>
         <Route path="/searchbylanguage" element={<SearchByLang/>}></Route>
         <Route path="/searchByTitle" element={<SearchByTitle/>}></Route>
+        <Route path="/snippetDetails" element={<SnippetDetails/>}></Route>
       </Routes>
      
     </BrowserRouter>

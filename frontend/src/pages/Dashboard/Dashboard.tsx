@@ -1,8 +1,11 @@
 import { useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.css"
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+
+    const navigate=useNavigate();
 
     const [isOpen, setIsOpen] = useState(true);
 
@@ -87,10 +90,7 @@ const Dashboard = () => {
                                     <td>3</td>
 
                                     <td className="actions">
-                                        <button>👁</button>
-                                        <button>✏️</button>
-                                        <button>📋</button>
-                                        <button>⋮</button>
+                                        <button onClick={()=>{navigate('/snippetDetails')}}>Open</button>
                                     </td>
                                 </tr>
                             </tbody>

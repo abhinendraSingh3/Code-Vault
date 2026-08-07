@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.VersionCard-main-body {
+  width: 100%;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 22px 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  transition: .25s ease;
+}
+
+.VersionCard-main-body:hover {
+  border-color: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,.35);
+}
+
+/* ===========================
+   Left
+=========================== */
+
+.VersionCard-card-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.VersionCard-card-icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+  background: rgba(245,158,11,.15);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+  color: #f59e0b;
+
+  flex-shrink: 0;
+}
+
+.VersionCard-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#VersionCard-title-snippet {
+  color: white;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+#VersionCard-desciption-snippet {
+  color: #9ca3af;
+  font-size: .95rem;
+}
+
+#VersionCard-updating-details {
+  color: #6b7280;
+  font-size: .82rem;
+}
+
+/* ===========================
+   Right
+=========================== */
+
+.VersionCard-card-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.VersionCard-language-badge {
+  padding: 7px 15px;
+  border-radius: 999px;
+
+  background: rgba(99,102,241,.15);
+  color: #818cf8;
+
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+#VersionCard-result-open {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+
+  background: #1f2937;
+  color: white;
+
+  cursor: pointer;
+  transition: .25s;
+}
+
+#VersionCard-result-open:hover {
+  background: #374151;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:768px) {
+
+  .VersionCard-main-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .VersionCard-card-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #VersionCard-title-snippet {
+    font-size: 1rem;
+  }
+
+}

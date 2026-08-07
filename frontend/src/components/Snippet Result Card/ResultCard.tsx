@@ -1,6 +1,14 @@
 import "./ResultCard.css";
+import { useNavigate } from "react-router-dom";
 
 const ResultCard = () => {
+
+    const navigate=useNavigate();
+
+    const handleOpen=()=>{
+        navigate('/snippetDetails');
+
+    }
     return (
         <div className="resultcard-main-body">
             <div className="resultcard-card-left">
@@ -13,7 +21,7 @@ const ResultCard = () => {
             </div>
             <div className="resultcard-card-right">
                 <span className="resultcard-language-badge">TypeScript</span>
-                <button id="resultcard-result-open" aria-label="View">Open</button>
+                <button id="resultcard-result-open" aria-label="View" onClick={handleOpen}>Open</button>
             </div>
         </div>
     );

@@ -31,9 +31,9 @@ body{
     text-rendering:optimizeLegibility;
 }
 
-#root{
-    min-height:100vh;
-    background:#f5f0f0;
+#root {
+    min-height: 100vh;
+    background: #090b12;
 }
 
 a{

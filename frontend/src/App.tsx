@@ -8,6 +8,8 @@ import Search from "./pages/Search/Search"
 import SearchByLang from "./pages/Search By Languages/SearchByLan"
 import SearchByTitle from "./pages/Search By Title/SearchByTitle"
 import SnippetDetails from "./components/SnippetDetails/SnippetDetails"
+import MyShareSnippet from "./pages/My ShareSnippet/ShareSnippet"
+import { EditSnippet } from "./pages/EditSnippet/EditSnippet"
 
 function App() {
 
@@ -25,6 +27,8 @@ function App() {
         <Route path="/searchbylanguage" element={<SearchByLang/>}></Route>
         <Route path="/searchByTitle" element={<SearchByTitle/>}></Route>
         <Route path="/snippetDetails" element={<SnippetDetails/>}></Route>
+        <Route path="/myShares" element={<MyShareSnippet/>}></Route>
+        <Route path="/editSnippet" element={<EditSnippet/>}></Route>
       </Routes>
      
     </BrowserRouter>

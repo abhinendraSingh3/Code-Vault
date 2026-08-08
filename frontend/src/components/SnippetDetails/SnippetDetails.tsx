@@ -2,9 +2,12 @@ import { useState } from "react"
 import Editor from "@monaco-editor/react"
 import VersionCard from "../Snippet Version Cards/VersionCards";
 import './SnippetDetails.css'
+import { useNavigate } from "react-router-dom";
 
 
 const SnippetDetails = () => {
+
+    const navigate=useNavigate();
 
 
     const [activeTab, setActiveTab] = useState("code");
@@ -12,7 +15,7 @@ const SnippetDetails = () => {
     return (
         <>
             <div className="snippetDetails-back">
-                <button id="snippetDetails-back-btn">⟵ Back</button>
+                <button id="snippetDetails-back-btn" onClick={()=>{navigate(-1)}}>⟵ Back</button>
             </div>
 
             <div className="snippetDetails-first">
@@ -21,7 +24,7 @@ const SnippetDetails = () => {
                     <p id="snippetDetails-description"> Data from Backend</p>
                 </div>
                 <div className="snippetDetails-rightSide">
-                    <button id="snippetDetails-edit">Edit</button>
+                    <button id="snippetDetails-edit" onClick={()=>navigate('/editSnippet')}>Edit</button>
                     <button id="snippetDetails-Delete">Delete</button>
                 </div>
 

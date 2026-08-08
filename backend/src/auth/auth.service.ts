@@ -34,7 +34,8 @@ export class AuthService{
         //fetch all the data from the user and copy to variable finalData without the password
         
 
-        return new ResponseDto(user);
+        // return new ResponseDto(user);
+        return "User registered successfully"
     }
 
     async loginRequest(loginDto: LoginDto){

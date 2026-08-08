@@ -36,11 +36,8 @@ const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
 
                     <a href="/searchByTitle" id="by-title">By Title</a>
 
-                    <a href="/SharedWme" id="shared-w-me">Share with me</a>
+                    <a href="/myShares" id="my-shares">My Shares</a>
 
-                    <a href="/MyShares" id="my-shares">My Shares</a>
-
-                    <a href="/allVersions" id="all-versions">All Versions</a>
                 </div>
                 <div className="third-section">
                     <a href="/Profile" id="profile">Profile</a>

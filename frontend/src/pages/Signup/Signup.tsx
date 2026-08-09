@@ -1,8 +1,13 @@
 import { useState } from "react";
 import "./Signup.css";
+import { useNavigate } from "react-router-dom";
+import { registerApi } from "../../api/authApi";
+import axios from "axios";
 
 //Keep everything that is already in formData, but update the email
 const Signup = () => {
+
+    const navigate = useNavigate();
 
     const [data, setData] = useState({
         firstName: "",
@@ -12,31 +17,102 @@ const Signup = () => {
         password: "",
         confirmPassword: ""
     });
-    const [error, setError] = useState();
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState<"success" | "error">("success");
 
-    const onSubmitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const onSubmitForm = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData({
-            firstName: "",
-            lastName: "",
-            userName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        })
 
-        console.log(data);
+
+        if (data.firstName.trim() === "") {
+            setMessage("First name is required");
+            setMessageType("error");
+            return;
+        }
+
+        if (data.lastName.trim() === "") {
+            setMessage("Last name is required");
+            setMessageType("error");
+            return;
+        }
+
+        if (data.userName.trim() === "") {
+            setMessage("Username is required");
+            setMessageType("error");
+            return;
+        }
+
+        if (data.email.trim() === "") {
+            setMessage("Email is required");
+            setMessageType("error");
+            return;
+        }
+
+        if (data.password.trim() === "") {
+            setMessage("Password is required");
+            setMessageType("error");
+            return;
+        }
+
+        if (data.confirmPassword.trim() === "") {
+            setMessage("Confirm password is required");
+            setMessageType("error");
+            return;
+        }
+
+        try {
+            const response = await registerApi(data);
+
+            console.log(response);
+
+            setData({
+                firstName: "",
+                lastName: "",
+                userName: "",
+                email: "",
+                password: "",
+                confirmPassword: ""
+            })
+
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000);
+
+            setMessage("Success!")
+
+
+        }
+        catch (error) {
+
+            //the below is for extracting the exact error from the response from the backend.
+            if (axios.isAxiosError(error)) {
+                const messages = error.response?.data.message
+                console.log(messages)
+
+                //if the error is array then separate the array and joing using , else show the single array only
+                if (Array.isArray(messages)) {
+                    setMessage(messages.join(", "));
+                } else {
+                    setMessage(messages || "Something went wrong");
+                }
+            }
+        }
+
+
 
     }
+
 
     return (
         <>
             <div className="signup-Body">
                 <div className="signup-back">
-                    <button id="signup-btn-back">⟵ Back</button>
+                    <button id="signup-btn-back" onClick={() => navigate(-1)}>⟵ Back</button>
                 </div>
+                <div className="signup-logo">
 
-                <h1 className="siteName"> Code Snap</h1>
+                    <h1 id="siteName">Code Snap</h1>
+                </div>
 
                 <div className="registration-body">
 
@@ -53,10 +129,13 @@ const Signup = () => {
                                 id="firstname"
                                 value={data.firstName}
                                 placeholder="Enter your first name"
-                                onChange={(e) => setData({
-                                    ...data,
-                                    firstName: e.target.value
-                                })}
+                                onChange={(e) => {
+                                    setData({
+                                        ...data,
+                                        firstName: e.target.value
+                                    })
+
+                                }}
 
                             />
                             <label>Last name</label>
@@ -78,10 +157,28 @@ const Signup = () => {
                                 id="username"
                                 value={data.userName}
                                 placeholder="Enter your user name"
-                                onChange={(e) => setData({
-                                    ...data,
-                                    userName: e.target.value
-                                })}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setData({
+                                        ...data,
+                                        userName: e.target.value
+                                    })
+                                    if (value === "") {
+                                        setMessage("");
+                                    }
+                                    else if (!/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
+                                        setMessage(
+                                            "Username must be 3-20 characters and contain only letters, numbers, and _"
+                                        );
+                                        setMessageType("error");
+                                    }
+                                    else {
+                                        setMessage("");
+                                    }
+                                }
+
+
+                                }
                             />
                             <label>Email</label>
                             <input
@@ -112,10 +209,25 @@ const Signup = () => {
                                 id="confirm-password"
                                 value={data.confirmPassword}
                                 placeholder="Confirm your Password"
-                                onChange={(e) => setData({
-                                    ...data,
-                                    confirmPassword: e.target.value
-                                })}
+                                onChange={(e) => {
+                                    const confirmPassword = e.target.value
+                                    setData({
+                                        ...data,
+                                        confirmPassword: e.target.value
+                                    })
+
+                                    if (confirmPassword && confirmPassword !== data.password) {
+                                        setMessage(" Confirm password not matched")
+                                        setMessageType("error");
+                                    }
+                                    else {
+                                        setMessage("")
+                                        setMessageType("success");
+                                    }
+
+                                }
+
+                                }
                             />
                         </div>
 
@@ -123,7 +235,14 @@ const Signup = () => {
 
                         <div className="already-account">
                             <p id="existing-account">Already have an account</p>
-                            <a href="">Login</a>
+                            <a href="" onClick={() => navigate('/login')}>Login</a>
+                        </div>
+                        <div className="signupError">
+
+                            {message && (
+                                <div className={messageType}>{message}</div>
+                            )
+                            }
                         </div>
 
                     </form>

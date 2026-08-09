@@ -1,10 +1,20 @@
-import api from './axios'
+    import api from './axios'
 
-export const registerApi=async()=>{
+    import type {SignUpData,LoginData} from '../types/auth.types'
 
-    const response=api.post('/auth/signup')
+    export const registerApi=async(data:SignUpData)=>{
 
-    return response;
-    
+        const response=await api.post('/auth/signup',data)
 
-}
+        return response;
+        
+
+    }
+
+    export const loginApi=async(loginData:LoginData)=>{
+
+        const response=await api.post('/auth/login',loginData);
+
+        return response;
+
+    }

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 
+    //get data of the 3 most recent snippet,total snippets in users account, when clicked on view all it should inject all in the recentsnippet
+
     const navigate=useNavigate();
 
     const [isOpen, setIsOpen] = useState(true);

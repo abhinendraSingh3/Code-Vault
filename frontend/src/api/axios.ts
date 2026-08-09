@@ -28,17 +28,18 @@ api.interceptors.response.use((response)=>{
     },
 
     //if there is error then erase the token in the local storage and navigate the user to the login page
-    (error)=>{
+   (error) => {
+    const isAuthEndpoint = error.config?.url?.includes("/login") || error.config?.url?.includes("/signup");
 
-        if(error.response?.status==401){
-            localStorage.removeItem("token");
-            window.location.href='/login'
-        }
-
-        //pass the error to the next stage of the chain 
-        return Promise.reject(error);
-
+    if (error.response?.status === 401 && !isAuthEndpoint) {
+        localStorage.removeItem("token");
+        window.location.href = '/login';
     }
 
+    return Promise.reject(error);
+}
+    
 
 );
+
+export default api;

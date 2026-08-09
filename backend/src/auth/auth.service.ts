@@ -64,38 +64,41 @@ export class AuthService{
             userName: user.userName,
             email: user.email
         }
-        
+
+        const userId=user.id
+        const userName=user.userName
+        const email=user.email
         const accessToken=await this.jwtService.signAsync(payload);
 
-        console.log(accessToken);
+        console.log("done")
 
         //return jwt token
-        return {accessToken}
+        return {userId:userId,userName:userName,email:email,accessToken:accessToken}
 
 
     }
 
-    async passwordReset(password: string, confirmPassword: string, email:string){
+    // async passwordReset(password: string, confirmPassword: string, email:string){
 
-        if(password!== confirmPassword){
-            throw new BadRequestException("Passwords do not match")
-        }
+    //     if(password!== confirmPassword){
+    //         throw new BadRequestException("Passwords do not match")
+    //     }
 
-        const emailConfirmed=await this.userService.findUserByEmail(email);
+    //     const emailConfirmed=await this.userService.findUserByEmail(email);
 
-        if(!emailConfirmed){
-            throw new NotFoundException("Cant find any user with the given mail")
-        }
+    //     if(!emailConfirmed){
+    //         throw new NotFoundException("Cant find any user with the given mail")
+    //     }
 
-        //generate token
-        //send the token to the mail 
+    //     //generate token
+    //     //send the token to the mail 
 
-        const hashedPassword=await bcrypt.hash(password,10);
+    //     const hashedPassword=await bcrypt.hash(password,10);
 
-        const user=this.userService.find
+    //     const user=this.userService.find
 
 
 
-    }
+    // }
 
 }

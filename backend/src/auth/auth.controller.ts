@@ -27,10 +27,10 @@ export class AuthController{
         return req.userId;
     }
 
-        @Post('resetpassword')
-    async passwordRest(@Body() passwordData: ForgetPasswordDto ){
-        return this.authService.passwordReset(passwordData.newPassword, passwordData.confirmNewPassword, passwordData.mail)
-    }
+    //     @Post('resetpassword')
+    // async passwordRest(@Body() passwordData: ForgetPasswordDto ){
+    //     return this.authService.passwordReset(passwordData.newPassword, passwordData.confirmNewPassword, passwordData.mail)
+    // }
  
 
 }

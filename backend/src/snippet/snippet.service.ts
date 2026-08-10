@@ -1,4 +1,4 @@
-import { Controller, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { Controller, ForbiddenException, Injectable, NotFoundException, NotImplementedException, UnauthorizedException } from "@nestjs/common";
 import { SnippetReqDTO } from "./dto/snippet-request";
 import { UserService } from "../users/users.services";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -787,6 +787,56 @@ export class SnippetService {
 
 
         return response;
+    }
+
+    //get the latest snippets of the user
+    async getRecentSnippets(userId:number){
+
+        const snippets=await this.snippetRepo.find({
+            where:{
+               user:{
+                id:userId
+               }
+            },
+            relations:{
+                snippetVersion:true,
+                user:true,
+            }
+        })
+
+        console.log(snippets)
+
+        if(!snippets){
+            throw new NotFoundException("cannot find the snippets with the given id");
+        }
+        
+        //sorting based on the creation time and then giving the top 3 snippets
+        const orderSnippets=snippets.sort((a,b)=>b.createdAt.getTime()-a.createdAt.getTime()).slice(0,3);
+        console.log(orderSnippets)
+
+        if(!orderSnippets){
+            throw new NotImplementedException("cannot extract the result")
+        }
+
+        return orderSnippets.map((snippet)=>{
+            const response=new SnippetResponseDTO();
+            console.log("here")
+
+            response.id=snippet.id
+            response.code=snippet.code
+            response.language=snippet.language
+            response.title=snippet.title
+            response.versions=snippet.snippetVersion.length;
+            response.tags=snippet.tag;
+            response.createdAt=snippet.createdAt
+            response.updatedAt=snippet.updatedAt
+            response.shareToken=snippet.shareToken
+            response.description=snippet.description
+
+            return response;
+            
+        })
+        
     }
 
 

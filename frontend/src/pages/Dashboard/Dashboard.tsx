@@ -1,21 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.css"
 import { useNavigate } from "react-router-dom";
+import { getrecentSnippet } from "../../api/dashBoardApi";
 
 const Dashboard = () => {
 
-    //get data of the 3 most recent snippet,total snippets in users account, when clicked on view all it should inject all in the recentsnippet
+    const [recentSnippets, setRecentSnippet] = useState([]);
 
-    const navigate=useNavigate();
+    //get data of the 3 most recent snippet,
+
+
+
+    // total snippets in users account,
+    //  when clicked on view all it should inject all in the recentsnippet
+
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(true);
+    useEffect(() => {
+
+        const fetchRecentSnippet = async () => {
+
+            try {
+                const data = await getrecentSnippet();
+                console.log(data);
+                setRecentSnippet(data);
+
+            }
+            catch (error) {
+                console.error("Failed to fetch recent snippets:", error);
+
+            }
+        }
+
+        fetchRecentSnippet();
+    }, [])
 
     const handleSideBar = () => {
         console.log("clicked")
         setIsOpen(true)
 
     }
+
+
     return (
         <>
             {(!isOpen &&
@@ -92,7 +120,7 @@ const Dashboard = () => {
                                     <td>3</td>
 
                                     <td className="actions">
-                                        <button onClick={()=>{navigate('/snippetDetails')}}>Open</button>
+                                        <button onClick={() => { navigate('/snippetDetails') }}>Open</button>
                                     </td>
                                 </tr>
                             </tbody>

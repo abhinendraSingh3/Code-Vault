@@ -6,12 +6,21 @@ import { SnippetResponseDTO } from "./dto/snippet-response";
 import { ShareTokenResDTO } from "./dto/share-token-response";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { AuthGuard } from "../auth/jwt.auth.guard";
+import { AuthService } from "../auth/auth.service";
 
 
 
 @Controller('snippet')
 export class SnippetController {
     constructor(private readonly snippetService: SnippetService) { }
+
+    //generate the recent snippets
+    @UseGuards(AuthGuard)
+    @Get('recent')
+   async getRecentSnippets(@Req() req: AuthRequest): Promise<SnippetResponseDTO[]>{
+    console.log("Its here man ",req.user.userId)
+        return this.snippetService.getRecentSnippets(req.user.userId);
+    }
 
     @UseGuards(AuthGuard)
     @Post()//creating new snippet
@@ -107,10 +116,6 @@ export class SnippetController {
             req.user.userId
         );
     }
-
-
-
-
 
 
 }

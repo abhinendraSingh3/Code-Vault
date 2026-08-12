@@ -1,4 +1,4 @@
-import { Controller, Req, Post, Body, Param, Get, ParseIntPipe, Delete, UseGuards} from "@nestjs/common";
+import { Controller, Req, Post, Body, Param, Get, ParseIntPipe, Delete, UseGuards, Query} from "@nestjs/common";
 import { SnippetService } from "./snippet.service";
 import { SnippetReqDTO } from "./dto/snippet-request";
 import type { AuthRequest } from "../auth/interfaces/auth-request.interface";
@@ -7,6 +7,8 @@ import { ShareTokenResDTO } from "./dto/share-token-response";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { AuthGuard } from "../auth/jwt.auth.guard";
 import { AuthService } from "../auth/auth.service";
+import { TopSnippet } from "./dto/topSnippetWithSnippetCountDto";
+import { link } from "fs";
 
 
 
@@ -17,7 +19,7 @@ export class SnippetController {
     //generate the recent snippets
     @UseGuards(AuthGuard)
     @Get('recent')
-   async getRecentSnippets(@Req() req: AuthRequest): Promise<SnippetResponseDTO[]>{
+   async getRecentSnippets(@Req() req: AuthRequest): Promise <TopSnippet>{
     console.log("Its here man ",req.user.userId)
         return this.snippetService.getRecentSnippets(req.user.userId);
     }
@@ -30,10 +32,15 @@ export class SnippetController {
 
         return this.snippetService.createSnippet(snippetReqB, req.user.userName);
     }
-      @UseGuards(AuthGuard)
+
+    @UseGuards(AuthGuard)
     @Get('all')
-    async getAllSnippets(@Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
-        return this.snippetService.getAllSnippets(req.user.userName);
+    async getAllSnippets(
+        @Req() req: AuthRequest,
+        @Query('page') page:number,
+        @Query('limit') limit:number,
+    ) {
+        return this.snippetService.getAllSnippets(page,limit,req.user.userName);
 
     }
 

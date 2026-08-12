@@ -14,4 +14,22 @@ export interface LoginData{
     userName:string;
     password:string;
 }
+export interface SnippetData {
+    id: number;
+    title: string;
+    description: string;
+    code: string;
+    language: string;
+    tags: string[];
+    versions: number;
+    shareToken: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface RecentSnippetsResponse {
+    totalLength: number;
+    recentSnippets: SnippetData[];
+}
+
 

@@ -2,30 +2,51 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.css"
 import { useNavigate } from "react-router-dom";
-import { getrecentSnippet } from "../../api/dashBoardApi";
-
+import { getrecentSnippet,getAllSnippetsOfUser } from "../../api/dashBoardApi";
+import type{ SnippetData } from "../../types/auth.types";
 const Dashboard = () => {
 
-    const [recentSnippets, setRecentSnippet] = useState([]);
-
-    //get data of the 3 most recent snippet,
-
+    const[dashBoardData,setDashBoardData]=useState(true);
 
 
     // total snippets in users account,
+    
+
+
     //  when clicked on view all it should inject all in the recentsnippet
+    const[allSnippetData, setAllSnippetData]= useState<SnippetData[]>([]);
+
+    const handleAllData=async()=>{
+        setDashBoardData(false);
+
+        const snippetsData=await getAllSnippetsOfUser();
+        console.log("snippetData->",snippetsData)
+
+        setAllSnippetData(snippetsData);
+    }
+
 
     const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(true);
+
+    //get data of the 3 most recent snippet
+    const [recentSnippets, setRecentSnippet] = useState<SnippetData[]>([]);
+    const [snippetsLength,setSnippetLength]=useState<number>(0);
+
     useEffect(() => {
 
         const fetchRecentSnippet = async () => {
 
             try {
                 const data = await getrecentSnippet();
-                console.log(data);
-                setRecentSnippet(data);
+                const recentSnippetfinal=data.recentSnippets;
+
+                setRecentSnippet(recentSnippetfinal);
+
+                const snippetLength=data.totalLength;
+
+                setSnippetLength(snippetLength);
 
             }
             catch (error) {
@@ -33,9 +54,9 @@ const Dashboard = () => {
 
             }
         }
-
         fetchRecentSnippet();
     }, [])
+
 
     const handleSideBar = () => {
         console.log("clicked")
@@ -66,7 +87,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="right-profile-section">
-                        <input id="search" type="text" placeholder="Search Snippet" />
+
                         <img
                             src="{db insert}"
                             alt="Profile"
@@ -76,7 +97,7 @@ const Dashboard = () => {
                 </div>
                 <div className="mid-section">
                     <div className="total-snippets">
-                        <h2 title="snippets-tota">Total Snippets</h2>
+                        <h2 title="snippets-tota">Total Snippets: {snippetsLength}</h2>
                     </div>
                 </div>
 
@@ -85,7 +106,7 @@ const Dashboard = () => {
                         <h3 id="recent">
                             Recent Snippets
                         </h3>
-                        <button id="view-all-snippet">View All</button>
+                        <button id="view-all-snippet" onClick={handleAllData}>View All</button>
                     </div>
 
                     <div className="last-down">
@@ -101,34 +122,69 @@ const Dashboard = () => {
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div className="snippet-title">
-                                            <h4>Quick Sort in Java</h4>
-                                            <p>Implementation of quick-sort algorithm</p>
-                                        </div>
-                                    </td>
+                                {/* if dashBoard data's state is true then inital api recent snippet will be shown or when user click view all then that data will be shown */}
+                                {dashBoardData ?(recentSnippets.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>
+                                            <div className="snippet-title">
+                                                <h4>{item.title}</h4>
+                                                <p>{item.description}</p>
+                                            </div>
+                                        </td>
 
-                                    <td>
-                                        <span className="language-tag java">
-                                            Java
-                                        </span>
-                                    </td>
+                                        <td>
+                                            <span className={`language-tag ${item.language}`}>
+                                                {item.language}
+                                            </span>
+                                        </td>
 
-                                    <td>2 hours ago</td>
+                                        <td>{new Date(item.updatedAt).toLocaleString()}</td>
 
-                                    <td>3</td>
+                                        <td>{item.versions}</td>
 
-                                    <td className="actions">
-                                        <button onClick={() => { navigate('/snippetDetails') }}>Open</button>
-                                    </td>
-                                </tr>
+                                        <td className="actions">
+                                            <button onClick={() => navigate(`/snippetDetails/${item.id}`)}>
+                                                Open
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))):(
+                                    allSnippetData.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>
+                                            <div className="snippet-title">
+                                                <h4>{item.title}</h4>
+                                                <p>{item.description}</p>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <span className={`language-tag ${item.language}`}>
+                                                {item.language}
+                                            </span>
+                                        </td>
+
+                                        <td>{new Date(item.updatedAt).toLocaleString()}</td>
+
+                                        <td>{item.versions}</td>
+
+                                        <td className="actions">
+                                            <button onClick={() => navigate(`/snippetDetails/${item.id}`)}>
+                                                Open
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                                    
+
+
+                                )}
+
                             </tbody>
+
                         </table>
                     </div>
                 </div>
-
-
             </div>
 
 

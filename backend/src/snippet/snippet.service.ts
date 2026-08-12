@@ -12,7 +12,7 @@ import { ConfigService } from "@nestjs/config";
 import { ShareToken } from "./entities/snippet-shareToken";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { User } from "../users/entities/user.entity";
-import { error } from "console";
+import { error, log } from "console";
 
 @Injectable()
 export class SnippetService {
@@ -123,27 +123,40 @@ export class SnippetService {
     }
 
     //find all the snippets
-    async getAllSnippets(userName: string) {
+   async getAllSnippets(page: number, limit: number, userName: string) {
+    console.log("the page is",page);
 
-        const userFound = this.userService.findByUsername(userName);
+    const skip = (page - 1) * limit;
 
-        const snippetsFound = await this.snippetRepo.find({
-            where: {
-                user: {
-                    userName: userName
-                }
-            },
-            relations: {
-                user: true,
-                snippetVersion: true
+    const userFound = await this.userService.findByUsername(userName);
+
+    if (!userFound) {
+        throw new NotFoundException("User not found");
+    }
+
+    const [snippetsFound, total] = await this.snippetRepo.findAndCount({
+        where: {
+            user: {
+                userName: userName
             }
-        })
+        },
+        relations: {
+            user: true,
+            snippetVersion: true
+        },
+        skip: skip,
+        take: limit,
+        order: { createdAt: "DESC" }
+    })
 
-        if (!snippetsFound) {
-            throw new NotFoundException("You haven't created any snippet")
-        }
 
-        return await Promise.all(snippetsFound.map(async (snippet) => {
+    if (!snippetsFound || snippetsFound.length === 0) {
+        throw new NotFoundException("You haven't created any snippet")
+    }
+
+    try {
+        const data = await Promise.all(snippetsFound.map(async (snippet) => {
+
             const response = new SnippetResponseDTO()
 
             const snippetId = snippet.id;
@@ -169,7 +182,19 @@ export class SnippetService {
 
             return response;
         }))
+        console.log(data,total)
+        return {
+            data,
+            total,
+            page,
+            totalPageNumbers: Math.ceil(total / limit)
+        };
     }
+    catch (error) {
+        console.log("L");
+        throw new NotImplementedException("Kutch na hua")
+    }
+}
 
     //-----------Update Snippet---------------------------
     async updateSnippet(userName: string, snippetId: number, snippetData: SnippetReqDTO) {
@@ -319,8 +344,8 @@ export class SnippetService {
             throw new NotFoundException("User not found");
         }
 
-    console.log(user);
-    
+        console.log(user);
+
         const snippetsFound = await this.snippetRepo.find({
             where: [
                 {
@@ -398,8 +423,8 @@ export class SnippetService {
                     }
                 }
             ],
-            relations:{
-                snippetVersion:true
+            relations: {
+                snippetVersion: true
             }
         })
 
@@ -436,7 +461,7 @@ export class SnippetService {
                     user: {
                         id: userId
                     },
-                    language: ILike (`%${anyKeyword}%`)
+                    language: ILike(`%${anyKeyword}%`)
                 },
                 {
                     user: {
@@ -468,11 +493,11 @@ export class SnippetService {
 
         })
 
-        if(snippetFound.length==0){
+        if (snippetFound.length == 0) {
             throw new NotFoundException("No Code Snippet Found")
         }
 
-        
+
 
         return snippetFound.map((snippet) => {
             const response = new SnippetResponseDTO();
@@ -548,8 +573,8 @@ export class SnippetService {
     async generateTokenBySnippetVersionId(snippetId: number, versionId: number, userId: number) {
 
         const user = await this.userService.findByUserId(userId);
-        
-        
+
+
         if (!user) {
             throw new NotFoundException("User not found")
         }
@@ -603,8 +628,8 @@ export class SnippetService {
 
     //get the snippet by the token
     async getSharedSnippetByToken(token: string) {
-        
-        
+
+
         const shareToken = await this.shareTokenRepo.findOne({
             where: {
                 token: token
@@ -614,11 +639,11 @@ export class SnippetService {
         if (!shareToken) {
             throw new NotFoundException("No Snippet Found")
         }
-        console.log("expiry time: ",shareToken.expiryTime.getTime());
-        console.log("current time: ",Date.now());
-        
-        
-        if(Date.now()>shareToken.expiryTime.getTime()){
+        console.log("expiry time: ", shareToken.expiryTime.getTime());
+        console.log("current time: ", Date.now());
+
+
+        if (Date.now() > shareToken.expiryTime.getTime()) {
             throw new UnauthorizedException("Share Link has expired")
         }
 
@@ -790,53 +815,41 @@ export class SnippetService {
     }
 
     //get the latest snippets of the user
-    async getRecentSnippets(userId:number){
+    async getRecentSnippets(userId: number) {
 
-        const snippets=await this.snippetRepo.find({
-            where:{
-               user:{
-                id:userId
-               }
-            },
-            relations:{
-                snippetVersion:true,
-                user:true,
-            }
+        const snippets = await this.snippetRepo.find({
+            where: { user: { id: userId } },
+            relations: { snippetVersion: true, user: true }
         })
 
-        console.log(snippets)
-
-        if(!snippets){
+        if (!snippets) {
             throw new NotFoundException("cannot find the snippets with the given id");
         }
-        
-        //sorting based on the creation time and then giving the top 3 snippets
-        const orderSnippets=snippets.sort((a,b)=>b.createdAt.getTime()-a.createdAt.getTime()).slice(0,3);
-        console.log(orderSnippets)
 
-        if(!orderSnippets){
-            throw new NotImplementedException("cannot extract the result")
-        }
+        const totalLength = snippets.length;
 
-        return orderSnippets.map((snippet)=>{
-            const response=new SnippetResponseDTO();
-            console.log("here")
+        const orderSnippets = snippets
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+            .slice(0, 3);
 
-            response.id=snippet.id
-            response.code=snippet.code
-            response.language=snippet.language
-            response.title=snippet.title
-            response.versions=snippet.snippetVersion.length;
-            response.tags=snippet.tag;
-            response.createdAt=snippet.createdAt
-            response.updatedAt=snippet.updatedAt
-            response.shareToken=snippet.shareToken
-            response.description=snippet.description
+        const recentSnippets = orderSnippets.map((snippet) => {
+            const response = new SnippetResponseDTO();
+
+            response.id = snippet.id
+            response.code = snippet.code
+            response.language = snippet.language
+            response.title = snippet.title
+            response.versions = snippet.snippetVersion.length;
+            response.tags = snippet.tag;
+            response.createdAt = snippet.createdAt
+            response.updatedAt = snippet.updatedAt
+            response.shareToken = snippet.shareToken
+            response.description = snippet.description
 
             return response;
-            
         })
-        
+
+        return { totalLength, recentSnippets };
     }
 
 

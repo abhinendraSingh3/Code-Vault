@@ -1,15 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './AllSnippets.css'
-import SnippetDetails from "../../components/SnippetDetails/SnippetDetails";
 import { useNavigate } from "react-router-dom";
+import { getALLSnippet } from "../../api/allSnippetAPI";
+import type { SnippetData } from "../../types/auth.types";
 
 const AllSnippets = () => {
 
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
-    const pages = [1, 2, 3, 4, 5, 6]
+    //is the data is loaded from pages or useEffect
+    const [initaLoadDate, setInitiaLoadData] = useState(true);
 
-    const [current, setCurrentPage] = useState<number>(1);
+    //set the initial page after the page loads
+    const [initalPage, setInitialPage] = useState<SnippetData[]>([])
+
+    //data of the particular page
+    const [pageNumberData,setPageNumberData]=useState<SnippetData[]>([])
+
+    const [totalPage, settotalPage] = useState<number>(1);
+    const pageNumbers = Array.from({ length: totalPage }, (_, i) => i + 1);
+
+    const [current, setCurrentPage] = useState<number>(0);
+
+    //this is the function
+    const pageNumberSnippet=async()=>{
+    
+        const response = await getALLSnippet(current, 5);
+
+        console.log("the page is", current)
+
+        setInitiaLoadData(false)
+        setPageNumberData(response.data);
+    }
+    
+    //initial the first page will load using the useEffect
+
+    //then when the user click then another function will run and extract the data and that will be displayed and change the state also
+
+    useEffect(() => {
+        const apiCall = async () => {
+            setCurrentPage(1);
+
+            const response = await getALLSnippet(1, 5);
+
+            setInitialPage(response.data);
+            
+            settotalPage(response.totalPageNumbers);
+        }
+        apiCall();
+
+
+    }, [])
 
 
 
@@ -41,147 +82,78 @@ const AllSnippets = () => {
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div className="snippet-title">
-                                        <h4>Quick Sort in Java</h4>
-                                        <p>Implementation of quick-sort algorithm</p>
-                                    </div>
-                                </td>
+                            {
+                                initaLoadDate ? (
+                                    initalPage.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>
+                                                <div className="snippet-title">
+                                                    <h4>{item.title}</h4>
+                                                    <p>{item.description}</p>
+                                                </div>
+                                            </td>
 
-                                <td>
-                                    <span className="language-tag java">
-                                        Java
-                                    </span>
-                                </td>
+                                            <td>
+                                                <span className="language-tag java">
+                                                    {item.language}
+                                                </span>
+                                            </td>
 
-                                <td>2 hours ago</td>
+                                            <td>{item.updatedAt}</td>
 
-                                <td>3</td>
+                                            <td>{item.versions}</td>
 
-                                <td className="actions">
-                                    <button onClick={()=>navigate('/snippetDetails')}>Open</button>
-                                </td>
-                            </tr>
+                                            <td className="actions">
+                                                <button onClick={() => navigate('/snippetDetails')}>Open</button>
+                                            </td>
+                                        </tr>
+
+                                    ))
+                                ) : (
+                                    initalPage.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>
+                                                <div className="snippet-title">
+                                                    <h4>{item.title}</h4>
+                                                    <p>{item.description}</p>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <span className="language-tag java">
+                                                    {item.language}
+                                                </span>
+                                            </td>
+
+                                            <td>{item.updatedAt}</td>
+
+                                            <td>{item.versions}</td>
+
+                                            <td className="actions">
+                                                <button onClick={() => navigate('/snippetDetails')}>Open</button>
+                                            </td>
+                                        </tr>
+
+                                    ))
+
+                                )}
+
                         </tbody>
                     </table>
-                    <table className="snippet-table">
-                        <thead>
-                            <tr>
-                                <th>TITLE</th>
-                                <th>LANGUAGE</th>
-                                <th>UPDATED</th>
-                                <th>VERSIONS</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div className="snippet-title">
-                                        <h4>Quick Sort in Java</h4>
-                                        <p>Implementation of quick-sort algorithm</p>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <span className="language-tag java">
-                                        Java
-                                    </span>
-                                </td>
-
-                                <td>2 hours ago</td>
-
-                                <td>3</td>
-
-                                <td className="actions">
-                                    <button>Open</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table className="snippet-table">
-                        <thead>
-                            <tr>
-                                <th>TITLE</th>
-                                <th>LANGUAGE</th>
-                                <th>UPDATED</th>
-                                <th>VERSIONS</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div className="snippet-title">
-                                        <h4>Quick Sort in Java</h4>
-                                        <p>Implementation of quick-sort algorithm</p>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <span className="language-tag java">
-                                        Java
-                                    </span>
-                                </td>
-
-                                <td>2 hours ago</td>
-
-                                <td>3</td>
-
-                              <td className="actions">
-                                    <button>Open</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table className="snippet-table">
-                        <thead>
-                            <tr>
-                                <th>TITLE</th>
-                                <th>LANGUAGE</th>
-                                <th>UPDATED</th>
-                                <th>VERSIONS</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div className="snippet-title">
-                                        <h4>Quick Sort in Java</h4>
-                                        <p>Implementation of quick-sort algorithm</p>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <span className="language-tag java">
-                                        Java
-                                    </span>
-                                </td>
-
-                                <td>2 hours ago</td>
-
-                                <td>3</td>
-
-                                <td className="actions">
-                                    <button>Open</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
                 <div className="pages-tags">
                     {
-                        pages.map((page) => {
+                        pageNumbers.map((page) => {
                             return (
                                 <button
                                     key={page}
                                     className={current === page ? "active-page" : ""}
-                                    onClick={() => setCurrentPage(page)}
+                                    onClick={() => {
+                                        setCurrentPage(page)
+                                        pageNumberSnippet()
+
+                                    }}
                                 >{page}
                                 </button>
                             )

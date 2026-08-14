@@ -1,25 +1,24 @@
-/* EditSnippet.css - Single Page Layout with Compact Code Editor */
+/* EditSnippet.css - Single Page Light Mode Layout */
 
-/* 1. Base Setup & Lock Viewport Height */
 html,
 body,
 #root,
 #app,
 main {
-  background-color: #080c14 !important;
-  color: #e2e8f0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #f8fafc !important;
+  color: #0f172a;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
   padding: 0;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Main Container - Fits 100% in One Viewport Screen */
+/* Main Container */
 .editSnippet-body {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px 24px;
+  padding: 24px;
   height: 100vh;
   box-sizing: border-box;
   display: flex;
@@ -27,7 +26,7 @@ main {
   justify-content: space-between;
 }
 
-/* 2. Top Navigation / Back Button */
+/* Top Navigation / Back Button */
 .editSnippet-backBtn {
   margin-bottom: 8px;
 }
@@ -35,45 +34,45 @@ main {
 #backBtn {
   background: transparent !important;
   border: none !important;
-  color: #818cf8 !important;
-  font-size: 13px;
-  font-weight: 500;
+  color: #6366f1 !important;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 2px 4px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
   transition: all 0.2s ease;
-  margin-left: -4px;
+  margin-left: -6px;
 }
 
 #backBtn:hover {
-  background-color: rgba(129, 140, 248, 0.1) !important;
-  color: #a5b4fc !important;
+  background-color: #eef2ff !important;
+  color: #4f46e5 !important;
 }
 
-/* 3. Main Headings */
+/* Main Headings */
 .editSnippet-mainHeading {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 #editSnippet-heading {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 2px 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px 0;
   letter-spacing: -0.02em;
 }
 
 #editSnippet-subHeading {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   color: #64748b;
   margin: 0;
 }
 
-/* 4. First Section: Title & Language Fields */
+/* First Section: Title & Language Fields */
 .editSnippet-firstSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -85,17 +84,17 @@ main {
 .editSnippet-languange {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 #editSnippet-titleMain,
 #editSnippet-languageMain {
-  font-size: 13px;
-  font-weight: 500;
-  color: #cbd5e1;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #334155;
 }
 
-/* Compact Input Fields */
+/* Input Fields */
 #editSnippet-title-inputEnabled,
 #editSnippet-title-inputDisabled,
 #editSnippet-language-inputEnabled,
@@ -103,12 +102,12 @@ main {
 #editSnippet-description-inputEnabled,
 #editSnippet-description-inputDisabled,
 #editSnippet-tags-inputEnabled {
-  background-color: #111625;
-  border: 1px solid #1e293b;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #f8fafc;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 14px;
+  color: #0f172a;
   outline: none;
   width: 100%;
   box-sizing: border-box;
@@ -120,41 +119,40 @@ main {
 #editSnippet-description-inputEnabled:focus,
 #editSnippet-tags-inputEnabled:focus {
   border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 #editSnippet-title-inputDisabled,
 #editSnippet-language-inputDisabled,
 #editSnippet-description-inputDisabled,
 #editSnippet-tags-inputEnabled:disabled {
-  background-color: #0d121e;
-  border-color: #1b2234;
-  color: #94a3b8;
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #64748b;
   cursor: not-allowed;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
-/* 5. Compact Code Editor Container */
+/* Code Editor Container */
 .editSnippet-code {
   position: relative;
-  border-radius: 10px;
-  border: 1px solid #1e293b;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
   overflow: hidden;
-  background-color: #0d1117;
+  background-color: #ffffff;
   height: 240px !important;
   max-height: 260px !important;
   margin-bottom: 12px;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
 }
 
-/* Monaco Editor height override */
 .editSnippet-code .monaco-editor,
 .editSnippet-code > div {
   height: 240px !important;
 }
 
-/* 6. Last Section: Description & Tags Fields */
+/* Last Section: Description & Tags Fields */
 .editSnippet-lastSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -166,72 +164,73 @@ main {
 .editSnippet-tags {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 #editSnippet-descriptionMain,
 #editSnippet-tagsMain {
-  font-size: 13px;
-  font-weight: 500;
-  color: #cbd5e1;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #334155;
   text-transform: capitalize;
 }
 
-/* 7. Action Buttons Section */
+/* Action Buttons Section */
 .editSnippet-buttonSec {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding-top: 4px;
 }
 
 #editSnippet-editBtn {
-  background-color: #1e293b;
-  color: #f8fafc;
-  border: 1px solid #334155;
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  padding: 9px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 #editSnippet-editBtn:hover:not(:disabled) {
-  background-color: #334155;
-  border-color: #475569;
+  background-color: #e2e8f0;
+  color: #0f172a;
 }
 
 #editSnippet-editBtn:disabled {
-  opacity: 0.45;
+  opacity: 0.5;
   cursor: not-allowed;
-  background-color: #161e2e;
-  border-color: #232d3f;
-  color: #64748b;
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #94a3b8;
 }
 
 #editSnippet-update {
   background-color: #6366f1;
   color: #ffffff;
   border: none;
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 9px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
 }
 
 #editSnippet-update:hover {
   background-color: #4f46e5;
+  transform: translateY(-1px);
 }
 
-/* Responsive Scaling for Short Viewports */
+/* Responsive Scaling */
 @media (max-height: 700px) {
   .editSnippet-body {
-    padding: 12px 16px;
+    padding: 14px 18px;
   }
   .editSnippet-code {
     height: 180px !important;

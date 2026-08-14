@@ -1,192 +1,219 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    background:#000;
-    overflow:hidden;
-    font-family:Arial, Helvetica, sans-serif;
+body {
+    background: #f8fafc;
+    overflow-x: hidden;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Sidebar */
 
-.sidebar{
-    position:fixed;
-    top:0;
-    left:-260px;
-    width:260px;
-    height:100vh;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100vh;
 
-    background:#0d111c;
-    border-right:1px solid #22273a;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 4px 0 24px rgba(15, 23, 42, 0.08);
 
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 
-    overflow-y:auto; /* FIX: without this, a nav list taller than the viewport (short
-                         laptop screens, landscape mobile) would get clipped with no
-                         way to reach the bottom links since body itself has
-                         overflow:hidden */
+    overflow-y: auto;
+    z-index: 10000;
 
-    z-index:10000; /* FIX: sidebar had no z-index at all, so depending on DOM order it
-                       could render underneath the fixed #expand-sidebar button
-                       (z-index:9999) in dashboard.css once opened. Setting this
-                       higher guarantees the sidebar always sits on top of that
-                       button when it slides in. */
-
-    transition:left .3s ease;
+    transition: left .3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.sidebar.open{
-    left:0;
+.sidebar.open {
+    left: 0;
 }
 
 /* Header */
 
-.first-section{
-    padding:16px 20px;
-    border-bottom:1px solid #22273a;
+.first-section {
+    padding: 20px 22px;
+    border-bottom: 1px solid #f1f5f9;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#main-title{
-    color:white;
-    font-size:20px;
-    font-weight:bold;
+#main-title {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-#close{
-    color:white;
-    cursor:pointer;
-    font-size:18px;
+#main-title::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #6366f1;
+    border-radius: 50%;
+}
+
+#close {
+    color: #64748b;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+#close:hover {
+    color: #0f172a;
+    background: #f1f5f9;
 }
 
 /* Navigation */
 
-.second-section{
-    padding:16px 15px;
+.second-section {
+    padding: 18px 16px;
 
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-#new-snippet{
-    width:100%;
-    height:42px;
+#new-snippet {
+    width: 100%;
+    height: 44px;
 
-    border:none;
-    border-radius:10px;
+    border: none;
+    border-radius: 10px;
 
-    background:#6b4dff;
-    color:white;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
 
-    font-size:14px;
-    cursor:pointer;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
 
-    margin-bottom:12px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    transition: all 0.2s ease;
 }
 
-.second-section a{
-    color:white;
-    text-decoration:none;
-
-    font-size:14px;
-
-    padding:10px 15px;
-
-    border-radius:10px;
-
-    transition:.2s;
+#new-snippet:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
 }
 
-.second-section a:hover{
-    background:#202845;
+.second-section a {
+    color: #475569;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    padding: 11px 16px;
+
+    border-radius: 10px;
+
+    transition: all .2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-#dashboard{
-    background:#26245d;
+.second-section a:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+#dashboard {
+    background: #eef2ff;
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+#dashboard:hover {
+    background: #e0e7ff;
+    color: #4338ca;
 }
 
 /* Bottom */
 
-.third-section{
+.third-section {
+    margin-top: auto;
+    padding: 18px 16px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafafa;
 
-    margin-top:auto;
-
-    padding:16px 20px;
-
-    border-top:1px solid #22273a;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.third-section a{
-    color:white;
-    text-decoration:none;
+.third-section a {
+    color: #475569;
+    text-decoration: none;
 
-    font-size:14px;
+    font-size: 14px;
+    font-weight: 600;
 
-    padding:10px 15px;
+    padding: 10px 14px;
+    border-radius: 8px;
 
-    border-radius:10px;
-
-    transition:.2s;
+    transition: all .2s ease;
 }
 
-.third-section a:hover{
-    background:#202845;
+.third-section a:hover {
+    background: #f1f5f9;
+    color: #0f172a;
 }
 
-#profile-pic{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    background:gray;
-    margin-top:16px;
-
-    flex-shrink:0; /* FIX: prevents the avatar from getting squeezed if the username/email
-                      text next to it (if inline) is long */
+#profile-pic {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    border: 2px solid #6366f1;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    flex-shrink: 0;
 }
 
-#userName{
-    color:white;
-    font-weight:bold;
-    font-size:14px;
+#userName {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 14px;
 }
 
-#email{
-    color:#888;
-    font-size:12px;
+#email {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
 }
 
+/* Small Screens */
+@media (max-width: 350px) {
+    .sidebar {
+        width: 220px;
+        left: -220px;
+    }
 
-/* =========================================
-   SMALL SCREENS
-========================================= */
+    #main-title {
+        font-size: 17px;
+    }
 
-@media(max-width:350px){
-
-.sidebar{
-    width:220px;
-    left:-220px;
-}
-
-#main-title{
-    font-size:17px;
-}
-
-#profile-pic{
-    width:36px;
-    height:36px;
-}
-
+    #profile-pic {
+        width: 38px;
+        height: 38px;
+    }
 }

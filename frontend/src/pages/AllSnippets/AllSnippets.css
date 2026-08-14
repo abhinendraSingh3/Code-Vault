@@ -7,9 +7,10 @@
 .main-all {
     width: 100%;
     min-height: 100vh;
-    padding: 30px;
-    background: #0b1220;
-    color: white;
+    padding: 32px 40px;
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .first-all {
@@ -17,112 +18,139 @@
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
     flex-wrap: wrap;
 }
 
 .heading {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 #title {
-    font-size: 1.2rem;
-    font-weight: 700;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f172a;
 }
 
 #title-description {
-    color: #9ca3af;
-    font-size: 0.8rem;
+    color: #64748b;
+    font-size: 0.95rem;
 }
 
 .right-side-bars {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 14px;
     flex-wrap: wrap;
 }
 
 #search-snippets {
     width: 280px;
-    height: 45px;
-    padding: 0 15px;
-    border-radius: 8px;
-    border: 1px solid #2d3748;
-    background: #111827;
-    color: white;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
     outline: none;
-    font-size: 15px;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
 }
 
 #search-snippets::placeholder {
-    color: #9ca3af;
+    color: #94a3b8;
+}
+
+#search-snippets:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 #search-btn {
-        font-size: 14px;
-    height: 45px;
+    font-size: 14px;
+    height: 44px;
     padding: 0 22px;
     border: none;
-    border-radius: 8px;
-    background: #7c3aed;
-    color: white;
+    border-radius: 10px;
+    background: #6366f1;
+    color: #ffffff;
     cursor: pointer;
-    font-weight: 600;
-    transition: .3s;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    transition: all 0.2s ease;
 }
 
 #search-btn:hover {
-    background: #6d28d9;
+    background: #4f46e5;
+    transform: translateY(-1px);
 }
 
 .last-down {
     width: 100%;
     overflow-x: auto;
-    border-radius: 12px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
 }
 
 .snippet-table {
     width: 100%;
     min-width: 850px;
     border-collapse: collapse;
-    background: #111827;
-    border-radius: 12px;
+    background: #ffffff;
     overflow: hidden;
 }
 
 .snippet-table th {
-    font-size: 12px;     /* was 14px */
-    font-weight: 600;
-    letter-spacing: 0.8px;
-        padding: 16px 22px;
-
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 16px 22px;
+    background: #f8fafc;
+    color: #64748b;
+    text-transform: uppercase;
+    text-align: left;
 }
 
 .snippet-table td {
-        font-size: 14px;
-    padding: 22px;
-    border-top: 1px solid #1f2937;
+    font-size: 14px;
+    padding: 20px 22px;
+    border-top: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.snippet-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.snippet-table tbody tr:hover {
+    background: #f8fafc;
 }
 
 .snippet-title h4 {
-  font-size: 15px;     /* was 16px */
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
     margin-bottom: 4px;
 }
 
 .snippet-title p {
-    color: #94a3b8;
-    font-size: 11px;
+    color: #64748b;
+    font-size: 12px;
 }
 
 .language-tag {
-    padding: 6px 12px;
+    padding: 5px 14px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    background: #f59e0b;
-    color: black;
+    background: #eef2ff;
+    color: #4f46e5;
+    border: 1px solid #c7d2fe;
 }
 
 .actions {
@@ -131,98 +159,88 @@
 
 .actions button {
     margin-right: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
 }
 
 .actions button:hover {
-    color: #7c3aed;
+    color: #4f46e5;
+    background: #eef2ff;
+    border-color: #c7d2fe;
 }
 
 .pages-tags {
-    margin-top: 30px;
+    margin-top: 32px;
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
 .pages-tags button {
     width: 42px;
     height: 42px;
-    border-radius: 8px;
-    border: none;
-    background: #1f2937;
-    color: white;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    font-weight: 600;
     cursor: pointer;
-    transition: .3s;
+    transition: all 0.2s ease;
 }
 
 .pages-tags button:hover {
-    background: #374151;
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
 }
 
 .active-page {
-    background: #7c3aed !important;
+    background: #6366f1 !important;
+    color: #ffffff !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-/* ---------------------- Tablet ---------------------- */
-
+/* Responsive */
 @media (max-width: 900px) {
-
     .first-all {
         flex-direction: column;
         align-items: stretch;
     }
-
     .right-side-bars {
         width: 100%;
     }
-
     #search-snippets {
         flex: 1;
         width: 100%;
     }
-
     #search-btn {
         width: 120px;
     }
-
 }
 
-/* ---------------------- Mobile ---------------------- */
-
 @media (max-width: 600px) {
-
     .main-all {
-        padding: 15px;
+        padding: 20px 16px;
     }
-
     #title {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
-
-    #title-description {
-        font-size: 14px;
-    }
-
     .right-side-bars {
         flex-direction: column;
         align-items: stretch;
     }
-
     #search-snippets {
-            font-size: 14px;
-                    width: 100%;
-
-
+        width: 100%;
     }
     #search-btn {
         width: 100%;
     }
-
-    .pages-tags button {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
-    }
-
 }

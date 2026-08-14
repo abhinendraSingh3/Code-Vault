@@ -15,24 +15,26 @@ const AllSnippets = () => {
     const [initalPage, setInitialPage] = useState<SnippetData[]>([])
 
     //data of the particular page
-    const [pageNumberData,setPageNumberData]=useState<SnippetData[]>([])
+    const [pageNumberData, setPageNumberData] = useState<SnippetData[]>([])
 
     const [totalPage, settotalPage] = useState<number>(1);
     const pageNumbers = Array.from({ length: totalPage }, (_, i) => i + 1);
 
-    const [current, setCurrentPage] = useState<number>(0);
+    const [current, setCurrentPage] = useState<number>(1);
 
     //this is the function
-    const pageNumberSnippet=async()=>{
-    
-        const response = await getALLSnippet(current, 5);
+    const pageNumberSnippet = async (page: number) => {
+
+        const response = await getALLSnippet(page, 5);
 
         console.log("the page is", current)
 
         setInitiaLoadData(false)
         setPageNumberData(response.data);
+        setCurrentPage(page);
+
     }
-    
+
     //initial the first page will load using the useEffect
 
     //then when the user click then another function will run and extract the data and that will be displayed and change the state also
@@ -44,15 +46,13 @@ const AllSnippets = () => {
             const response = await getALLSnippet(1, 5);
 
             setInitialPage(response.data);
-            
+
             settotalPage(response.totalPageNumbers);
         }
         apiCall();
 
 
     }, [])
-
-
 
     return (
         <>
@@ -82,61 +82,24 @@ const AllSnippets = () => {
                         </thead>
 
                         <tbody>
-                            {
-                                initaLoadDate ? (
-                                    initalPage.map((item) => (
-                                        <tr key={item.id}>
-                                            <td>
-                                                <div className="snippet-title">
-                                                    <h4>{item.title}</h4>
-                                                    <p>{item.description}</p>
-                                                </div>
-                                            </td>
-
-                                            <td>
-                                                <span className="language-tag java">
-                                                    {item.language}
-                                                </span>
-                                            </td>
-
-                                            <td>{item.updatedAt}</td>
-
-                                            <td>{item.versions}</td>
-
-                                            <td className="actions">
-                                                <button onClick={() => navigate('/snippetDetails')}>Open</button>
-                                            </td>
-                                        </tr>
-
-                                    ))
-                                ) : (
-                                    initalPage.map((item) => (
-                                        <tr key={item.id}>
-                                            <td>
-                                                <div className="snippet-title">
-                                                    <h4>{item.title}</h4>
-                                                    <p>{item.description}</p>
-                                                </div>
-                                            </td>
-
-                                            <td>
-                                                <span className="language-tag java">
-                                                    {item.language}
-                                                </span>
-                                            </td>
-
-                                            <td>{item.updatedAt}</td>
-
-                                            <td>{item.versions}</td>
-
-                                            <td className="actions">
-                                                <button onClick={() => navigate('/snippetDetails')}>Open</button>
-                                            </td>
-                                        </tr>
-
-                                    ))
-
-                                )}
+                            {(initaLoadDate ? initalPage : pageNumberData).map((item) => (
+                                <tr key={item.id}>
+                                    <td>
+                                        <div className="snippet-title">
+                                            <h4>{item.title}</h4>
+                                            <p>{item.description}</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span className="language-tag java">{item.language}</span>
+                                    </td>
+                                    <td>{item.updatedAt}</td>
+                                    <td>{item.versions}</td>
+                                    <td className="actions">
+                                        <button onClick={() => navigate('/snippetDetails')}>Open</button>
+                                    </td>
+                                </tr>
+                            ))}
 
                         </tbody>
                     </table>
@@ -150,8 +113,7 @@ const AllSnippets = () => {
                                     key={page}
                                     className={current === page ? "active-page" : ""}
                                     onClick={() => {
-                                        setCurrentPage(page)
-                                        pageNumberSnippet()
+                                        pageNumberSnippet(page)
 
                                     }}
                                 >{page}

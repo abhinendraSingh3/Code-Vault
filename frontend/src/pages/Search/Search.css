@@ -7,15 +7,16 @@
 .search-container {
     width: 100%;
     height: 100vh;
-    background: #0b1120;
-    color: white;
+    background: #f8fafc;
+    color: #0f172a;
     padding: 40px 24px;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    overflow: hidden; /* Prevent the whole page from scrolling */
+    overflow: hidden;
 }
 
 .search-first-section {
@@ -23,58 +24,37 @@
     max-width: 900px;
     flex-shrink: 0;
 }
+
 .search-second-sec {
     width: 100%;
     max-width: 900px;
-
-    flex: 1;              /* Take the remaining height */
-    overflow-y: auto;     /* Enable vertical scrolling */
-    padding-right: 8px;   /* Space for scrollbar */
-}
-/* .search-second-sec::-webkit-scrollbar {
-    width: 8px;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
-.search-second-sec::-webkit-scrollbar-track {
-    background: #111827;
-    border-radius: 10px;
-}
-
-.search-second-sec::-webkit-scrollbar-thumb {
-    background: #374151;
-    border-radius: 10px;
-}
-
-.search-second-sec::-webkit-scrollbar-thumb:hover {
-    background: #4b5563; */
-}   
-
-/* ===========================
-   Heading
-=========================== */
-
+/* Headings */
 .search-headings {
   margin-bottom: 28px;
 }
 
 #search-main-heading {
   font-size: 2.2rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
   margin-bottom: 8px;
 }
 
 #search-desc-main {
-  color: #9ca3af;
+  color: #64748b;
   font-size: 1rem;
 }
 
-/* ===========================
-   Search Input
-=========================== */
-
+/* Search Input */
 .search-input-wrapper {
   position: relative;
-  margin-bottom: 45px;
+  margin-bottom: 40px;
 }
 
 .search-input-wrapper::before {
@@ -84,42 +64,44 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
-  opacity: .7;
+  opacity: .6;
 }
 
 #search {
   width: 100%;
   height: 60px;
-  background: #111827;
-  border: 1px solid #1f2937;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 16px;
-  color: white;
+  color: #0f172a;
   font-size: 1rem;
+  font-weight: 500;
   padding: 0 55px;
   outline: none;
-  transition: .25s;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  transition: all .25s ease;
 }
 
 #search:focus {
-  border-color: #3b82f6;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
 #search::placeholder {
-  color: #6b7280;
+  color: #94a3b8;
 }
 
-/* ===========================
-   Results
-=========================== */
-
+/* Results */
 #search-result-show {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
   margin-bottom: 24px;
 }
 
 #search-result-show span {
-  color: white;
+  color: #6366f1;
 }
 
 .search-resultCardList {
@@ -129,26 +111,18 @@
   gap: 20px;
 }
 
-/* ===========================
-   Responsive
-=========================== */
-
-@media (max-width:768px) {
-
+/* Responsive */
+@media (max-width: 768px) {
   .search-container {
     padding: 30px 16px;
   }
-
   #search-main-heading {
     font-size: 1.8rem;
   }
-
   #search-result-show {
     font-size: 1.2rem;
   }
-
   #search {
-    height: 56px;
+    height: 54px;
   }
-
 }

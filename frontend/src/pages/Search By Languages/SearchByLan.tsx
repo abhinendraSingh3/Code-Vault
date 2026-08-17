@@ -20,18 +20,7 @@ const SearchByLang = () => {
             <div className="SearchByLang-tags">
                 <div className="SearchByLang-tags-bodyarea">
                     <Tags/>
-                     <Tags/>
-                      <Tags/>
-                       <Tags/>
-                        <Tags/>
-                         <Tags/>
-                          <Tags/>
-                           <Tags/>
-                            <Tags/>
-                             <Tags/>
-                              <Tags/>
-                               <Tags/>
-                                <Tags/>
+                  
                 </div>
 
             </div>

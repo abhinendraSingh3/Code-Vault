@@ -1,4 +1,4 @@
-import { Controller, Req, Post, Body, Param, Get, ParseIntPipe, Delete, UseGuards, Query} from "@nestjs/common";
+import { Controller, Req, Post, Body, Param, Get, ParseIntPipe, Delete, UseGuards, Query } from "@nestjs/common";
 import { SnippetService } from "./snippet.service";
 import { SnippetReqDTO } from "./dto/snippet-request";
 import type { AuthRequest } from "../auth/interfaces/auth-request.interface";
@@ -9,6 +9,8 @@ import { AuthGuard } from "../auth/jwt.auth.guard";
 import { AuthService } from "../auth/auth.service";
 import { TopSnippet } from "./dto/topSnippetWithSnippetCountDto";
 import { link } from "fs";
+import { log } from "console";
+import { AllCountLanguages } from "./dto/allLanguages-Count";
 
 
 
@@ -16,11 +18,18 @@ import { link } from "fs";
 export class SnippetController {
     constructor(private readonly snippetService: SnippetService) { }
 
+    @UseGuards(AuthGuard)
+    @Get('allSnippet') async getAllSnippetsOfUsers(@Req() req: AuthRequest) {
+        console.log("All snippet Route hit");
+
+        return this.snippetService.getAllSnippetsOfUsers(req.user.userName);
+
+    }
     //generate the recent snippets
     @UseGuards(AuthGuard)
     @Get('recent')
-   async getRecentSnippets(@Req() req: AuthRequest): Promise <TopSnippet>{
-    console.log("Its here man ",req.user.userId)
+    async getRecentSnippets(@Req() req: AuthRequest): Promise<TopSnippet> {
+        console.log("reaching recent")
         return this.snippetService.getRecentSnippets(req.user.userId);
     }
 
@@ -33,69 +42,33 @@ export class SnippetController {
         return this.snippetService.createSnippet(snippetReqB, req.user.userName);
     }
 
+    //all snippets by pages
     @UseGuards(AuthGuard)
     @Get('all')
     async getAllSnippets(
         @Req() req: AuthRequest,
-        @Query('page') page:number,
-        @Query('limit') limit:number,
+        @Query('page') page: number,
+        @Query('limit') limit: number,
     ) {
-        return this.snippetService.getAllSnippets(page,limit,req.user.userName);
+        return this.snippetService.getAllSnippets(page, limit, req.user.userName);
 
     }
 
-    @UseGuards(AuthGuard)
-    @Get(':id')
-    async getSnippetById(@Req() req: AuthRequest, @Param('id') snippetId: number) {
-        return this.snippetService.getSnippetById(snippetId, req.user.userName);
-
-    }
-
-    @UseGuards(AuthGuard)
-    @Post(':id')
-    async updateSnippet(@Req() req: AuthRequest, @Param('id', ParseIntPipe) snippetId: number, @Body() snippetData: SnippetReqDTO): Promise<SnippetResponseDTO> {
-        return this.snippetService.updateSnippet(req.user.userName, snippetId, snippetData)
-    }
-
-    @UseGuards(AuthGuard)
-    @Delete('delete/:id')
-    async deleteSnippet(@Req() req: AuthRequest, @Param('id', ParseIntPipe) snippetID: number): Promise<string> {
-        return this.snippetService.deleteSnippet(req.user.userName, snippetID);
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('search/language/:lang')
-    async getByLanguage(@Param('lang') language: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
-        return this.snippetService.getByLanguage(language, req.user.userId);
-
-    }
-
+    //search by title
     @UseGuards(AuthGuard)
     @Get('search/title/:title')
     async getByTitle(@Param('title') title: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
+        console.log("it has reached title");
+
         return this.snippetService.getByTitle(title, req.user.userId);
     }
 
+
+    //get by language and title.
     @UseGuards(AuthGuard)
     @Get('search/:anyKeyword')
     async getByTitleOrLanguage(@Param('anyKeyword') anyKeyword: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
         return this.snippetService.getByAnykeyword(anyKeyword, req.user.userId)
-    }
-
-    @UseGuards(AuthGuard)
-    //share any snippet
-    @Post('share/:id')
-    async generateTokenBySnippetId(@Param('id',ParseIntPipe) snippetId: number, @Req() req: AuthRequest): Promise<ShareTokenResDTO> {
-        return this.snippetService.generateTokenBySnippetId(snippetId, req.user.userId);
-
-    }
-
-    @UseGuards(AuthGuard)
-    //share any snippetVersion by token
-    @Post('token/:snippetId/:versionId')
-    async generateTokenBySnippetVersionId(@Param('snippetId',ParseIntPipe) snippetId: number, @Param('versionId', ParseIntPipe) versionId: number, @Req() req: AuthRequest): Promise<ShareTokenResDTO> {
-        return this.snippetService.generateTokenBySnippetVersionId(snippetId, versionId, req.user.userId);
-
     }
 
     @Get('getSnippet/:token')
@@ -123,6 +96,64 @@ export class SnippetController {
             req.user.userId
         );
     }
+
+
+    @UseGuards(AuthGuard)
+    //share any snippetVersion by token
+    @Post('token/:snippetId/:versionId')
+    async generateTokenBySnippetVersionId(@Param('snippetId', ParseIntPipe) snippetId: number, @Param('versionId', ParseIntPipe) versionId: number, @Req() req: AuthRequest): Promise<ShareTokenResDTO> {
+        return this.snippetService.generateTokenBySnippetVersionId(snippetId, versionId, req.user.userId);
+
+    }
+
+    @UseGuards(AuthGuard)
+    @Get(':id')
+    async getSnippetById(@Req() req: AuthRequest, @Param('id') snippetId: number) {
+
+        return this.snippetService.getSnippetById(snippetId, req.user.userName);
+
+    }
+
+    @UseGuards(AuthGuard)
+    @Post(':id')
+    async updateSnippet(@Req() req: AuthRequest, @Param('id', ParseIntPipe) snippetId: number, @Body() snippetData: SnippetReqDTO): Promise<SnippetResponseDTO> {
+        return this.snippetService.updateSnippet(req.user.userName, snippetId, snippetData)
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete('delete/:id')
+    async deleteSnippet(@Req() req: AuthRequest, @Param('id', ParseIntPipe) snippetID: number): Promise<string> {
+        return this.snippetService.deleteSnippet(req.user.userName, snippetID);
+    }
+
+    @UseGuards(AuthGuard)
+    //share any snippet
+    @Post('share/:id')
+    async generateTokenBySnippetId(@Param('id', ParseIntPipe) snippetId: number, @Req() req: AuthRequest): Promise<ShareTokenResDTO> {
+        return this.snippetService.generateTokenBySnippetId(snippetId, req.user.userId);
+
+    }
+
+   @UseGuards(AuthGuard)
+    @Get('search/language/:lang')
+    async getByLanguage(@Param('lang') language: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
+        console.log("reaching language")
+        return this.snippetService.getByLanguage(language, req.user.userId);
+
+    }
+
+    //make api which should return an array of language with each language count,rest return data of the searched snippet
+    @UseGuards(AuthGuard)
+    @Get('/load/totalLanguage')
+    async getTotalLanguage(@Req() req: AuthRequest):Promise<AllCountLanguages[]>{
+        return this.snippetService.getTotalLanguage(req.user.userId);
+
+    }
+
+
+
+
+
 
 
 }

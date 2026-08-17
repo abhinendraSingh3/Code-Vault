@@ -123,78 +123,78 @@ export class SnippetService {
     }
 
     //find all the snippets
-   async getAllSnippets(page: number, limit: number, userName: string) {
-    console.log("the page is",page);
+    async getAllSnippets(page: number, limit: number, userName: string) {
+        console.log("the page is", page);
 
-    const skip = (page - 1) * limit;
+        const skip = (page - 1) * limit;
 
-    const userFound = await this.userService.findByUsername(userName);
+        const userFound = await this.userService.findByUsername(userName);
 
-    if (!userFound) {
-        throw new NotFoundException("User not found");
-    }
+        if (!userFound) {
+            throw new NotFoundException("User not found");
+        }
 
-    const [snippetsFound, total] = await this.snippetRepo.findAndCount({
-        where: {
-            user: {
-                userName: userName
-            }
-        },
-        relations: {
-            user: true,
-            snippetVersion: true
-        },
-        skip: skip,
-        take: limit,
-        order: { createdAt: "DESC" }
-    })
-
-
-    if (!snippetsFound || snippetsFound.length === 0) {
-        throw new NotFoundException("You haven't created any snippet")
-    }
-
-    try {
-        const data = await Promise.all(snippetsFound.map(async (snippet) => {
-
-            const response = new SnippetResponseDTO()
-
-            const snippetId = snippet.id;
-
-            const versionCount = await this.snippetVersionRepo.count({
-                where: {
-                    snippet: {
-                        id: snippetId
-                    }
+        const [snippetsFound, total] = await this.snippetRepo.findAndCount({
+            where: {
+                user: {
+                    userName: userName
                 }
-            })
+            },
+            relations: {
+                user: true,
+                snippetVersion: true
+            },
+            skip: skip,
+            take: limit,
+            order: { createdAt: "DESC" }
+        })
 
-            response.id = snippetId;
-            response.title = snippet.title;
-            response.description = snippet.description;
-            response.code = snippet.code;
-            response.language = snippet.language;
-            response.tags = snippet.tag;
-            response.versions = versionCount;
-            response.shareToken = snippet.shareToken;
-            response.createdAt = snippet.createdAt;
-            response.updatedAt = snippet.updatedAt;
 
-            return response;
-        }))
-        console.log(data,total)
-        return {
-            data,
-            total,
-            page,
-            totalPageNumbers: Math.ceil(total / limit)
-        };
+        if (!snippetsFound || snippetsFound.length === 0) {
+            throw new NotFoundException("You haven't created any snippet")
+        }
+
+        try {
+            const data = await Promise.all(snippetsFound.map(async (snippet) => {
+
+                const response = new SnippetResponseDTO()
+
+                const snippetId = snippet.id;
+
+                const versionCount = await this.snippetVersionRepo.count({
+                    where: {
+                        snippet: {
+                            id: snippetId
+                        }
+                    }
+                })
+
+                response.id = snippetId;
+                response.title = snippet.title;
+                response.description = snippet.description;
+                response.code = snippet.code;
+                response.language = snippet.language;
+                response.tags = snippet.tag;
+                response.versions = versionCount;
+                response.shareToken = snippet.shareToken;
+                response.createdAt = snippet.createdAt;
+                response.updatedAt = snippet.updatedAt;
+
+                return response;
+            }))
+            console.log(data, total)
+            return {
+                data,
+                total,
+                page,
+                totalPageNumbers: Math.ceil(total / limit)
+            };
+        }
+        catch (error) {
+            console.log("L");
+            throw new NotImplementedException("Kutch na hua")
+        }
     }
-    catch (error) {
-        console.log("L");
-        throw new NotImplementedException("Kutch na hua")
-    }
-}
 
     //-----------Update Snippet---------------------------
     async updateSnippet(userName: string, snippetId: number, snippetData: SnippetReqDTO) {
@@ -427,6 +427,11 @@ export class SnippetService {
                 snippetVersion: true
             }
         })
+
+
+        if (snippetsFound.length === 0) {
+            throw new NotFoundException("Cannot find the snippet with the given title")
+        }
 
         return snippetsFound.map((snippet) => {
             const response = new SnippetResponseDTO();
@@ -852,6 +857,85 @@ export class SnippetService {
         return { totalLength, recentSnippets };
     }
 
+    async getAllSnippetsOfUsers(userName: string) {
+
+
+        const userFound = await this.userService.findByUsername(userName);
+
+        if (!userFound) {
+            throw new NotFoundException("User not found");
+        }
+
+        const snippetsFound = await this.snippetRepo.find({
+            where: {
+                user: {
+                    userName: userName
+                }
+            },
+            relations: {
+                user: true,
+                snippetVersion: true
+            },
+        })
+
+        if (!snippetsFound || snippetsFound.length === 0) {
+            throw new NotFoundException("You haven't created any snippet")
+        }
+
+        try {
+            const data = await Promise.all(snippetsFound.map(async (snippet) => {
+
+                const response = new SnippetResponseDTO()
+
+                const snippetId = snippet.id;
+
+                const versionCount = await this.snippetVersionRepo.count({
+                    where: {
+                        snippet: {
+                            id: snippetId
+                        }
+                    }
+                })
+
+                response.id = snippetId;
+                response.title = snippet.title;
+                response.description = snippet.description;
+                response.code = snippet.code;
+                response.language = snippet.language;
+                response.tags = snippet.tag;
+                response.versions = versionCount;
+                response.shareToken = snippet.shareToken;
+                response.createdAt = snippet.createdAt;
+                response.updatedAt = snippet.updatedAt;
+
+                return response;
+            }))
+            return data
+
+        }
+        catch (error) {
+            console.log("L");
+            throw new NotImplementedException("Kutch na hua")
+        }
+    }
+
+    //make api which should return an array of language with each language count,rest return data of the searched snippet
+
+    async getTotalLanguage(userId: number) {
+
+        const snippetFound = await this.snippetRepo.findAndCount({
+            where:{
+                user:{
+                    id:userId
+                },
+                lan
+
+            }
+        })
+
+
+
+}
 
 
 }

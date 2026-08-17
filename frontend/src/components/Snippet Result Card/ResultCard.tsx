@@ -1,7 +1,7 @@
 import "./ResultCard.css";
 import { useNavigate } from "react-router-dom";
 
-const ResultCard = () => {
+const ResultCard = ({title,description,language,updatedAt}) => {
 
     const navigate=useNavigate();
 
@@ -14,13 +14,13 @@ const ResultCard = () => {
             <div className="resultcard-card-left">
                 <div className="resultcard-card-icon">⚡</div>
                 <div className="resultcard-card-text">
-                    <p id="resultcard-title-snippet">React useFetch Hook</p>
-                    <p id="resultcard-desciption-snippet">Custom hook for data fetching in React</p>
-                    <p id="resultcard-updating-details">Updated 5 hours ago</p>
+                    <p id="resultcard-title-snippet">{title}</p>
+                    <p id="resultcard-desciption-snippet">{description}</p>
+                    <p id="resultcard-updating-details">{updatedAt}</p>
                 </div>
             </div>
             <div className="resultcard-card-right">
-                <span className="resultcard-language-badge">TypeScript</span>
+                <span className="resultcard-language-badge">{language}</span>
                 <button id="resultcard-result-open" aria-label="View" onClick={handleOpen}>Open</button>
             </div>
         </div>

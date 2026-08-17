@@ -10,8 +10,7 @@ export const getrecentSnippet=async():Promise<RecentSnippetsResponse>=>{
 }
 
 export const getAllSnippetsOfUser=async()=>{
-    const response=await api.get("/snippet/all")
-
+    const response=await api.get("/snippet/allSnippet")
     return response.data
 
 }

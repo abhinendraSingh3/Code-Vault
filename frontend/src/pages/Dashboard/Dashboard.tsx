@@ -11,8 +11,6 @@ const Dashboard = () => {
 
     // total snippets in users account,
     
-
-
     //  when clicked on view all it should inject all in the recentsnippet
     const[allSnippetData, setAllSnippetData]= useState<SnippetData[]>([]);
 
@@ -20,8 +18,6 @@ const Dashboard = () => {
         setDashBoardData(false);
 
         const snippetsData=await getAllSnippetsOfUser();
-        console.log("snippetData->",snippetsData)
-
         setAllSnippetData(snippetsData);
     }
 

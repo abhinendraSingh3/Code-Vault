@@ -9,8 +9,13 @@ const SnippetDetails = () => {
 
     const navigate=useNavigate();
 
-
     const [activeTab, setActiveTab] = useState("code");
+
+
+    // useEffect(()=>{
+
+
+    // })
 
     return (
         <>

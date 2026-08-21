@@ -59,10 +59,24 @@ export class SnippetController {
     @Get('search/title/:title')
     async getByTitle(@Param('title') title: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
         console.log("it has reached title");
-
         return this.snippetService.getByTitle(title, req.user.userId);
     }
 
+    //make api which should return an array of language with each language count,rest return data of the searched snippet
+    @UseGuards(AuthGuard)
+    @Get('load/totalLanguage')
+    async getTotalLanguage(@Req() req: AuthRequest):Promise<AllCountLanguages[]>{
+        console.log("reaching tags count");
+        return this.snippetService.getTotalLanguage(req.user.userId);
+    }
+    
+      @UseGuards(AuthGuard)
+    @Get('search/language/:lang')
+    async getByLanguage(@Param('lang') language: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
+        console.log("reaching language")
+        return this.snippetService.getByLanguage(language, req.user.userId);
+
+    }
 
     //get by language and title.
     @UseGuards(AuthGuard)
@@ -131,28 +145,7 @@ export class SnippetController {
     @Post('share/:id')
     async generateTokenBySnippetId(@Param('id', ParseIntPipe) snippetId: number, @Req() req: AuthRequest): Promise<ShareTokenResDTO> {
         return this.snippetService.generateTokenBySnippetId(snippetId, req.user.userId);
-
     }
-
-   @UseGuards(AuthGuard)
-    @Get('search/language/:lang')
-    async getByLanguage(@Param('lang') language: string, @Req() req: AuthRequest): Promise<SnippetResponseDTO[]> {
-        console.log("reaching language")
-        return this.snippetService.getByLanguage(language, req.user.userId);
-
-    }
-
-    //make api which should return an array of language with each language count,rest return data of the searched snippet
-    @UseGuards(AuthGuard)
-    @Get('/load/totalLanguage')
-    async getTotalLanguage(@Req() req: AuthRequest):Promise<AllCountLanguages[]>{
-        return this.snippetService.getTotalLanguage(req.user.userId);
-
-    }
-
-
-
-
 
 
 

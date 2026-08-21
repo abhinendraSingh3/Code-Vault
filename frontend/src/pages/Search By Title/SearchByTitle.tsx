@@ -29,14 +29,21 @@ const searchByTitle = () => {
             setSearchedValue(searchVal);
             setHasSearched(true);
 
-        } catch (error) {
-            console.error("API failed:", error);
-
+        } catch (error:any) {
+            if(error.response?.status===404){
+                setSearchedValue(searchVal);
+            setHasSearched(true);
+            setFetchedData([]);
+            setTotalSnippetFound(0);
+            setSearchError("Search result not found");
+            }
+            else{
             setSearchedValue(searchVal);
             setHasSearched(true);
             setFetchedData([]);
             setTotalSnippetFound(0);
             setSearchError("Something went wrong while searching.");
+            }
         }
     };
 

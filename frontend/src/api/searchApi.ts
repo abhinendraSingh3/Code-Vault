@@ -35,3 +35,13 @@ export const searchByTitleApi=async(anyKeyword:string)=>{
 }
 
 //below is for search by language
+export const searchByLangauge=async()=>{
+
+    const response=await api.get('/snippet/load/totalLanguage');
+    return response.data;
+}
+export const searchBylangOnbtn=async(lang:string)=>{
+    const response =await api.get(`/snippet/search/language/${lang}`)
+
+    return response;
+}

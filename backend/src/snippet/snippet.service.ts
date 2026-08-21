@@ -12,7 +12,7 @@ import { ConfigService } from "@nestjs/config";
 import { ShareToken } from "./entities/snippet-shareToken";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { User } from "../users/entities/user.entity";
-import { error, log } from "console";
+import { count, error, log } from "console";
 
 @Injectable()
 export class SnippetService {
@@ -337,14 +337,15 @@ export class SnippetService {
 
     //-------------get by langauge-----------------------
     async getByLanguage(language: string, userId: number) {
+        console.log("reaching service of lang");
+        
 
         const user = await this.userService.findByUserId(userId);
+        
 
         if (!user) {
             throw new NotFoundException("User not found");
         }
-
-        console.log(user);
 
         const snippetsFound = await this.snippetRepo.find({
             where: [
@@ -364,14 +365,18 @@ export class SnippetService {
                 }
             ],
             relations: {
-                snippetVersion: true
+                snippetVersion: true,
+                user:true
             }
         });
 
 
         if (snippetsFound.length === 0) {
+            // console.log("reching error");
+            
             throw new NotFoundException("Snippet Not Found");
         }
+        // console.log(snippetsFound);
 
 
         return snippetsFound.map(snippet => {
@@ -919,23 +924,36 @@ export class SnippetService {
         }
     }
 
-    //make api which should return an array of language with each language count,rest return data of the searched snippet
-
+    //make api which should return an array of language with each language count, rest return data of the searched snippet
     async getTotalLanguage(userId: number) {
 
-        const snippetFound = await this.snippetRepo.findAndCount({
-            where:{
-                user:{
-                    id:userId
-                },
-                lan
-
+        const snippetFound = await this.snippetRepo.find({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            relations: {
+                user: true
             }
         })
 
+        const languageCount = snippetFound.reduce((acc, snippet) => {
+            const language = snippet.language;
+            acc[language] = (acc[language] || 0) + 1;
+            return acc;
+        }, {} as Record<string, number>);
+
+        return Object.entries(languageCount)
+            .map(([language, count]) => (
+                {
+                    languages: language,
+                    count: Number(count)
+                }
+            ))
+    }
+
 
 
 }
 
-
-}

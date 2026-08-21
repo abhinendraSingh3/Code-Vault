@@ -32,4 +32,9 @@ export interface RecentSnippetsResponse {
     recentSnippets: SnippetData[];
 }
 
+export interface totalLanguageCount{
+    languages: string
+    count:number
+}
+
 

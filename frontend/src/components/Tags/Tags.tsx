@@ -1,10 +1,16 @@
 import "./Tags.css"
-const Tags=()=>{
+
+type PropUse = {
+    language: boolean;
+    count: number;
+}
+
+const Tags=({language,count}:PropUse)=>{
     return (
         <>
         <div className="tags-body">
-            <p id="tags-textArea"> props language data </p>
-            <p id="tags-occurence">25</p>
+            <p id="tags-textArea"> {language} </p>
+            <p id="tags-occurence">{count}</p>
         </div>
         </>
     )

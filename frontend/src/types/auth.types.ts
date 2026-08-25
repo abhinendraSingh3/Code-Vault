@@ -37,4 +37,11 @@ export interface totalLanguageCount{
     count:number
 }
 
+export interface ShareSnippetDetails{
+      snippetId:number
+    snippetName : string
+    shareToken: string
+    snippetType :string
+}
+
 

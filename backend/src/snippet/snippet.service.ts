@@ -13,6 +13,8 @@ import { ShareToken } from "./entities/snippet-shareToken";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { User } from "../users/entities/user.entity";
 import { count, error, log } from "console";
+import { AllSharedSnippets } from "./dto/allSharedSnippetDetails";
+import { share } from "rxjs";
 
 @Injectable()
 export class SnippetService {
@@ -951,6 +953,51 @@ export class SnippetService {
                     count: Number(count)
                 }
             ))
+    }
+
+    //---------------
+    async getAllSharedSnippetsDetails(userId:number):Promise<AllSharedSnippets[]>{
+        console.log(userId);
+        
+
+        const snippets=await this.snippetRepo.find({
+            where:{
+                user:{
+                    id:userId
+                }
+            },
+            relations:{
+                sharetoken:true,
+                user:true
+            }
+        })
+
+        if(!snippets){
+
+            throw new NotFoundException("No Snippets found")
+
+        }
+        console.log(snippets);
+        
+        
+
+        const sharedTokensnippets=snippets
+        .filter(snippet=>snippet.sharetoken)
+        .map((snippet)=>({
+            snippetId:snippet.id,
+            snippetName:snippet.title,
+            shareToken:snippet.sharetoken.token,
+            snippetType:snippet.sharetoken.type
+        }))
+        console.log(sharedTokensnippets);
+        
+
+        if(sharedTokensnippets.length===0){
+            throw new NotFoundException("No shared token found")
+        }
+
+        return sharedTokensnippets
+
     }
 
 

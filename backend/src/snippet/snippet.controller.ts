@@ -11,6 +11,7 @@ import { TopSnippet } from "./dto/topSnippetWithSnippetCountDto";
 import { link } from "fs";
 import { log } from "console";
 import { AllCountLanguages } from "./dto/allLanguages-Count";
+import { AllSharedSnippets } from "./dto/allSharedSnippetDetails";
 
 
 
@@ -52,6 +53,13 @@ export class SnippetController {
     ) {
         return this.snippetService.getAllSnippets(page, limit, req.user.userName);
 
+    }
+       @UseGuards(AuthGuard)
+
+    @Get('share/myShares')
+    async getAllSharedSnippetsDetails(@Req() req:AuthRequest): Promise<AllSharedSnippets[]>{
+        console.log("reached allSharedSNippets")
+        return this.snippetService.getAllSharedSnippetsDetails(req.user.userId);
     }
 
     //search by title
@@ -147,6 +155,7 @@ export class SnippetController {
         return this.snippetService.generateTokenBySnippetId(snippetId, req.user.userId);
     }
 
+ 
 
 
 }

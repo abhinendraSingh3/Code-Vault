@@ -3,9 +3,15 @@ import Editor from "@monaco-editor/react"
 import VersionCard from "../Snippet Version Cards/VersionCards";
 import './SnippetDetails.css'
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 const SnippetDetails = () => {
+
+    const { id } = useParams();
+    const snippetId = Number(id);
+    console.log(snippetId);
+    
 
     const navigate=useNavigate();
 

@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Snippet } from "./snippet-entities";
 
 @Entity()
 export class ShareToken {
@@ -19,4 +20,12 @@ export class ShareToken {
 
     @Column()
     expiryTime!: Date;
+
+    @OneToOne(()=>Snippet,
+    (snippet)=>snippet.sharetoken
+)
+    @JoinColumn()
+    snippet!: Snippet
+
+
 }

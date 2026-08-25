@@ -1,10 +1,28 @@
-import ResultCard from "../../components/Snippet Result Card/ResultCard"
+import { useEffect,useState } from "react";
 import './ShareSnippet.css'
+import ShareTokenCard from "../../components/Share Detail Card/ShareTokenCard";
 import { useNavigate } from "react-router-dom"
+import { sharedApi } from "../../api/sharedSnippetApi";
+import type{ShareSnippetDetails} from '../../types/auth.types'
 
 const MyShareSnippet=()=>{
+    const[sharedSnippetFound, setShareSnippetFound]=useState(true);
+    const [sharedDetails, setSharedDetails]=useState<ShareSnippetDetails[]>([])
 
     const navigate=useNavigate();
+
+    useEffect(()=>{
+        const extractDetails=async()=>{
+            const response=await sharedApi();
+
+            if(response.status==404){
+                setShareSnippetFound(false);
+            }
+            setSharedDetails(response.data);
+            
+        }
+        extractDetails()
+    },[])
 
     return (
         <>
@@ -17,13 +35,24 @@ const MyShareSnippet=()=>{
                 <h4 id="allShareSnippet-subTitle">All of your shared snippets appear here</h4>
             </div>
             <div className="allShareSnippet-secondSec">
-                <ResultCard/>
-                <ResultCard/>
-                <ResultCard/>
-                <ResultCard/>
-                <ResultCard/>
-                <ResultCard/>
-                <ResultCard/>
+
+                {sharedSnippetFound ?(
+                sharedDetails.map((detail)=>(
+                    <ShareTokenCard
+                    key={detail.snippetId}
+                    name={detail.snippetName}
+                    token={detail.shareToken}
+                    type={detail.snippetType}
+                    />
+                   
+                ))
+            )
+                    
+
+                    
+
+                :  ( <h1>No shared snippet found</h1>)
+}
                 
             </div>
         </div>

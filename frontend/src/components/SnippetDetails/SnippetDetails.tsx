@@ -1,27 +1,31 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Editor from "@monaco-editor/react"
 import VersionCard from "../Snippet Version Cards/VersionCards";
 import './SnippetDetails.css'
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { oneSnippetDetail } from "../../api/sharedSnippetApi";
 
 
 const SnippetDetails = () => {
+    const {state}=useLocation();
 
-    const { id } = useParams();
-    const snippetId = Number(id);
-    console.log(snippetId);
-    
+    const snippetId=state?.snippetId;
+    console.log(snippetId)
 
     const navigate=useNavigate();
 
     const [activeTab, setActiveTab] = useState("code");
 
+     useEffect(()=>{
+        const findDetails=async()=>{
+            const response=await oneSnippetDetail(snippetId);
+            console.log(response);
+            
+        }
 
-    // useEffect(()=>{
+        findDetails();
 
-
-    // })
+     },[])
 
     return (
         <>

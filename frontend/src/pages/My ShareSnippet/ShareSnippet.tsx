@@ -40,6 +40,7 @@ const MyShareSnippet=()=>{
                 sharedDetails.map((detail)=>(
                     <ShareTokenCard
                     key={detail.snippetId}
+                    snippetId={detail.snippetId}
                     name={detail.snippetName}
                     token={detail.shareToken}
                     type={detail.snippetType}
@@ -47,10 +48,6 @@ const MyShareSnippet=()=>{
                    
                 ))
             )
-                    
-
-                    
-
                 :  ( <h1>No shared snippet found</h1>)
 }
                 

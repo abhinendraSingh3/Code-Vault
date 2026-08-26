@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.css"
 import { useNavigate } from "react-router-dom";
-import { getrecentSnippet,getAllSnippetsOfUser } from "../../api/dashBoardApi";
-import type{ SnippetData } from "../../types/auth.types";
+import { getrecentSnippet, getAllSnippetsOfUser } from "../../api/dashBoardApi";
+import type { SnippetData } from "../../types/auth.types";
 const Dashboard = () => {
 
-    const[dashBoardData,setDashBoardData]=useState(true);
+    const [dashBoardData, setDashBoardData] = useState(true);
 
 
     // total snippets in users account,
-    
-    //  when clicked on view all it should inject all in the recentsnippet
-    const[allSnippetData, setAllSnippetData]= useState<SnippetData[]>([]);
 
-    const handleAllData=async()=>{
+    //  when clicked on view all it should inject all in the recentsnippet
+    const [allSnippetData, setAllSnippetData] = useState<SnippetData[]>([]);
+
+    const handleAllData = async () => {
         setDashBoardData(false);
 
-        const snippetsData=await getAllSnippetsOfUser();
+        const snippetsData = await getAllSnippetsOfUser();
         setAllSnippetData(snippetsData);
     }
 
@@ -28,7 +28,7 @@ const Dashboard = () => {
 
     //get data of the 3 most recent snippet
     const [recentSnippets, setRecentSnippet] = useState<SnippetData[]>([]);
-    const [snippetsLength,setSnippetLength]=useState<number>(0);
+    const [snippetsLength, setSnippetLength] = useState<number>(0);
 
     useEffect(() => {
 
@@ -36,11 +36,11 @@ const Dashboard = () => {
 
             try {
                 const data = await getrecentSnippet();
-                const recentSnippetfinal=data.recentSnippets;
+                const recentSnippetfinal = data.recentSnippets;
 
                 setRecentSnippet(recentSnippetfinal);
 
-                const snippetLength=data.totalLength;
+                const snippetLength = data.totalLength;
 
                 setSnippetLength(snippetLength);
 
@@ -119,7 +119,7 @@ const Dashboard = () => {
 
                             <tbody>
                                 {/* if dashBoard data's state is true then inital api recent snippet will be shown or when user click view all then that data will be shown */}
-                                {dashBoardData ?(recentSnippets.map((item) => (
+                                {dashBoardData ? (recentSnippets.map((item) => (
                                     <tr key={item.id}>
                                         <td>
                                             <div className="snippet-title">
@@ -139,7 +139,13 @@ const Dashboard = () => {
                                         <td>{item.versions}</td>
 
                                         <td className="actions">
-                                            <button onClick={() => navigate(`/snippetDetails/${item.id}`)}>
+                                            <button
+                                            onClick={()=>navigate("/snippetDetails",{
+                                                state:{
+                                                    snippetId:item.id
+                                                }
+                                            })}
+                                            >
                                                 Open
                                             </button>
                                         </td>
@@ -155,7 +161,7 @@ const Dashboard = () => {
                                         </td>
 
                                         <td>
-                                            <span className={`language-tag ${item.language}`}>
+                                            <span className={`language - tag ${ item.language }`}>
                                                 {item.language}
                                             </span>
                                         </td>
@@ -165,7 +171,15 @@ const Dashboard = () => {
                                         <td>{item.versions}</td>
 
                                         <td className="actions">
-                                            <button onClick={() => navigate(`/snippetDetails/${item.id}`)}>
+                                             <button
+                                            onClick={()=>{
+                                                
+                                                navigate("/snippetDetails",{
+                                                state:{
+                                                    snippetId:item.id
+                                                }
+                                            })}}
+                                            >
                                                 Open
                                             </button>
                                         </td>

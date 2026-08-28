@@ -28,7 +28,7 @@ export class SnippetVersions {
     @Column({ unique: true, nullable: true })
     shareToken!: string;
 
-    @Column({ unique: true })
+    @Column()
     versions!: number;
 
     @CreateDateColumn()

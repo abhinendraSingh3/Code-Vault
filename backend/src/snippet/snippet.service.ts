@@ -340,10 +340,10 @@ export class SnippetService {
     //-------------get by langauge-----------------------
     async getByLanguage(language: string, userId: number) {
         console.log("reaching service of lang");
-        
+
 
         const user = await this.userService.findByUserId(userId);
-        
+
 
         if (!user) {
             throw new NotFoundException("User not found");
@@ -368,14 +368,14 @@ export class SnippetService {
             ],
             relations: {
                 snippetVersion: true,
-                user:true
+                user: true
             }
         });
 
 
         if (snippetsFound.length === 0) {
             // console.log("reching error");
-            
+
             throw new NotFoundException("Snippet Not Found");
         }
         // console.log(snippetsFound);
@@ -531,11 +531,16 @@ export class SnippetService {
     }
 
     //generate token by SnippetID
-    async generateTokenBySnippetId(snippetId: number, userId: number) {
+    // generate token by SnippetID
+    async generateTokenBySnippetId(
+        snippetId: number,
+        userId: number
+    ): Promise<ShareTokenResDTO> {
+
         const user = await this.userService.findByUserId(userId);
 
         if (!user) {
-            throw new NotFoundException("User not found")
+            throw new NotFoundException("User not found");
         }
 
         const snippetFound = await this.snippetRepo.findOne({
@@ -548,37 +553,68 @@ export class SnippetService {
         });
 
         if (!snippetFound) {
-            throw new NotFoundException("cannot find the particular snippet with the ID")
+            throw new NotFoundException(
+                "Cannot find the particular snippet with the ID"
+            );
         }
 
         if (snippetFound.user.id !== userId) {
-            throw new ForbiddenException("You are allowed to generate share link for this toke ")
+            throw new ForbiddenException(
+                "You are not allowed to generate a share link for this snippet"
+            );
         }
 
-        const port = this.configService.get<number>('port');
+        const port = this.configService.get<number>("port");
 
-        const expiryTime = new Date()
+        // Token expires after 10 minutes
+        const expiryTime = new Date();
         expiryTime.setMinutes(expiryTime.getMinutes() + 10);
 
         const token = randomUUID();
 
-        const shareToken = new ShareToken();
+        // Check whether this snippet already has a share token
+        let shareToken = await this.shareTokenRepo.findOne({
+            where: {
+                snippet: {
+                    id: snippetId
+                }
+            },
+            relations: {
+                snippet: true
+            }
+        });
 
-        shareToken.token = token;
-        shareToken.targetId = snippetFound.id
-        shareToken.type = "SNIPPET"
-        shareToken.expiryTime = expiryTime;
+        if (shareToken) {
+
+            // Existing token → regenerate/update it
+            shareToken.token = token;
+            shareToken.type = "SNIPPET";
+            shareToken.targetId = snippetId;
+            shareToken.expiryTime = expiryTime;
+
+        } else {
+
+            // No token exists → create one
+            shareToken = this.shareTokenRepo.create({
+                token: token,
+                type: "SNIPPET",
+                targetId: snippetId,
+                expiryTime: expiryTime,
+                snippet: snippetFound
+            });
+        }
 
         await this.shareTokenRepo.save(shareToken);
-        console.log(shareToken)
+
+        console.log("this is the share token", shareToken);
 
         const response = new ShareTokenResDTO();
+
         response.expiresAt = shareToken.expiryTime;
-        response.token = token;
-        response.url = `http://localhost:${port}/snippet/getSnippet/${token}`;
+        response.token = shareToken.token;
+        response.url = `http://localhost:${port}/snippet/getSnippet/${shareToken.token}`;
 
         return response;
-
     }
 
     //generate token by version id
@@ -641,38 +677,51 @@ export class SnippetService {
     //get the snippet by the token
     async getSharedSnippetByToken(token: string) {
 
-
         const shareToken = await this.shareTokenRepo.findOne({
             where: {
                 token: token
             }
-        })
+        });
 
         if (!shareToken) {
-            throw new NotFoundException("No Snippet Found")
+            throw new NotFoundException("No Snippet Found");
         }
-        console.log("expiry time: ", shareToken.expiryTime.getTime());
-        console.log("current time: ", Date.now());
 
+        console.log(
+            "expiry time:",
+            shareToken.expiryTime.getTime()
+        );
 
+        console.log(
+            "current time:",
+            Date.now()
+        );
+
+        // Check expiry
         if (Date.now() > shareToken.expiryTime.getTime()) {
-            throw new UnauthorizedException("Share Link has expired")
+
+            // Delete expired token
+            await this.shareTokenRepo.remove(shareToken);
+
+            throw new UnauthorizedException(
+                "Share Link has expired"
+            );
         }
 
+        // SNIPPET
         if (shareToken.type === "SNIPPET") {
-            const snippetId = shareToken.targetId;
 
             const snippetFound = await this.snippetRepo.findOne({
                 where: {
-                    id: snippetId
+                    id: shareToken.targetId
                 },
                 relations: {
                     snippetVersion: true
                 }
-            })
+            });
 
             if (!snippetFound) {
-                throw new NotFoundException("snippet not found")
+                throw new NotFoundException("Snippet not found");
             }
 
             const response = new SnippetResponseDTO();
@@ -691,40 +740,41 @@ export class SnippetService {
             return response;
         }
 
-        else if (shareToken.type === "SNIPPET_VERSION") {
-            const snippetVersionId = shareToken.targetId;
+        // SNIPPET_VERSION
+        if (shareToken.type === "SNIPPET_VERSION") {
 
-            const snippetFound = await this.snippetVersionRepo.findOne({
-                where: {
-                    id: snippetVersionId
-                },
-                relations: {
-                    snippet: true
-                }
-            })
+            const snippetVersionFound =
+                await this.snippetVersionRepo.findOne({
+                    where: {
+                        id: shareToken.targetId
+                    },
+                    relations: {
+                        snippet: true
+                    }
+                });
 
-            if (!snippetFound) {
-                throw new NotFoundException("snippet not found")
+            if (!snippetVersionFound) {
+                throw new NotFoundException(
+                    "Snippet version not found"
+                );
             }
 
             const response = new SnippetResponseDTO();
 
-            response.id = snippetFound.id;
-            response.title = snippetFound.title;
-            response.description = snippetFound.description;
-            response.code = snippetFound.code;
-            response.language = snippetFound.language;
-            response.tags = snippetFound.tag;
-            response.shareToken = snippetFound.shareToken;
-            response.createdAt = snippetFound.createdAt;
-            response.updatedAt = snippetFound.updatedAt;
+            response.id = snippetVersionFound.id;
+            response.title = snippetVersionFound.title;
+            response.description = snippetVersionFound.description;
+            response.code = snippetVersionFound.code;
+            response.language = snippetVersionFound.language;
+            response.tags = snippetVersionFound.tag;
+            response.shareToken = snippetVersionFound.shareToken;
+            response.createdAt = snippetVersionFound.createdAt;
+            response.updatedAt = snippetVersionFound.updatedAt;
 
             return response;
         }
 
-        return "Not Found"
-
-
+        throw new NotFoundException("Invalid share token type");
     }
 
     //get snippet versions summary
@@ -751,10 +801,11 @@ export class SnippetService {
         return snippetFound.snippetVersion.map((version) => {
 
             const response = new SnippetSumamryDTO();
-
+            response.id=version.id
             response.title = version.title;
+            response.description = version.description
             response.versionNumber = version.versions;
-            response.createdAt = version.createdAt;
+            response.UpdatedAt = version.createdAt;
 
             return response;
         });
@@ -956,43 +1007,43 @@ export class SnippetService {
     }
 
     //---------------
-    async getAllSharedSnippetsDetails(userId:number):Promise<AllSharedSnippets[]>{
+    async getAllSharedSnippetsDetails(userId: number): Promise<AllSharedSnippets[]> {
         console.log(userId);
-        
 
-        const snippets=await this.snippetRepo.find({
-            where:{
-                user:{
-                    id:userId
+
+        const snippets = await this.snippetRepo.find({
+            where: {
+                user: {
+                    id: userId
                 }
             },
-            relations:{
-                sharetoken:true,
-                user:true
+            relations: {
+                sharetoken: true,
+                user: true
             }
         })
 
-        if(!snippets){
+        if (!snippets) {
 
             throw new NotFoundException("No Snippets found")
 
         }
         console.log(snippets);
-        
-        
 
-        const sharedTokensnippets=snippets
-        .filter(snippet=>snippet.sharetoken)
-        .map((snippet)=>({
-            snippetId:snippet.id,
-            snippetName:snippet.title,
-            shareToken:snippet.sharetoken.token,
-            snippetType:snippet.sharetoken.type
-        }))
+
+
+        const sharedTokensnippets = snippets
+            .filter(snippet => snippet.sharetoken)
+            .map((snippet) => ({
+                snippetId: snippet.id,
+                snippetName: snippet.title,
+                shareToken: snippet.sharetoken.token,
+                snippetType: snippet.sharetoken.type
+            }))
         console.log(sharedTokensnippets);
-        
 
-        if(sharedTokensnippets.length===0){
+
+        if (sharedTokensnippets.length === 0) {
             throw new NotFoundException("No shared token found")
         }
 

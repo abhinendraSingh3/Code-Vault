@@ -1,8 +1,12 @@
 export class SnippetSumamryDTO{
 
+    id!: number;
+
     title!: string;
+
+    description!: string
 
     versionNumber!: number;
     
-    createdAt!: Date;
+    UpdatedAt!: Date;
 }

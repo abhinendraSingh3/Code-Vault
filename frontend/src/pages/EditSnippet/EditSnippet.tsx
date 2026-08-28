@@ -1,8 +1,11 @@
 import Editor from "@monaco-editor/react"
 import { useState } from "react"
 import './EditSnippet.css'
+import { useNavigate } from "react-router-dom"
 
 export function EditSnippet() {
+
+    const navigate=useNavigate();
 
     //one for data from backend
     const [originalData, setOriginalData] = useState({
@@ -39,7 +42,7 @@ export function EditSnippet() {
             <div className="editSnippet-body">
 
                 <div className="editSnippet-backBtn">
-                    <button id="backBtn">⟵ Back</button>
+                    <button id="backBtn" onClick={()=>navigate(-1)}>⟵ Back</button>
                 </div>
 
                 <div className="editSnippet-mainHeading">

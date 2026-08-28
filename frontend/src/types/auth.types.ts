@@ -38,10 +38,25 @@ export interface totalLanguageCount{
 }
 
 export interface ShareSnippetDetails{
-      snippetId:number
+    snippetId:number
     snippetName : string
     shareToken: string
     snippetType :string
 }
 
+export interface SnippetVersion{
+
+    id:number
+    title: string
+    description:string
+    updatedAt: string
+    versionNumber: number
+
+}
+
+export interface shareTokenData{
+    token: string,
+    url: string,
+    expiresAt: string
+}
 

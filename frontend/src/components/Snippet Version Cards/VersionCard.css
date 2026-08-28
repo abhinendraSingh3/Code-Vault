@@ -120,3 +120,19 @@
     font-size: 1rem;
   }
 }
+
+.VersionCard-current {
+    border: 1px solid #4a9eff;
+    opacity: 0.9;
+}
+
+.VersionCard-current-label {
+    font-size: 0.85rem;
+    color: #4a9eff;
+    font-weight: 500;
+}
+
+#VersionCard-result-open:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

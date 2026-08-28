@@ -146,6 +146,30 @@ body {
     background: #6366f1;
     border-radius: 20px;
 }
+.snippetDetail-error {
+    color: #b91c1c;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+.snippetDetails-versionBanner {
+    font-size: 0.85rem;
+    color: #4a9eff;
+    margin-top: 4px;
+}
+
+#snippetDetails-edit:disabled,
+#snippetDetails-Delete:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
 
 /* ------------------ LEFT CONTENT ------------------ */
 

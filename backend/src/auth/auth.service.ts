@@ -65,15 +65,28 @@ export class AuthService{
             email: user.email
         }
 
-        const userId=user.id
-        const userName=user.userName
-        const email=user.email
-        const accessToken=await this.jwtService.signAsync(payload);
+        const userId = user.id;
+        const userName = user.userName;
+        const email = user.email;
+        const firstName = user.firstName;
+        const lastName = user.lastName;
+        const profilePic = user.profilePic || "https://api.dicebear.com/7.x/bottts/svg?seed=user";
+        const bio = user.bio || "";
+        const accessToken = await this.jwtService.signAsync(payload);
 
-        console.log("done")
+        console.log("done");
 
-        //return jwt token
-        return {userId:userId,userName:userName,email:email,accessToken:accessToken}
+        //return jwt token and user details
+        return {
+            userId: userId,
+            userName: userName,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            profilePic: profilePic,
+            bio: bio,
+            accessToken: accessToken
+        };
 
 
     }

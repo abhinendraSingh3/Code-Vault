@@ -32,5 +32,12 @@ export const deleteSnippet=async(id:number)=>{
     console.log(response)
 }
 
+export const deleteVersion=async(snippetId:number,id:number)=>{
+    const response=await api.delete(`/snippet/delete/${snippetId}/version/${id}`)
+    console.log(response)
+}
+
+
+
 
 

@@ -39,16 +39,22 @@ const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
                     <a href="/myShares" id="my-shares">My Shares</a>
 
                 </div>
-                <div className="third-section">
-                    <a href="/Profile" id="profile">Profile</a>
+                <div className="third-section" onClick={() => navigate('/profile')}>
+                    <button className="sidebar-link-btn" id="profile" onClick={(e) => { e.stopPropagation(); navigate('/profile'); }}>
+                        Profile
+                    </button>
 
-                    <a href="/Settings" id="setting">Settings</a>
-
-                    {/* data will be inserted later from the backend */}
-                    <img src="${profile}" id="profile-pic" alt="profilePic" />
-                    <p id="userName">{ }</p>
-                    <p id="email">{ }</p>
-
+                    <div className="user-profile-box">
+                        <img 
+                            src={localStorage.getItem("profilePic") || "https://api.dicebear.com/7.x/bottts/svg?seed=user"} 
+                            id="profile-pic" 
+                            alt="profilePic" 
+                        />
+                        <div className="user-details">
+                            <p id="userName">{localStorage.getItem("userName") || "User"}</p>
+                            <p id="email">{localStorage.getItem("email") || ""}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -157,9 +157,18 @@ export class SnippetController {
     @UseGuards(AuthGuard)
     @Delete('delete/:id')
     async deleteSnippet(@Req() req: AuthRequest, @Param('id', ParseIntPipe) snippetID: number): Promise<string> {
-        console.log("reacjhed here");
+        console.log("reached delete");
         
-        return this.snippetService.deleteSnippet(req.user.userName, snippetID);
+        return this.snippetService.deleteSnippet(req.user.userId, snippetID);
+    }
+
+    //delete snippetVersion
+    @UseGuards(AuthGuard)
+    @Delete('delete/:snippetId/version/:versionId')
+    async deleteVersion(@Req() req: AuthRequest, @Param('snippetId', ParseIntPipe)snippetId: number,@Param('versionId', ParseIntPipe) versionId: number):Promise<string> {
+        console.log("reached delete by snippetversion");
+        return this.snippetService.deleteVersion(req.user.userId, snippetId,versionId)
+        
     }
 
 

@@ -304,8 +304,8 @@ export class SnippetService {
     }
 
     //-------------deleteSnippet--------------------------
-    async deleteSnippet(userName: string, snippetID) {
-        const user = await this.userService.findByUsername(userName);
+    async deleteSnippet(userId: number, snippetID:number) {
+        const user = await this.userService.findByUserId(userId)
 
         if (!user) {
             throw new NotFoundException("No user found with this username");
@@ -313,12 +313,26 @@ export class SnippetService {
 
         const snippetFound = await this.snippetRepo.findOne({
             where: {
-                id: snippetID
+                id: snippetID,
+                user:{
+                    id:userId
+                }
             },
             relations: {
                 user: true
             }
         })
+
+        // const snippetVersions=await this.snippetVersionRepo.find({
+        //     where:{
+        //         snippet:{
+        //             id:snippetID
+        //         }
+        //     },
+        //     relations:{
+        //         snippet:true
+        //     }
+        // })
 
 
 
@@ -330,7 +344,10 @@ export class SnippetService {
             throw new ForbiddenException("You cannot delete this snippet");
         }
 
+        await this.snippetVersionRepo.delete({snippet:{id:snippetID}})
+        await this.shareTokenRepo.delete({snippet:{id:snippetID}})
         await this.snippetRepo.remove(snippetFound);
+
 
         return "Snippet Delete Successfully";
 
@@ -1049,6 +1066,44 @@ export class SnippetService {
 
         return sharedTokensnippets
 
+    }
+
+    async deleteVersion(userId:number, snippetId:number, versionId:number){
+        const user = await this.userService.findByUserId(userId)
+
+        if (!user) {
+            throw new NotFoundException("No user found with this username");
+        }
+
+        const snippetVersionFound = await this.snippetVersionRepo.findOne({
+            where: {
+                id: versionId,
+                snippet:{
+                    id:snippetId
+                }
+            },
+            relations: {
+                snippet:{
+                    user:true
+                }
+            }
+        })
+
+        if (!snippetVersionFound) {
+            throw new NotFoundException("Snippet Not Found");
+        }
+
+        if (snippetVersionFound.snippet.user.id !== user.id) {
+            throw new ForbiddenException("You cannot delete this snippet");
+        }
+
+        await this.snippetVersionRepo.delete(versionId)
+        await this.shareTokenRepo.delete(versionId)
+
+
+        return "Snippet Delete Successfully";
+
+        
     }
 
 

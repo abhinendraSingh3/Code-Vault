@@ -8,6 +8,18 @@ export interface SignUpData{
     email:string;
     password:string;
     confirmPassword:string;
+    profilePic?: string;
+    bio?: string;
+}
+
+export interface UserProfileData {
+    id: number;
+    userName: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    profilePic?: string;
+    bio?: string;
 }
 
 export interface LoginData{

@@ -15,7 +15,9 @@ const Signup = () => {
         userName: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        profilePic: "https://api.dicebear.com/7.x/bottts/svg?seed=user1",
+        bio: ""
     });
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState<"success" | "error">("success");
@@ -71,7 +73,9 @@ const Signup = () => {
                 userName: "",
                 email: "",
                 password: "",
-                confirmPassword: ""
+                confirmPassword: "",
+                profilePic: "https://api.dicebear.com/7.x/bottts/svg?seed=user1",
+                bio: ""
             })
 
             setTimeout(() => {
@@ -203,31 +207,65 @@ const Signup = () => {
                                     ...data,
                                     password: e.target.value
                                 })}
-                            /><label>Confirm Password</label>
+                            />
+                            <label>Confirm Password</label>
                             <input
                                 type="password"
                                 id="confirm-password"
                                 value={data.confirmPassword}
                                 placeholder="Confirm your Password"
                                 onChange={(e) => {
-                                    const confirmPassword = e.target.value
+                                    const confirmPassword = e.target.value;
                                     setData({
                                         ...data,
                                         confirmPassword: e.target.value
-                                    })
+                                    });
 
                                     if (confirmPassword && confirmPassword !== data.password) {
-                                        setMessage(" Confirm password not matched")
+                                        setMessage("Confirm password not matched");
                                         setMessageType("error");
-                                    }
-                                    else {
-                                        setMessage("")
+                                    } else {
+                                        setMessage("");
                                         setMessageType("success");
                                     }
+                                }}
+                            />
+                        </div>
 
-                                }
+                        <div className="signup-profile-section">
+                            <label>Choose Profile Photo</label>
+                            <div className="profile-options">
+                                {[
+                                    "https://api.dicebear.com/7.x/bottts/svg?seed=user1",
+                                    "https://api.dicebear.com/7.x/bottts/svg?seed=coder",
+                                    "https://api.dicebear.com/7.x/bottts/svg?seed=developer",
+                                    "https://api.dicebear.com/7.x/bottts/svg?seed=ninja"
+                                ].map((url, idx) => (
+                                    <img
+                                        key={idx}
+                                        src={url}
+                                        alt={`avatar-${idx}`}
+                                        className={`avatar-option ${data.profilePic === url ? "selected-avatar" : ""}`}
+                                        onClick={() => setData({ ...data, profilePic: url })}
+                                    />
+                                ))}
+                            </div>
+                            <label>Or enter Profile Photo URL</label>
+                            <input
+                                type="text"
+                                id="profilePic"
+                                value={data.profilePic}
+                                placeholder="Paste image URL (optional)"
+                                onChange={(e) => setData({ ...data, profilePic: e.target.value })}
+                            />
 
-                                }
+                            <label>Bio</label>
+                            <input
+                                type="text"
+                                id="bio"
+                                value={data.bio}
+                                placeholder="Tell us about yourself (optional)"
+                                onChange={(e) => setData({ ...data, bio: e.target.value })}
                             />
                         </div>
 

@@ -8,38 +8,40 @@
 }
 
 html, body {
-  height: 100vh;
-  overflow: hidden;
   background-color: #f8fafc;
   color: #0f172a;
+  height: auto;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 /* Outer Container */
 .signup-Body {
   height: 100vh;
   width: 100%;
+  overflow-y: auto;
   background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08), transparent 45%),
               radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.06), transparent 45%),
               #f8fafc;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
-  padding: 16px;
-  overflow: hidden;
+  padding: 90px 16px 50px;
+  box-sizing: border-box;
 }
 
 /* Top Back Button */
 .signup-back {
-  position: absolute;
+  position: fixed;
   top: 24px;
   left: 32px;
-  z-index: 10;
+  z-index: 100;
 }
 
 #signup-btn-back {
-  background: transparent;
-  border: none;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   color: #6366f1;
   font-size: 14px;
   font-weight: 600;
@@ -49,6 +51,7 @@ html, body {
   gap: 6px;
   padding: 8px 14px;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
   transition: all 0.2s ease;
 }
 
@@ -59,10 +62,10 @@ html, body {
 
 /* Logo Container & Heading */
 .signup-logo {
-  position: absolute;
+  position: fixed;
   top: 24px;
-  left: 130px;
-  z-index: 10;
+  left: 140px;
+  z-index: 100;
 }
 
 #siteName {
@@ -203,6 +206,42 @@ html, body {
   text-decoration: underline;
 }
 
+/* Profile Selection Styles */
+.signup-profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+
+.profile-options {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.avatar-option {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #f1f5f9;
+  padding: 2px;
+  transition: all 0.2s ease;
+}
+
+.avatar-option:hover {
+  transform: scale(1.1);
+}
+
+.avatar-option.selected-avatar {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  background: #e0e7ff;
+}
+
 /* Validation Messages */
 .signupError {
   margin-top: 12px;
@@ -237,18 +276,6 @@ html, body {
 
 /* Mobile Responsiveness */
 @media (max-width: 640px) {
-  html, body {
-    height: auto;
-    overflow-y: auto;
-  }
-
-  .signup-Body {
-    height: auto;
-    min-height: 100vh;
-    padding: 70px 16px 30px;
-    align-items: flex-start;
-  }
-
   .signup-back {
     top: 16px;
     left: 16px;

@@ -160,10 +160,14 @@ body {
     gap: 6px;
 }
 
-.third-section a {
+.third-section a,
+.sidebar-link-btn {
+    background: transparent;
+    border: none;
+    text-align: left;
     color: #475569;
     text-decoration: none;
-
+    cursor: pointer;
     font-size: 14px;
     font-weight: 600;
 
@@ -173,32 +177,62 @@ body {
     transition: all .2s ease;
 }
 
-.third-section a:hover {
+.third-section a:hover,
+.sidebar-link-btn:hover {
     background: #f1f5f9;
     color: #0f172a;
 }
 
+.user-profile-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-profile-box:hover {
+    border-color: #6366f1;
+    background: #f8fafc;
+}
+
 #profile-pic {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    object-fit: cover;
     background: #e2e8f0;
     border: 2px solid #6366f1;
-    margin-top: 12px;
-    margin-bottom: 6px;
+    margin: 0;
     flex-shrink: 0;
+}
+
+.user-details {
+    overflow: hidden;
 }
 
 #userName {
     color: #0f172a;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #email {
     color: #64748b;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Small Screens */

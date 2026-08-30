@@ -1,0 +1,254 @@
+.profile-container {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
+    background: #f8fafc;
+    color: #0f172a;
+    padding: 32px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transition: margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-container.sidebar-expanded {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+}
+
+.profile-container.sidebar-collapsed {
+    margin-left: 0;
+    width: 100%;
+}
+
+.profile-header {
+    margin-top: 48px;
+    margin-bottom: 28px;
+    text-align: center;
+    width: 100%;
+    max-width: 720px;
+}
+
+.profile-header h1 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.profile-header p {
+    color: #64748b;
+    font-size: 15px;
+    margin-top: 4px;
+}
+
+.profile-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 32px;
+    width: 100%;
+    max-width: 720px;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+    margin: 0 auto;
+}
+
+.profile-preview-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 24px;
+}
+
+.profile-avatar-large {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #6366f1;
+    background: #e2e8f0;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
+}
+
+.profile-preview-info h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.username-tag {
+    color: #6366f1;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.bio-text {
+    color: #64748b;
+    font-size: 13.5px;
+    margin-top: 6px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.disabled-input {
+    background: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed;
+}
+
+.avatar-options-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.avatar-option-item {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: #f1f5f9;
+    padding: 2px;
+    transition: all 0.2s ease;
+}
+
+.avatar-option-item:hover {
+    transform: scale(1.1);
+}
+
+.avatar-option-item.active-avatar {
+    border-color: #6366f1;
+    background: #e0e7ff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.save-profile-btn {
+    height: 44px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    margin-top: 10px;
+}
+
+.save-profile-btn:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+}
+
+.status-message {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-message.success {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+}
+
+.status-message.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+}
+
+/* Reset Password Section */
+.reset-password-card {
+    margin-top: 24px;
+}
+
+.reset-password-header {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.reset-password-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.reset-password-header p {
+    font-size: 13.5px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.reset-pass-btn {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 20px 16px;
+    }
+    .profile-container.sidebar-expanded {
+        margin-left: 0;
+        width: 100%;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    .profile-preview-section {
+        flex-direction: column;
+        text-align: center;
+    }
+}

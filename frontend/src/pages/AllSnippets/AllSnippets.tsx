@@ -44,6 +44,8 @@ const AllSnippets = () => {
             setCurrentPage(1);
 
             const response = await getALLSnippet(1, 5);
+            console.log(response);
+            
 
             setInitialPage(response.data);
 
@@ -96,7 +98,7 @@ const AllSnippets = () => {
                                     <td>{item.updatedAt}</td>
                                     <td>{item.versions}</td>
                                     <td className="actions">
-                                        <button onClick={() => navigate('/snippetDetails')}>Open</button>
+                                        <button onClick={() => navigate('/snippetDetails',{state:{snippetId:item.id}})}>Open</button>
                                     </td>
                                 </tr>
                             ))}

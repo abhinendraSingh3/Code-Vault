@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, BeforeInsert, BeforeUpdate, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, BeforeInsert, BeforeUpdate, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn,OneToOne } from "typeorm";
 import { User } from "../../users/entities/user.entity"
 import { Snippet } from "./snippet-entities";
+import { ShareToken } from "./snippet-shareToken";
 
 @Entity()
 export class SnippetVersions {
@@ -46,6 +47,12 @@ export class SnippetVersions {
         (originalSnippet) => originalSnippet.snippetVersion
     )
     snippet!: Snippet;
+
+    @OneToOne(
+        ()=>ShareToken,
+        (sharetoken)=>sharetoken.snippetVersion
+    )
+    sharetoken!: ShareToken
 
     //()=>User .represents that this entity has a relationship with User entity
     //(user)=>user.snippet. means that go to user entity and find the property that points back to snippet. user can be anything its just the variable name.

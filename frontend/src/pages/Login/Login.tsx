@@ -33,6 +33,10 @@ const Login = () => {
                 localStorage.setItem("userId", data.userId.toString());
                 localStorage.setItem("userName", data.userName);
                 localStorage.setItem("email", data.email);
+                localStorage.setItem("firstName", data.firstName || "");
+                localStorage.setItem("lastName", data.lastName || "");
+                localStorage.setItem("profilePic", data.profilePic || "https://api.dicebear.com/7.x/bottts/svg?seed=user");
+                localStorage.setItem("bio", data.bio || "");
                 localStorage.setItem("accessToken", data.accessToken);
                 localStorage.setItem("isLoggedIn","true");
 

@@ -10,6 +10,8 @@ import SearchByTitle from "./pages/Search By Title/SearchByTitle"
 import SnippetDetails from "./components/SnippetDetails/SnippetDetails"
 import MyShareSnippet from "./pages/My ShareSnippet/ShareSnippet"
 import { EditSnippet } from "./pages/EditSnippet/EditSnippet"
+import Profile from "./pages/Profile/Profile"
+import Settings from "./pages/Settings/Settings"
 
 function App() {
 
@@ -30,6 +32,10 @@ function App() {
         <Route path="/snippetDetails" element={<SnippetDetails/>}></Route>
         <Route path="/myShares" element={<MyShareSnippet/>}></Route>
         <Route path="/editSnippet" element={<EditSnippet/>}></Route>
+        <Route path="/profile" element={<Profile/>}></Route>
+        <Route path="/Profile" element={<Profile/>}></Route>
+        <Route path="/settings" element={<Settings/>}></Route>
+        <Route path="/Settings" element={<Settings/>}></Route>
       </Routes>
      
     </BrowserRouter>

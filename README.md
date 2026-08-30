@@ -1,98 +1,256 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div align="center">
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <h1>⚡ Code Vault ⚡</h1>
+  <p><strong>A modern, full-stack code snippet management platform built with NestJS, React 19, PostgreSQL, and Monaco Editor.</strong></p>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <p>
+    <a href="#key-features">Key Features</a> •
+    <a href="#tech-stack">Tech Stack</a> •
+    <a href="#project-structure">Project Structure</a> •
+    <a href="#getting-started">Getting Started</a> •
+    <a href="#api-endpoints">API Endpoints</a> •
+    <a href="#license">License</a>
+  </p>
 
-## Description
+  <p>
+    <img src="https://img.shields.io/badge/NestJS-v11-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
+    <img src="https://img.shields.io/badge/React-v19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+    <img src="https://img.shields.io/badge/TypeScript-v5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Vite-v6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/PostgreSQL-v16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+    <img src="https://img.shields.io/badge/TypeORM-v11-FE0803?style=for-the-badge&logo=typeorm&logoColor=white" alt="TypeORM" />
+  </p>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+</div>
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 📌 Overview
+
+**Code Vault** is a centralized developer workspace to store, organize, version, and share code snippets effortlessly. Equipped with VS Code's **Monaco Editor** integration, version tracking, multi-language support, and tokenized snippet sharing, Code Vault simplifies code reuse and collaboration for developers and technical teams.
+
+---
+
+## ✨ Key Features
+
+- 💻 **Monaco Code Editor**: Full-fledged code editing experience powered by VS Code's editor engine, featuring syntax highlighting, line numbers, and theme support across multiple programming languages.
+- 🔒 **Secure Authentication**: User sign-up, login, and token-based state management implemented via NestJS Passport JWT strategy and bcrypt password hashing.
+- 📝 **Snippet Management**: Create, edit, inspect, and delete snippets with customizable titles, descriptions, programming language categorization, and tags.
+- 📜 **Version History & Revision Control**: Automatic snippet versioning tracking previous edits (`SnippetVersions`), enabling developers to inspect changes and preserve historical revisions.
+- 🔗 **Tokenized Snippet Sharing**: Share code snippets publicly or securely via custom generated share tokens (`ShareToken`).
+- 🔍 **Smart Search & Filtering**: Instantly search snippets by title, filter by target programming languages, or browse shared vaults.
+- 👤 **User Profiles & Customization**: Manage user credentials, profile details, and account settings.
+
+---
+
+## 🛠️ Tech Stack
+
+### **Backend**
+- **Framework**: [NestJS](https://nestjs.com/) (TypeScript)
+- **Database & ORM**: PostgreSQL with [TypeORM](https://typeorm.io/)
+- **Authentication**: Passport.js with JWT Strategy & Bcrypt password hashing
+- **Validation**: `class-validator` & `class-transformer`
+- **Config**: `@nestjs/config` for environment variables
+
+### **Frontend**
+- **Framework**: [React 19](https://react.dev/) with [Vite](https://vitejs.dev/) & TypeScript
+- **Code Editor**: `@monaco-editor/react` (Monaco Editor)
+- **Routing**: [React Router v7](https://reactrouter.com/)
+- **HTTP Client**: [Axios](https://axios-http.com/) with request/response interceptors for automatic JWT handling
+
+---
+
+## 📁 Project Structure
+
+```text
+code-vault-nest/
+├── backend/                  # NestJS Backend API
+│   ├── src/
+│   │   ├── auth/             # JWT Authentication (Login/Register guards & strategies)
+│   │   ├── users/            # User management service, controller, and entity
+│   │   ├── snippet/          # Snippets, Versioning, and Share Token modules
+│   │   │   ├── entities/     # TypeORM Entities (Snippet, SnippetVersions, ShareToken)
+│   │   │   ├── dto/          # Data Transfer Objects & validation rules
+│   │   │   └── ...
+│   │   ├── app.module.ts     # Main application module & PostgreSQL TypeORM setup
+│   │   └── main.ts           # Application entry point & CORS configuration
+│   ├── .env.example          # Sample backend environment configuration
+│   └── package.json
+│
+├── frontend/                 # React 19 + Vite Frontend Application
+│   ├── src/
+│   │   ├── api/              # Axios API instances & service functions
+│   │   ├── components/       # UI Components (Monaco Editor, Cards, Modals)
+│   │   ├── pages/            # App pages (Dashboard, Create, Edit, Versions, Search, Profile)
+│   │   ├── types/            # TypeScript interfaces & types
+│   │   ├── App.tsx           # Router & navigation setup
+│   │   └── main.tsx          # Frontend entry point
+│   └── package.json
+│
+└── README.md
 ```
 
-## Compile and run the project
+---
+
+## 🚀 Getting Started
+
+Follow the instructions below to get a local development instance up and running.
+
+### **Prerequisites**
+
+Ensure you have the following installed on your machine:
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/)
+- [PostgreSQL](https://www.postgresql.org/) database server running locally or hosted remotely
+
+---
+
+### **1. Clone the Repository**
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/your-username/code-vault-nest.git
+cd code-vault-nest
 ```
 
-## Run tests
+---
 
+### **2. Setup & Run Backend**
+
+1. Navigate to the `backend` directory:
+   ```bash
+   cd backend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file in the `backend` folder based on `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Configure your `.env` variables with your PostgreSQL credentials:
+   ```env
+   port=4000
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=postgres
+   DB_PASSWORD=your_postgres_password
+   DB_NAME=codeVaultNestJs
+   jwtSecret=your_super_secret_jwt_key
+   jwt_expiry=1h
+   ```
+
+5. Start the backend development server:
+   ```bash
+   npm run start:dev
+   ```
+
+   The server will start running at `http://localhost:4000`.
+
+---
+
+### **3. Setup & Run Frontend**
+
+1. Open a new terminal tab and navigate to the `frontend` directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open your browser and navigate to:
+   ```text
+   http://localhost:5173
+   ```
+
+---
+
+## 🔑 Environment Variables
+
+### Backend Configuration (`backend/.env`)
+
+| Variable | Description | Default Value |
+| :--- | :--- | :--- |
+| `port` | Port number for the NestJS API server | `4000` |
+| `DB_HOST` | PostgreSQL Database Host | `localhost` |
+| `DB_PORT` | PostgreSQL Database Port | `5432` |
+| `DB_USERNAME` | PostgreSQL Database User | `postgres` |
+| `DB_PASSWORD` | PostgreSQL Password | — |
+| `DB_NAME` | PostgreSQL Database Name | `codeVaultNestJs` |
+| `jwtSecret` | Secret key for JWT signing | — |
+| `jwt_expiry` | Expiration time for JWT tokens | `1h` |
+
+---
+
+## 🔌 API Endpoints Summary
+
+### **Authentication & Users**
+| Method | Endpoint | Description | Protected |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/auth/signup` | Register a new user account | ❌ |
+| `POST` | `/auth/login` | Authenticate user & return JWT token | ❌ |
+| `GET` | `/users/profile` | Fetch logged-in user profile details | 🔒 |
+| `PATCH` | `/users/profile` | Update user profile information | 🔒 |
+
+### **Snippets & Versioning**
+| Method | Endpoint | Description | Protected |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/snippet` | Get all snippets for logged-in user | 🔒 |
+| `POST` | `/snippet` | Create a new code snippet | 🔒 |
+| `GET` | `/snippet/:id` | Get details of a specific snippet | 🔒 |
+| `PATCH` | `/snippet/:id` | Update snippet content & create new version | 🔒 |
+| `DELETE` | `/snippet/:id` | Delete a snippet | 🔒 |
+| `GET` | `/snippet/:id/versions` | View version history for a snippet | 🔒 |
+| `POST` | `/snippet/:id/share` | Generate a shareable token for snippet | 🔒 |
+| `GET` | `/snippet/share/:token` | View shared snippet via public token | ❌ |
+
+---
+
+## 🧪 Testing & Linting
+
+### **Backend**
 ```bash
-# unit tests
-$ npm run test
+# Run unit tests
+npm --prefix backend run test
 
-# e2e tests
-$ npm run test:e2e
+# Run e2e tests
+npm --prefix backend run test:e2e
 
-# test coverage
-$ npm run test:cov
+# Run linter
+npm --prefix backend run lint
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### **Frontend**
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Run linter
+npm --prefix frontend run lint
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🤝 Contributing
 
-Check out a few resources that may come in handy when working with NestJS:
+Contributions are always welcome! Feel free to open an issue or submit a pull request if you'd like to improve Code Vault.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📄 License
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

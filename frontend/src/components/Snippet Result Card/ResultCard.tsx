@@ -1,12 +1,14 @@
 import "./ResultCard.css";
 import { useNavigate } from "react-router-dom";
 
-const ResultCard = ({title,description,language,updatedAt}) => {
+const ResultCard = ({snippetId,title,description,language,updatedAt}) => {
 
     const navigate=useNavigate();
 
     const handleOpen=()=>{
-        navigate('/snippetDetails');
+        console.log("snippetId",snippetId);
+        
+        navigate('/snippetDetails',{state:{snippetId:snippetId}});
 
     }
     return (

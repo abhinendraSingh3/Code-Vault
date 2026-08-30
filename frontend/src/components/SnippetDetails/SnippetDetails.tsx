@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react"
 import VersionCard from "../Snippet Version Cards/VersionCards";
 import './SnippetDetails.css'
 import { useLocation, useNavigate } from "react-router-dom";
-import { oneSnippetDetail, oneVersionDetail, snippetVersion, generateTokenById,deleteSnippet } from "../../api/snippetsDetailApi";
+import { oneSnippetDetail, oneVersionDetail, snippetVersion, generateTokenById, deleteSnippet,deleteVersion } from "../../api/snippetsDetailApi";
 import type { SnippetData, SnippetVersion, shareTokenData } from "../../types/auth.types"
 
 const SnippetDetails = () => {
@@ -20,6 +20,8 @@ const SnippetDetails = () => {
     const [error, setError] = useState("");
     const [sharedData, setSharedData] = useState<shareTokenData>();
     const [copyMessage, setCopyMessage] = useState("");
+    const [deleteMessage, setDeleteMessage] = useState("");
+
 
     useEffect(() => {
         const findDetails = async () => {
@@ -27,12 +29,12 @@ const SnippetDetails = () => {
                 // Viewing a specific version — check this first since
                 // snippetId is always present alongside versionId
                 console.log("versionId", versionId);
-                
+
                 const response = await oneVersionDetail(snippetId, versionId);
                 const formattedCode = response.data.code.replace(/\\n/g, "\n");
                 setSnippetData({ ...response.data, code: formattedCode });
-            } 
-            
+            }
+
             else if (snippetId) {
                 // No version specified — show current/latest snippet
                 const response = await oneSnippetDetail(snippetId);
@@ -54,6 +56,7 @@ const SnippetDetails = () => {
     //for handling versions
     const handleVersion = async () => {
         if (!snippetId) return;
+        setDeleteMessage("")
 
         const response = await snippetVersion(snippetId);
 
@@ -108,19 +111,31 @@ const SnippetDetails = () => {
         }, 2000);
     }
 
+
    const handleDelete = async () => {
     if (!snippetData?.id) return;
 
     try {
         if (isViewingVersion) {
-            // deleting a specific version row — go back to the live snippet
+            await deleteVersion(snippetId,snippetData.id);
+            setDeleteMessage("Version deleted!");
+
+        } 
+        
+        else {
             await deleteSnippet(snippetData.id);
-            navigate('/snippetDetails', { state: { snippetId } });
-        } else {
-            // deleting the live/current snippet — go back to dashboard
-            // await deleteVersion(snippetData.id);
-            // navigate('/dashboard');
+            setDeleteMessage("Snippet deleted!");
         }
+
+        setTimeout(async() => {
+            if (isViewingVersion) {
+                navigate('/snippetDetails', { state: { snippetId } });
+                await handleVersion(); // refresh the version list so the deleted one disappears
+                setActiveTab("versions");
+            } else {
+                navigate('/dashboard');
+            }
+        }, 900);
     } catch (error) {
         console.log("delete failed", error);
         setError("Something went wrong while deleting");
@@ -160,6 +175,11 @@ const SnippetDetails = () => {
                     >
                         Delete
                     </button>
+                    {deleteMessage && (
+                        <p className="snippetDetail-copyMessage">
+                            {deleteMessage}
+                        </p>
+                    )}
                 </div>
             </div>
 
@@ -184,7 +204,6 @@ const SnippetDetails = () => {
                             className="snippetDetail-code"
                             style={{ display: activeTab === "code" ? "block" : "none" }}
                         >
-                            <button id="snippetDetail-codeMax">⛶</button>
                             <Editor
                                 height="60vh"
                                 width="100%"

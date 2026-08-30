@@ -83,12 +83,13 @@ const Dashboard = () => {
                     </div>
 
                     <div className="right-profile-section">
-
                         <img
-                            src="{db insert}"
+                            src={localStorage.getItem("profilePic") || "https://api.dicebear.com/7.x/bottts/svg?seed=user"}
                             alt="Profile"
                             className="profile-photo"
-                        ></img>
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate('/profile')}
+                        />
                     </div>
                 </div>
                 <div className="mid-section">

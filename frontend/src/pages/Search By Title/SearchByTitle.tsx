@@ -102,6 +102,7 @@ const searchByTitle = () => {
                         fetchedData.map((item) => (
                             <ResultCard
                                 key={item.id}
+                                snippetId={item.id}
                                 title={item.title}
                                 description={item.description}
                                 language={item.language}

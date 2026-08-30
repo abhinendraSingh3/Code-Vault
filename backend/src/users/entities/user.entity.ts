@@ -22,6 +22,12 @@ export class User{
     @Column({nullable: false})
     password!: string;
 
+    @Column({nullable: true, default: "https://api.dicebear.com/7.x/bottts/svg?seed=user"})
+    profilePic!: string;
+
+    @Column({nullable: true, default: ""})
+    bio!: string;
+
     @CreateDateColumn()
     createdAt!: Date;
 

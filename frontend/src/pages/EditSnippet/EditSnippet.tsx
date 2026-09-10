@@ -1,11 +1,20 @@
 import Editor from "@monaco-editor/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import './EditSnippet.css'
-import { useNavigate } from "react-router-dom"
+import { useNavigate,useLocation } from "react-router-dom"
 
 export function EditSnippet() {
 
     const navigate=useNavigate();
+    const {state}= useLocation();
+
+    useEffect(()=>{
+        const funcSample=()=>{
+            console.log(state)
+        }
+        funcSample();
+    },[])
+
 
     //one for data from backend
     const [originalData, setOriginalData] = useState({

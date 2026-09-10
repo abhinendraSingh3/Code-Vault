@@ -49,9 +49,9 @@ const SnippetDetails = () => {
     }, [snippetId, versionId]);
 
     //for handling code
-    const handleChange = () => {
-        console.log();
-    }
+    // const handleChange = () => {
+    //     console.log();
+    // }
 
     //for handling versions
     const handleVersion = async () => {

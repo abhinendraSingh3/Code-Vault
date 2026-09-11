@@ -38,8 +38,8 @@ const SnippetDetails = () => {
             else if (snippetId) {
                 // No version specified — show current/latest snippet
                 const response = await oneSnippetDetail(snippetId);
-                const formattedCode = response.data.code.replace(/\\n/g, "\n");
-                setSnippetData({ ...response.data, code: formattedCode });
+                const formattedCode = response.code.replace(/\\n/g, "\n");
+                setSnippetData({ ...response, code: formattedCode });
             }
         };
 

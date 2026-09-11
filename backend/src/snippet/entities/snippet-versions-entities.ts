@@ -32,7 +32,7 @@ export class SnippetVersions {
     @Column()
     versions!: number;
 
-    @CreateDateColumn()
+    @Column({ nullable: true })
     expiryTime!: Date;
 
     @CreateDateColumn()

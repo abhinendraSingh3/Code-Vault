@@ -227,6 +227,19 @@ main {
   transform: translateY(-1px);
 }
 
+#editSnippet-update:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  transform: none;
+}
+
+#editSnippet-update:disabled:hover {
+  background-color: #9ca3af;
+  transform: none;
+}
+
 /* Responsive Scaling */
 @media (max-height: 700px) {
   .editSnippet-body {

@@ -19,7 +19,7 @@ const Sidebar = ({isOpen, setIsOpen}: SidebarProps) => {
         <>
             <div className={isOpen ? "sidebar open" : "sidebar"}>
                 <div className="first-section">
-                    <h1 id="main-title"> CodeSnap</h1>
+                    <h1 id="main-title"> CodeVault</h1>
                     <p id='close' onClick={()=>setIsOpen(false)}>X</p>
                 </div>
 

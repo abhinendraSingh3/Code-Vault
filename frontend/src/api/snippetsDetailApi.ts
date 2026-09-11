@@ -1,10 +1,33 @@
 import api from "./axios";
-export const oneSnippetDetail=async(id:number)=>{
+import type { SnippetData } from "../types/auth.types";
 
-    const response=await api.get(`/snippet/${id}`)
-        return response;         
+export const createSnippet = async (payload: {
+    title: string;
+    description: string;
+    code: string;
+    language: string;
+    tag: string[];
+}) => {
+    const response = await api.post('/snippet', payload);
+    return response.data;
+};
 
-}
+export const oneSnippetDetail = async (id: number): Promise<SnippetData> => {
+    const response = await api.get<SnippetData>(`/snippet/${id}`);
+    return response.data;
+
+};
+
+export const updateSnippet = async (id: number, payload: Partial<{
+    title: string;
+    description: string;
+    code: string;
+    language: string;
+    tag: string[];
+}>) => {
+    const response = await api.post(`/snippet/${id}`, payload);
+    return response.data;
+};
 
 //get all versions of the particular snippet
 export const snippetVersion=async(id:number)=>{

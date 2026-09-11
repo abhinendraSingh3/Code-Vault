@@ -29,7 +29,7 @@ export class Snippet {
     @Column({ unique: true, nullable: true })
     shareToken!: string;
 
-    @Column()
+    @Column({nullable: true})
     expiryTime!: Date;
 
     @CreateDateColumn()

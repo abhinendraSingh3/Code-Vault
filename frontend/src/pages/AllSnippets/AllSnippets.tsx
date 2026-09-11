@@ -61,7 +61,7 @@ const AllSnippets = () => {
             <div className="main-all">
                 <div className="first-all">
                     <div className="heading">
-                        <p id="title">All Snipepts</p>
+                        <p id="title">All Snippets</p>
                         <p id="title-description">Manage and organize your code snippet</p>
                     </div>
                     <div className="right-side-bars">

@@ -34,6 +34,7 @@ export interface SnippetData {
     language: string;
     tags: string[];
     versions: number;
+    versionNumber?: number;
     shareToken: string | null;
     createdAt: string;
     updatedAt: string;

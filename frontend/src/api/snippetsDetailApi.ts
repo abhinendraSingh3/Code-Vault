@@ -1,6 +1,7 @@
 import api from "./axios";
 import type { SnippetData } from "../types/auth.types";
 
+
 export const createSnippet = async (payload: {
     title: string;
     description: string;
@@ -58,6 +59,13 @@ export const deleteSnippet=async(id:number)=>{
 export const deleteVersion=async(snippetId:number,id:number)=>{
     const response=await api.delete(`/snippet/delete/${snippetId}/version/${id}`)
     console.log(response)
+}
+
+export const aiResponseAPI=async(prompt:string)=>{
+
+    const response=await api.post('/snippet/askAi',{prompt:prompt});
+
+    return response.data;    
 }
 
 

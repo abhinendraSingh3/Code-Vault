@@ -14,7 +14,10 @@ import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { User } from "../users/entities/user.entity";
 import { count, error, log } from "console";
 import { AllSharedSnippets } from "./dto/allSharedSnippetDetails";
-import { share } from "rxjs";
+import { Groq } from 'groq-sdk';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 @Injectable()
 export class SnippetService {
@@ -304,7 +307,7 @@ export class SnippetService {
     }
 
     //-------------deleteSnippet--------------------------
-    async deleteSnippet(userId: number, snippetID:number) {
+    async deleteSnippet(userId: number, snippetID: number) {
         const user = await this.userService.findByUserId(userId)
 
         if (!user) {
@@ -314,8 +317,8 @@ export class SnippetService {
         const snippetFound = await this.snippetRepo.findOne({
             where: {
                 id: snippetID,
-                user:{
-                    id:userId
+                user: {
+                    id: userId
                 }
             },
             relations: {
@@ -344,8 +347,8 @@ export class SnippetService {
             throw new ForbiddenException("You cannot delete this snippet");
         }
 
-        await this.snippetVersionRepo.delete({snippet:{id:snippetID}})
-        await this.shareTokenRepo.delete({snippet:{id:snippetID}})
+        await this.snippetVersionRepo.delete({ snippet: { id: snippetID } })
+        await this.shareTokenRepo.delete({ snippet: { id: snippetID } })
         await this.snippetRepo.remove(snippetFound);
 
 
@@ -818,7 +821,7 @@ export class SnippetService {
         return snippetFound.snippetVersion.map((version) => {
 
             const response = new SnippetSumamryDTO();
-            response.id=version.id
+            response.id = version.id
             response.title = version.title;
             response.description = version.description
             response.versionNumber = version.versions;
@@ -1068,7 +1071,7 @@ export class SnippetService {
 
     }
 
-    async deleteVersion(userId:number, snippetId:number, versionId:number){
+    async deleteVersion(userId: number, snippetId: number, versionId: number) {
         const user = await this.userService.findByUserId(userId)
 
         if (!user) {
@@ -1078,13 +1081,13 @@ export class SnippetService {
         const snippetVersionFound = await this.snippetVersionRepo.findOne({
             where: {
                 id: versionId,
-                snippet:{
-                    id:snippetId
+                snippet: {
+                    id: snippetId
                 }
             },
             relations: {
-                snippet:{
-                    user:true
+                snippet: {
+                    user: true
                 }
             }
         })
@@ -1103,10 +1106,52 @@ export class SnippetService {
 
         return "Snippet Delete Successfully";
 
-        
+
     }
+    //this is the part for the AI implementation.
+    async askAi(body: any, userId: number) {
 
+        console.log("prompt is", body.prompt);
 
+        let apiKey = process.env.apiKey;
+        
+        if (!apiKey) {
+            throw new Error("OPENAI_API_KEY is not set in the environment variables.");
+        }
+        const groq = new Groq({apiKey: apiKey});
 
+        const user = await this.userService.findByUserId(userId);
+
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        const prompt=body.prompt;
+
+        const chatCompletion = await groq.chat.completions.create({
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            "model": "openai/gpt-oss-120b",
+            "temperature": 1,
+            "max_completion_tokens": 2048,
+            "top_p": 1,
+            "stream": false,
+            "reasoning_effort": "medium",
+            "stop": null
+        });
+
+        // for await (const chunk of chatCompletion) {
+        //     process.stdout.write(chunk.choices[0]?.delta?.content || '');
+        // }
+        const reponse=chatCompletion.choices[0]?.message?.content;
+        console.log("the response of ai is ",reponse);
+        
+        return reponse;
+
+    }
 }
 

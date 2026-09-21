@@ -1,7 +1,14 @@
 import "./ShareTokenCard.css";
 import { useNavigate } from "react-router-dom";
 
-const ShareTokenCard = ({name,snippetId,token,type}) => {
+interface ShareTokenCardProps {
+  name: string;
+  snippetId: number | string;
+  token: string;
+  type: string;
+}
+
+const ShareTokenCard = ({ name, snippetId, token, type }: ShareTokenCardProps) => {
 
     const navigate=useNavigate();
 

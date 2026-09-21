@@ -146,6 +146,13 @@ export class SnippetController {
         return this.snippetService.getSnippetById(snippetId, req.user.userName);
 
     }
+      @UseGuards(AuthGuard)
+    @Post('askAi')
+    async askAi(@Req() req: AuthRequest, @Body() body: any) {
+        console.log("reached askAi");
+        return this.snippetService.askAi(body, req.user.userId);
+
+    }
 
     @UseGuards(AuthGuard)
     @Post(':id')
@@ -171,6 +178,7 @@ export class SnippetController {
         
     }
 
+  
 
 
 

@@ -1,7 +1,15 @@
 import "./ResultCard.css";
 import { useNavigate } from "react-router-dom";
 
-const ResultCard = ({snippetId,title,description,language,updatedAt}) => {
+interface ResultCardProps {
+  snippetId: number | string;
+  title: string;
+  description: string;
+  language: string;
+  updatedAt: string;
+}
+
+const ResultCard = ({ snippetId, title, description, language, updatedAt }: ResultCardProps) => {
 
     const navigate=useNavigate();
 

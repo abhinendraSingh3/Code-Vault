@@ -3,8 +3,13 @@ import Editor from "@monaco-editor/react"
 import VersionCard from "../Snippet Version Cards/VersionCards";
 import './SnippetDetails.css'
 import { useLocation, useNavigate } from "react-router-dom";
-import { oneSnippetDetail, oneVersionDetail, snippetVersion, generateTokenById, deleteSnippet,deleteVersion } from "../../api/snippetsDetailApi";
+import { oneSnippetDetail, oneVersionDetail, snippetVersion, generateTokenById, deleteSnippet,deleteVersion,aiResponseAPI } from "../../api/snippetsDetailApi";
 import type { SnippetData, SnippetVersion, shareTokenData } from "../../types/auth.types"
+
+type AiMessage = {
+    prompt: string;
+    response: string;
+};
 
 const SnippetDetails = () => {
     const { state } = useLocation();
@@ -21,7 +26,9 @@ const SnippetDetails = () => {
     const [sharedData, setSharedData] = useState<shareTokenData>();
     const [copyMessage, setCopyMessage] = useState("");
     const [deleteMessage, setDeleteMessage] = useState("");
-
+    const [aiInput, setAiInput] = useState("");
+    const [aiMessages, setAiMessages] = useState<AiMessage[]>([]);
+    
 
     useEffect(() => {
         const findDetails = async () => {
@@ -111,6 +118,25 @@ const SnippetDetails = () => {
         }, 2000);
     }
 
+    //for handling AI
+    const handleAsk = async () => {
+        const prompt = aiInput.trim();
+
+        if (!prompt) return;
+
+        const response=await aiResponseAPI(prompt);
+
+        setAiMessages((messages) => [
+            ...messages,
+            {
+                prompt,
+                response: `${response}`,
+            },
+        ]);
+                
+        setAiInput("");
+    };
+
 
    const handleDelete = async () => {
     if (!snippetData?.id) return;
@@ -197,6 +223,9 @@ const SnippetDetails = () => {
                         <button className={activeTab == "share" ? "active tab" : "tab"}
                             onClick={() => setActiveTab("share")}
                         >Share</button>
+                        <button className={activeTab == "askAi" ? "active tab" : "tab"}
+                            onClick={() => setActiveTab("askAi")}
+                        >Ask Ai</button>
                     </div>
 
                     <div className="snippetDetails-left-content">
@@ -278,6 +307,50 @@ const SnippetDetails = () => {
                                     <p className="snippetDetail-error">
                                         {error}
                                     </p>
+                                )}
+                            </div>
+                        )}
+                        {activeTab == "askAi" && (
+                            <div className="snippetDetail-askAi">
+                                {hasData ? (
+                                    <div className="snippetDetail-main">
+                                        <div id="snippetDetail-subheading">
+                                            <h3>Ask anything related to your code</h3>
+                                        </div>
+                                        <div className="snippetDetail-conversation" aria-live="polite">
+                                            {aiMessages.length === 0 && (
+                                                <p className="snippetDetail-emptyConversation">Your questions and responses will appear here.</p>
+                                            )}
+                                            {aiMessages.map((message, index) => (
+                                                <div className="snippetDetail-messagePair" key={`${message.prompt}-${index}`}>
+                                                    <div className="snippetDetail-userMessage">
+                                                        <span className="snippetDetail-messageLabel">You</span>
+                                                        <p>{message.prompt}</p>
+                                                    </div>
+                                                    <div className="snippetDetail-aiMessage">
+                                                        <span className="snippetDetail-messageLabel">AI</span>
+                                                        <p>{message.response}</p>
+                                                    </div>
+                                                    
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div id="snippetDetail-inputValBtn">
+                                            <input
+                                                id="snippetDetail-aiInputValue"
+                                                type="text"
+                                                value={aiInput}
+                                                onChange={(e) => setAiInput(e.target.value)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") handleAsk();
+                                                }}
+                                                placeholder="Ask"
+                                            />
+                                            <button id="snippetDetail-btn" onClick={handleAsk}>Ask</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <h1> No Data of the code is available therefore AI cannot be used at this time</h1>
                                 )}
                             </div>
                         )}

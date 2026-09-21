@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { log } from 'console';
 import { SnippetVersions } from './snippet/entities/snippet-versions-entities';
 import { ShareToken } from './snippet/entities/snippet-shareToken';
+import { AiMessages } from './snippet/entities/ai-messages';
 
 @Module({
   
@@ -42,7 +43,7 @@ import { ShareToken } from './snippet/entities/snippet-shareToken';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'), 
 
-        entities: [User, Snippet,SnippetVersions,ShareToken], 
+        entities: [User, Snippet,SnippetVersions,ShareToken, AiMessages], 
         synchronize: true, // dev only — auto-creates tables from entities
         }
         

@@ -2,6 +2,7 @@ import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, ManyToOne
 import { User } from "../../users/entities/user.entity"
 import { SnippetVersions } from "./snippet-versions-entities";
 import { ShareToken } from "./snippet-shareToken";
+import { AiMessages } from "./ai-messages";
 
 @Entity()
 export class Snippet {
@@ -56,6 +57,12 @@ export class Snippet {
     )
     sharetoken!: ShareToken;
 
+    @OneToMany(
+        ()=>AiMessages,
+        (aiMessages)=>aiMessages.snippet
+    )
+    aiMessages!:AiMessages[]
+    
     //()=>User .represents that this entity has a relationship with User entity
     //(user)=>user.snippet. means that go to user entity and find the property that points back to snippet. user can be anything its just the variable name.
 

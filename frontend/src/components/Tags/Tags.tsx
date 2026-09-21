@@ -1,7 +1,7 @@
 import "./Tags.css"
 
 type PropUse = {
-    language: boolean;
+    language: string;
     count: number;
 }
 

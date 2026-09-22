@@ -3,7 +3,7 @@ import { SnippetReqDTO } from "./dto/snippet-request";
 import { UserService } from "../users/users.services";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Snippet } from "./entities/snippet-entities";
-import { ILike, Not, Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 import { SnippetResponseDTO } from "./dto/snippet-response";
 import { SnippetVersions } from "./entities/snippet-versions-entities";
 import { randomUUID } from "crypto";
@@ -11,9 +11,8 @@ import { ShareTokenResDTO } from "./dto/share-token-response";
 import { ConfigService } from "@nestjs/config";
 import { ShareToken } from "./entities/snippet-shareToken";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
-import { User } from "../users/entities/user.entity";
-import { count, error, log } from "console";
 import { AllSharedSnippets } from "./dto/allSharedSnippetDetails";
+import { AiMessages } from "./entities/ai-messages";
 import { Groq } from 'groq-sdk';
 import dotenv from "dotenv";
 
@@ -24,6 +23,7 @@ export class SnippetService {
 
     constructor(
 
+        // A repository gives you methods to read and write database data for an entity.
         @InjectRepository(Snippet)
         private readonly snippetRepo: Repository<Snippet>,
 
@@ -33,9 +33,13 @@ export class SnippetService {
         @InjectRepository(ShareToken)
         private readonly shareTokenRepo: Repository<ShareToken>,
 
+        @InjectRepository(AiMessages)
+        private readonly aiMessageRepository: Repository<AiMessages>,
+
         private readonly userService: UserService,
 
         private readonly configService: ConfigService,
+
 
     ) { }
 
@@ -1108,17 +1112,8 @@ export class SnippetService {
 
 
     }
-    //this is the part for the AI implementation.
+    //this is the part for the AI implementation.--------------------------------
     async askAi(body: any, userId: number) {
-
-        console.log("prompt is", body.prompt);
-
-        let apiKey = process.env.apiKey;
-        
-        if (!apiKey) {
-            throw new Error("OPENAI_API_KEY is not set in the environment variables.");
-        }
-        const groq = new Groq({apiKey: apiKey});
 
         const user = await this.userService.findByUserId(userId);
 
@@ -1126,13 +1121,118 @@ export class SnippetService {
             throw new NotFoundException("User not found");
         }
 
-        const prompt=body.prompt;
+        let snippetId = body.snippetId;
+        let versionId: number | undefined = body.versionId;
+        let prompt = body.prompt;
+
+            
+        if (versionId && snippetId) {
+            console.log(snippetId, versionId, prompt);
+
+            let version = await this.snippetVersionRepo.findOne({
+                where: {
+                    id: versionId,
+                    snippet: {id:snippetId}
+                },
+                relations: {
+                    snippet: true,
+                    aiMessages: true
+                }
+            })
+            console.log(version);
+            
+
+
+
+            if (version?.code) {
+                const response = await this.aiProcedure(version.code, prompt);
+                if (response) {
+
+                    const aiMessageEntityData = this.aiMessageRepository.create({
+                        snippet: { id: snippetId },
+                        snippetVersion: { id: versionId },
+                        prompt,
+                        response
+                    })
+                    await this.aiMessageRepository.save(aiMessageEntityData);
+                    console.log("response saved of versionID");
+                }
+                return response;
+            }
+
+        }
+
+        else if (snippetId && !versionId) {
+            let snippet = await this.snippetRepo.findOne({
+                where: {
+                    id: snippetId
+                },
+                relations: {
+                    aiMessages: true
+                }
+            })
+            if (snippet?.code) {
+                const response = await this.aiProcedure(snippet.code, prompt);
+
+                if (response) {
+
+                    const aiMessageEntityData = this.aiMessageRepository.create({
+                        snippet: { id: snippetId },
+                        prompt,
+                        response
+                    })
+                    await this.aiMessageRepository.save(aiMessageEntityData);
+                    console.log("response saved of snippetID");
+                    
+                }
+
+
+                return response
+            }
+
+        }
+
+    }
+    //------------------this is actual implementation of ai backend
+    async aiProcedure(code: string, prompt: string) {
+
+        let apiKey = process.env.apiKey;
+
+        if (!apiKey) {
+            throw new Error("OPENAI_API_KEY is not set in the environment variables.");
+        }
+
+        const systemPrompt = `
+            You are a coding assistant.
+
+            Analyze the provided code and answer the user's asked question only.
+            Dont give user additional information apart from the asked question
+            Give clear and concise explanations.
+            `;
+
+        const userPrompt = `
+            Code:
+
+                \`\`\`
+                 ${code}
+                 \`\`\`
+
+        User question:
+            ${prompt}
+                 `;
+
+        const groq = new Groq({ apiKey: apiKey });
+
 
         const chatCompletion = await groq.chat.completions.create({
             "messages": [
                 {
+                    "role": "system",
+                    content: systemPrompt
+                },
+                {
                     "role": "user",
-                    "content": prompt
+                    "content": userPrompt
                 }
             ],
             "model": "openai/gpt-oss-120b",
@@ -1147,9 +1247,9 @@ export class SnippetService {
         // for await (const chunk of chatCompletion) {
         //     process.stdout.write(chunk.choices[0]?.delta?.content || '');
         // }
-        const reponse=chatCompletion.choices[0]?.message?.content;
-        console.log("the response of ai is ",reponse);
-        
+        const reponse = chatCompletion.choices[0]?.message?.content;
+        console.log("the response of ai is ", reponse);
+
         return reponse;
 
     }

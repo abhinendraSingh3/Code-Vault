@@ -34,7 +34,7 @@ const VersionCard = (prop: propType) => {
                         aria-label="View"
                         onClick={() =>
                             navigate('/snippetDetails', {
-                                state: { versionId: prop.versionNumber, snippetId: prop.snippetId }
+                                state: { versionId: prop.versionNumber, snippetId: prop.snippetId, id:prop.id }
                             })
                         }
                     >

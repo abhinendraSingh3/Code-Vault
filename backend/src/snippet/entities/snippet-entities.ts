@@ -62,7 +62,7 @@ export class Snippet {
         (aiMessages)=>aiMessages.snippet
     )
     aiMessages!:AiMessages[]
-    
+
     //()=>User .represents that this entity has a relationship with User entity
     //(user)=>user.snippet. means that go to user entity and find the property that points back to snippet. user can be anything its just the variable name.
 

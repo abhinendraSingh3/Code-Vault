@@ -5,6 +5,7 @@ import './SnippetDetails.css'
 import { useLocation, useNavigate } from "react-router-dom";
 import { oneSnippetDetail, oneVersionDetail, snippetVersion, generateTokenById, deleteSnippet,deleteVersion,aiResponseAPI } from "../../api/snippetsDetailApi";
 import type { SnippetData, SnippetVersion, shareTokenData } from "../../types/auth.types"
+import MarkdownRenderer from "../MarkdownRenderer/MarkdownRenderer";
 
 type AiMessage = {
     prompt: string;
@@ -17,6 +18,7 @@ const SnippetDetails = () => {
 
     const snippetId = state?.snippetId;
     const versionId = state?.versionId;
+    const id=state?.id;
 
     const [activeTab, setActiveTab] = useState("code");
     const [snippetData, setSnippetData] = useState<SnippetData>();
@@ -69,7 +71,8 @@ const SnippetDetails = () => {
 
         if (response.data.length === 0) {
             setHasData(false);
-        } else {
+        } 
+        else {
             setHasData(true);
         }
         setVersionData(response.data);
@@ -118,13 +121,13 @@ const SnippetDetails = () => {
         }, 2000);
     }
 
-    //for handling AI
+    //for handling AI----------------------------
     const handleAsk = async () => {
         const prompt = aiInput.trim();
 
         if (!prompt) return;
 
-        const response=await aiResponseAPI(prompt);
+        const response=await aiResponseAPI(prompt,snippetId, id);
 
         setAiMessages((messages) => [
             ...messages,
@@ -143,7 +146,7 @@ const SnippetDetails = () => {
 
     try {
         if (isViewingVersion) {
-            await deleteVersion(snippetId,snippetData.id);
+            await deleteVersion(snippetId, snippetData.id);
             setDeleteMessage("Version deleted!");
 
         } 
@@ -329,7 +332,7 @@ const SnippetDetails = () => {
                                                     </div>
                                                     <div className="snippetDetail-aiMessage">
                                                         <span className="snippetDetail-messageLabel">AI</span>
-                                                        <p>{message.response}</p>
+                                                        <MarkdownRenderer content={message.response} />
                                                     </div>
                                                     
                                                 </div>

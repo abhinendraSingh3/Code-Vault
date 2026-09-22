@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {Snippet} from "./snippet-entities";
+import {SnippetVersions} from "./snippet-versions-entities";
 
 @Entity()
 export class AiMessages {
@@ -21,4 +22,10 @@ export class AiMessages {
         (snippet)=>snippet.aiMessages
     )
     snippet!:Snippet;
+
+    @ManyToOne(
+        ()=>SnippetVersions,
+        (snippetVersion)=>snippetVersion.aiMessages
+    )
+    snippetVersion!:SnippetVersions;
 }

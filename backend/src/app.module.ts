@@ -8,10 +8,10 @@ import { Snippet } from './snippet/entities/snippet-entities';
 import { UsersModule } from './users/users.module';
 import { SnippetModule } from './snippet/snippet.module';
 import { AuthModule } from './auth/auth.module';
-import { log } from 'console';
 import { SnippetVersions } from './snippet/entities/snippet-versions-entities';
 import { ShareToken } from './snippet/entities/snippet-shareToken';
-import { AiMessages } from './snippet/entities/ai-messages';
+import { AiMessages } from './ai/entities/ai-messages';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   
@@ -53,6 +53,7 @@ import { AiMessages } from './snippet/entities/ai-messages';
     UsersModule,
     SnippetModule,
     AuthModule,
+    AiModule,
   ],
 
 })

@@ -63,7 +63,7 @@ export const deleteVersion=async(snippetId:number,id:number)=>{
 
 export const aiResponseAPI=async(prompt:string,snippetId:number, versionId:number)=>{
 
-    const response=await api.post('/snippet/askAi',{prompt:prompt, snippetId:snippetId, versionId:versionId});
+    const response=await api.post('/ai/askAi',{prompt:prompt, snippetId:snippetId, versionId:versionId});
 
     return response.data;    
 }

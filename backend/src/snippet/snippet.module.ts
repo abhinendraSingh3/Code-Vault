@@ -7,10 +7,9 @@ import { UsersModule } from "../users/users.module";
 import { ShareToken } from "./entities/snippet-shareToken";
 import { SnippetVersions } from "./entities/snippet-versions-entities";
 import { AuthModule } from "../auth/auth.module";
-import { AiMessages } from "./entities/ai-messages";
 
 @Module({
-    imports:[TypeOrmModule.forFeature([Snippet,ShareToken,SnippetVersions,AiMessages]),UsersModule,AuthModule],
+    imports:[TypeOrmModule.forFeature([Snippet,ShareToken,SnippetVersions]),UsersModule,AuthModule],
     controllers:[SnippetController],
     providers:[SnippetService],
     exports:[SnippetService]

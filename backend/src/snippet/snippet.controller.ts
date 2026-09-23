@@ -6,10 +6,10 @@ import { SnippetResponseDTO } from "./dto/snippet-response";
 import { ShareTokenResDTO } from "./dto/share-token-response";
 import { SnippetSumamryDTO } from "./dto/snippet-summary";
 import { AuthGuard } from "../auth/jwt.auth.guard";
-import { AuthService } from "../auth/auth.service";
+
 import { TopSnippet } from "./dto/topSnippetWithSnippetCountDto";
-import { link } from "fs";
-import { log } from "console";
+
+
 import { AllCountLanguages } from "./dto/allLanguages-Count";
 import { AllSharedSnippets } from "./dto/allSharedSnippetDetails";
 
@@ -144,13 +144,6 @@ export class SnippetController {
     async getSnippetById(@Req() req: AuthRequest, @Param('id') snippetId: number) {
 
         return this.snippetService.getSnippetById(snippetId, req.user.userName);
-
-    }
-      @UseGuards(AuthGuard)
-    @Post('askAi')
-    async askAi(@Req() req: AuthRequest, @Body() body: any) {
-        console.log("reached askAi");
-        return this.snippetService.askAi(body, req.user.userId);
 
     }
 

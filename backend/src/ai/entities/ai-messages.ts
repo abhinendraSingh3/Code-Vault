@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import {Snippet} from "./snippet-entities";
-import {SnippetVersions} from "./snippet-versions-entities";
+import { Snippet } from "../../snippet/entities/snippet-entities";
+import { SnippetVersions } from "../../snippet/entities/snippet-versions-entities";
 
 @Entity()
 export class AiMessages {

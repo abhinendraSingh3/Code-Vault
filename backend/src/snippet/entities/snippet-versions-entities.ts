@@ -2,8 +2,7 @@ import { Column, CreateDateColumn, Entity, BeforeInsert, BeforeUpdate, ManyToOne
 import { User } from "../../users/entities/user.entity"
 import { Snippet } from "./snippet-entities";
 import { ShareToken } from "./snippet-shareToken";
-import { AiMessages } from "./ai-messages";
-
+import { AiMessages } from "../../ai/entities/ai-messages";
 @Entity()
 export class SnippetVersions {
 

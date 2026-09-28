@@ -27,6 +27,6 @@ import { AuthModule } from '../auth/auth.module';
 
   controllers: [AiController],
 
-  providers: [AiService],
+  providers: [AiService], 
 })
 export class AiModule {}

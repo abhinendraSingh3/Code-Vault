@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Code Vault ⚡ Launch Video</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #090d16;
+        color: #f8fafc;
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(circle at 50% 20%, #151c33 0%, #090d16 80%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Background Grid & Ambient Glow */
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image: 
+          linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+      }
+
+      .glow-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.45;
+        pointer-events: none;
+      }
+      .glow-1 {
+        width: 700px;
+        height: 700px;
+        top: -150px;
+        left: 200px;
+        background: #6366f1;
+      }
+      .glow-2 {
+        width: 600px;
+        height: 600px;
+        bottom: -100px;
+        right: 200px;
+        background: #4f46e5;
+      }
+
+      /* Shared Container */
+      .scene-container {
+        position: absolute;
+        width: 1600px;
+        height: 900px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* SCENE 1: HOOK */
+      #scene-1 {
+        opacity: 0;
+      }
+      .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 20px;
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(129, 140, 248, 0.4);
+        border-radius: 9999px;
+        color: #818cf8;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+      }
+      .pulse-dot {
+        width: 10px;
+        height: 10px;
+        background: #6366f1;
+        border-radius: 50%;
+        box-shadow: 0 0 12px #818cf8;
+      }
+
+      .hero-title {
+        font-size: 80px;
+        font-weight: 800;
+        line-height: 1.1;
+        text-align: center;
+        max-width: 1300px;
+        color: #f8fafc;
+        margin-bottom: 24px;
+        letter-spacing: -0.02em;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #818cf8 0%, #c7d2fe 50%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-sub {
+        font-size: 26px;
+        color: #94a3b8;
+        text-align: center;
+        max-width: 950px;
+        margin-bottom: 40px;
+      }
+
+      .code-preview-mini {
+        width: 900px;
+        background: #0f172a;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 16px;
+        padding: 24px 32px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 20px;
+        color: #e2e8f0;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      }
+
+      /* SCENE 2: MONACO EDITOR */
+      #scene-2 {
+        opacity: 0;
+      }
+      .editor-window {
+        width: 1400px;
+        height: 750px;
+        background: #0f172a;
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        border-radius: 20px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .editor-header {
+        height: 60px;
+        background: #1e293b;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        gap: 20px;
+      }
+      .window-dots {
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+      }
+      .dot-red { background: #ff5f56; }
+      .dot-yellow { background: #ffbd2e; }
+      .dot-green { background: #27c93f; }
+
+      .lang-tabs {
+        display: flex;
+        gap: 8px;
+        margin-left: 20px;
+      }
+      .tab-btn {
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #94a3b8;
+        background: transparent;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .tab-btn.active {
+        background: rgba(99, 102, 241, 0.2);
+        color: #818cf8;
+        border-color: rgba(129, 140, 248, 0.4);
+      }
+
+      .editor-title-bar {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .version-tag {
+        padding: 4px 12px;
+        background: rgba(34, 197, 94, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.5);
+        color: #4ade80;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 6px;
+      }
+
+      .editor-body {
+        flex: 1;
+        display: flex;
+      }
+      .line-numbers {
+        width: 60px;
+        padding: 24px 0;
+        text-align: right;
+        padding-right: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        color: #475569;
+        line-height: 1.8;
+        user-select: none;
+        border-right: 1px solid rgba(255,255,255,0.05);
+      }
+      .code-content {
+        flex: 1;
+        padding: 24px 32px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 19px;
+        line-height: 1.8;
+        color: #e2e8f0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .kw { color: #f43f5e; font-weight: 600; }
+      .dec { color: #e0234e; font-weight: 600; }
+      .str { color: #10b981; }
+      .cls { color: #38bdf8; font-weight: 600; }
+      .fn { color: #a78bfa; }
+      .cmt { color: #64748b; font-style: italic; }
+
+      /* SCENE 3: DEDICATED GROQ AI ASSISTANT SHOWCASE */
+      #scene-3 {
+        opacity: 0;
+      }
+      .ai-showcase-split {
+        width: 1450px;
+        height: 760px;
+        display: flex;
+        gap: 28px;
+      }
+      .ai-code-context {
+        width: 650px;
+        background: #0f172a;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 20px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .context-badge {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #94a3b8;
+        font-family: 'JetBrains Mono', monospace;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 12px;
+      }
+
+      .ai-chat-panel {
+        flex: 1;
+        background: #131c2e;
+        border: 1px solid rgba(244, 63, 94, 0.4);
+        border-radius: 20px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0 0 35px rgba(244, 63, 94, 0.15);
+      }
+      .ai-header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 16px;
+      }
+      .ai-title-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .groq-badge {
+        padding: 6px 14px;
+        background: rgba(244, 63, 94, 0.18);
+        border: 1px solid rgba(244, 63, 94, 0.5);
+        color: #fb7185;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .ai-prompt-box {
+        background: #1e293b;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-size: 16px;
+        color: #f8fafc;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #6366f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .ai-response-box {
+        background: #0f172a;
+        border: 1px solid rgba(244, 63, 94, 0.3);
+        border-radius: 14px;
+        padding: 20px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #cbd5e1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .ai-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f43f5e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      /* SCENE 4: REVISION CONTROL & SHARE */
+      #scene-4 {
+        opacity: 0;
+      }
+      .version-split {
+        width: 1400px;
+        height: 750px;
+        display: flex;
+        gap: 30px;
+      }
+      .version-history-panel {
+        width: 480px;
+        background: #131c2e;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 20px;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .panel-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #f8fafc;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .version-card {
+        background: #1e293b;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .version-card.active-ver {
+        border-color: #6366f1;
+        background: rgba(99, 102, 241, 0.15);
+      }
+      .ver-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ver-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 16px;
+        color: #818cf8;
+      }
+      .ver-date {
+        font-size: 13px;
+        color: #64748b;
+      }
+      .ver-desc {
+        font-size: 14px;
+        color: #cbd5e1;
+      }
+
+      .diff-editor {
+        flex: 1;
+        background: #0f172a;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        line-height: 1.8;
+      }
+      .diff-add {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border-left: 4px solid #22c55e;
+        padding-left: 12px;
+        margin: 4px 0;
+      }
+      .diff-del {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border-left: 4px solid #ef4444;
+        padding-left: 12px;
+        margin: 4px 0;
+        text-decoration: line-through;
+      }
+
+      .token-pill {
+        width: 100%;
+        height: 54px;
+        background: #0f172a;
+        border: 1px dashed #6366f1;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        color: #38bdf8;
+        margin-top: 10px;
+      }
+      .btn-copy {
+        padding: 6px 16px;
+        background: #6366f1;
+        color: #ffffff;
+        font-weight: 700;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      /* SCENE 5: OUTRO */
+      #scene-5 {
+        opacity: 0;
+      }
+      .brand-logo-large {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 96px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 20px;
+      }
+      .logo-icon-box {
+        width: 110px;
+        height: 110px;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+      }
+      .tech-badges {
+        display: flex;
+        gap: 16px;
+        margin-top: 40px;
+      }
+      .tech-tag {
+        padding: 10px 24px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 9999px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #cbd5e1;
+      }
+      .tech-tag-ai {
+        background: rgba(244, 63, 94, 0.2);
+        border: 1px solid rgba(244, 63, 94, 0.5);
+        color: #fb7185;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="21"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Background elements -->
+      <div class="bg-grid"></div>
+      <div class="glow-orb glow-1" id="orb-1"></div>
+      <div class="glow-orb glow-2" id="orb-2"></div>
+
+      <!-- AUDIO TRACK -->
+      <audio
+        id="bg-music"
+        class="clip"
+        src="assets/music/track.mp3"
+        data-start="0"
+        data-duration="21"
+        data-volume="0.45"
+        data-track-index="0"
+      ></audio>
+
+      <!-- SCENE 1: HOOK (0.0s - 3.5s) -->
+      <div class="scene-container clip" id="scene-1" data-start="0" data-duration="3.5" data-track-index="1">
+        <div class="badge-pill" id="s1-badge">
+          <span class="pulse-dot"></span> Centralized Code Snippet Vault
+        </div>
+        <h1 class="hero-title" id="s1-title">
+          Stop Rewriting <br><span class="gradient-text">The Same Boilerplate Logic</span>
+        </h1>
+        <p class="hero-sub" id="s1-sub">
+          Store, version, and AI-analyze reusable NestJS guards, DB sessions, and algorithms effortlessly.
+        </p>
+        <div class="code-preview-mini" id="s1-code">
+          <span class="dec">@Injectable</span>()<br>
+          <span class="kw">export class</span> <span class="cls">JwtAuthGuard</span> <span class="kw">implements</span> <span class="cls">CanActivate</span> { ... }
+        </div>
+      </div>
+
+      <!-- SCENE 2: MONACO EDITOR (3.5s - 8.0s) -->
+      <div class="scene-container clip" id="scene-2" data-start="3.5" data-duration="4.5" data-track-index="1">
+        <div class="editor-window">
+          <div class="editor-header">
+            <div class="window-dots">
+              <div class="dot dot-red"></div>
+              <div class="dot dot-yellow"></div>
+              <div class="dot dot-green"></div>
+            </div>
+            <div class="lang-tabs">
+              <div class="tab-btn active" id="tab-ts">⚡ TypeScript</div>
+              <div class="tab-btn" id="tab-py">🐍 Python</div>
+              <div class="tab-btn" id="tab-go">🐹 Go</div>
+            </div>
+            <div class="editor-title-bar">
+              <span class="version-tag">SnippetVersions v2.1.0</span>
+            </div>
+          </div>
+          <div class="editor-body">
+            <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10</div>
+            <div class="code-content" id="code-panel">
+              <div id="code-ts">
+                <span class="dec">@Injectable</span>()<br>
+                <span class="kw">export class</span> <span class="cls">JwtAuthGuard</span> <span class="kw">implements</span> <span class="cls">CanActivate</span> {<br>
+                &nbsp;&nbsp;<span class="kw">constructor</span>(<span class="kw">private</span> <span class="fn">jwtService</span>: <span class="cls">JwtService</span>) {}<br><br>
+                &nbsp;&nbsp;<span class="kw">async</span> <span class="fn">canActivate</span>(<span class="fn">context</span>: <span class="cls">ExecutionContext</span>): <span class="cls">Promise</span>&lt;<span class="kw">boolean</span>&gt; {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> <span class="fn">req</span> = <span class="fn">context</span>.<span class="fn">switchToHttp</span>().<span class="fn">getRequest</span>();<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> <span class="fn">payload</span> = <span class="kw">await</span> <span class="kw">this</span>.<span class="fn">jwtService</span>.<span class="fn">verifyAsync</span>(<span class="fn">req</span>.<span class="fn">headers</span>.authorization);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> !!<span class="fn">payload</span>;<br>
+                &nbsp;&nbsp;}<br>
+                }
+              </div>
+              <div id="code-py" style="display:none;">
+                <span class="dec">@asynccontextmanager</span><br>
+                <span class="kw">async def</span> <span class="fn">get_db_session</span>() -&gt; <span class="cls">AsyncSession</span>:<br>
+                &nbsp;&nbsp;<span class="kw">async with</span> <span class="fn">AsyncSession</span>(<span class="fn">engine</span>) <span class="kw">as</span> <span class="fn">session</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">try</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">yield</span> <span class="fn">session</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">await</span> <span class="fn">session</span>.<span class="fn">commit</span>()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">except</span> <span class="cls">Exception</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">await</span> <span class="fn">session</span>.<span class="fn">rollback</span>()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">raise</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: DEDICATED GROQ AI ASSISTANT SHOWCASE (8.0s - 13.5s) -->
+      <div class="scene-container clip" id="scene-3" data-start="8.0" data-duration="5.5" data-track-index="1">
+        <div class="ai-showcase-split">
+          <div class="ai-code-context">
+            <div class="context-badge">
+              <span>📄 Code Context (JwtAuthGuard.ts)</span>
+              <span class="version-tag">Snippet ID: #104</span>
+            </div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 16px; line-height: 1.7; color: #94a3b8;">
+              <span class="dec">@Injectable</span>()<br>
+              <span class="kw">export class</span> <span class="cls">JwtAuthGuard</span> {<br>
+              &nbsp;&nbsp;<span class="kw">async</span> <span class="fn">canActivate</span>(<span class="fn">ctx</span>) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> <span class="fn">t</span> = <span class="fn">extractToken</span>(<span class="fn">ctx</span>);<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (!<span class="fn">t</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">UnauthorizedException</span>();<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="kw">await</span> <span class="kw">this</span>.<span class="fn">jwt</span>.<span class="fn">verifyAsync</span>(<span class="fn">t</span>);<br>
+              &nbsp;&nbsp;}<br>
+              }
+            </div>
+          </div>
+
+          <div class="ai-chat-panel" id="ai-panel">
+            <div class="ai-header-bar">
+              <div class="ai-title-group">
+                <span style="font-size: 26px;">🤖</span>
+                <span>Ask AI Coding Assistant</span>
+              </div>
+              <div class="groq-badge">
+                <span>⚡ Groq SDK</span> • <span>openai/gpt-oss-120b</span>
+              </div>
+            </div>
+
+            <div class="ai-prompt-box" id="ai-prompt">
+              <div class="user-avatar">You</div>
+              <span>Explain how this JwtAuthGuard validates tokens.</span>
+            </div>
+
+            <div class="ai-response-box" id="ai-response">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                <div class="ai-avatar">AI</div>
+                <strong style="color: #fb7185;">Groq AI Response (`openai/gpt-oss-120b`)</strong>
+              </div>
+              <p><strong>1. Header Extraction:</strong> Reads Bearer token from request authorization header.</p>
+              <p><strong>2. Async Validation:</strong> Calls <code style="color: #38bdf8;">jwtService.verifyAsync()</code> to validate payload signature.</p>
+              <p><strong>3. Exception Guard:</strong> Throws <code style="color: #f43f5e;">UnauthorizedException</code> if missing/invalid.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: REVISION CONTROL & SHARE TOKEN (13.5s - 18.0s) -->
+      <div class="scene-container clip" id="scene-4" data-start="13.5" data-duration="4.5" data-track-index="1">
+        <div class="version-split">
+          <div class="version-history-panel" id="ver-panel">
+            <div class="panel-title">📜 Revision History & Token Sharing</div>
+            <div class="version-card active-ver">
+              <div class="ver-header">
+                <span class="ver-num">v2.1.0 (Current)</span>
+                <span class="ver-date">Today</span>
+              </div>
+              <div class="ver-desc">Added JWT bearer token extractor guard</div>
+            </div>
+            <div class="version-card">
+              <div class="ver-header">
+                <span class="ver-num">v1.0.0</span>
+                <span class="ver-date">Sep 24</span>
+              </div>
+              <div class="ver-desc">Initial snippet upload</div>
+            </div>
+            <div class="token-pill" id="share-pill">
+              <span>https://codevault.dev/s/share_tk</span>
+              <div class="btn-copy">Copied! ✨</div>
+            </div>
+          </div>
+          <div class="diff-editor" id="ver-diff">
+            <div class="cmt">// SnippetVersions Revision Diff (v2.0.0 → v2.1.0)</div><br>
+            <div class="diff-del">- const token = request.headers['x-access-token'];</div>
+            <div class="diff-add">+ const token = this.extractTokenFromHeader(request);</div>
+            <div class="diff-add">+ if (!token) throw new UnauthorizedException('Access token missing');</div>
+            <br>
+            <span class="kw">const</span> <span class="fn">payload</span> = <span class="kw">await</span> <span class="kw">this</span>.<span class="fn">jwtService</span>.<span class="fn">verifyAsync</span>(<span class="fn">token</span>);
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 5: OUTRO (18.0s - 21.0s) -->
+      <div class="scene-container clip" id="scene-5" data-start="18.0" data-duration="3.0" data-track-index="1">
+        <div class="brand-logo-large" id="outro-logo">
+          <div class="logo-icon-box">⚡</div>
+          <span>Code<span class="gradient-text">Vault</span></span>
+        </div>
+        <h2 style="font-size: 32px; font-weight: 600; color: #94a3b8; text-align: center;" id="outro-sub">
+          Centralize, Version & AI-Analyze Code Effortlessly.
+        </h2>
+        <div class="tech-badges" id="outro-badges">
+          <div class="tech-tag">NestJS 11</div>
+          <div class="tech-tag">React 19</div>
+          <div class="tech-tag">Monaco Editor</div>
+          <div class="tech-tag tech-tag-ai">⚡ Groq AI (gpt-oss-120b)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GSAP TIMELINE DEFINITION -->
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      const tl = gsap.timeline({ paused: true });
+
+      // INITIAL STATES AT t=0 SET VIA GSAP
+      tl.set("#scene-1", { opacity: 0, scale: 0.95 });
+      tl.set("#scene-2", { opacity: 0, y: 30 });
+      tl.set("#scene-3", { opacity: 0, scale: 0.95 });
+      tl.set("#scene-4", { opacity: 0, y: 20 });
+      tl.set("#scene-5", { opacity: 0, scale: 0.9 });
+
+      // SCENE 1: HOOK (0.0s - 3.5s)
+      tl.to("#scene-1", { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0.0);
+      tl.from("#s1-badge", { y: -20, opacity: 0, duration: 0.4 }, 0.2);
+      tl.from("#s1-title", { y: 20, opacity: 0, duration: 0.5 }, 0.4);
+      tl.from("#s1-code", { y: 30, opacity: 0, duration: 0.5 }, 0.8);
+      tl.to("#scene-1", { opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.in" }, 3.1);
+
+      // SCENE 2: MONACO EDITOR (3.5s - 8.0s)
+      tl.to("#scene-2", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 3.5);
+      tl.call(() => {
+        document.getElementById("tab-ts").classList.remove("active");
+        document.getElementById("tab-py").classList.add("active");
+        document.getElementById("code-ts").style.display = "none";
+        document.getElementById("code-py").style.display = "block";
+      }, null, 5.19);
+      tl.to("#scene-2", { opacity: 0, y: -30, duration: 0.4 }, 7.6);
+
+      // SCENE 3: DEDICATED GROQ AI ASSISTANT (8.0s - 13.5s)
+      tl.to("#scene-3", { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 8.0);
+      tl.from("#ai-panel", { x: 50, opacity: 0, duration: 0.5 }, 8.2);
+      tl.from("#ai-prompt", { y: 15, opacity: 0, duration: 0.4 }, 8.6);
+      tl.from("#ai-response", { scale: 0.95, opacity: 0, duration: 0.5, ease: "back.out(1.5)" }, 9.4);
+      tl.to("#scene-3", { opacity: 0, scale: 0.95, duration: 0.4 }, 13.1);
+
+      // SCENE 4: REVISION CONTROL & SHARE TOKEN (13.5s - 18.0s)
+      tl.to("#scene-4", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 13.5);
+      tl.from("#ver-panel", { x: -40, opacity: 0, duration: 0.5 }, 13.7);
+      tl.from("#ver-diff", { x: 40, opacity: 0, duration: 0.5 }, 13.9);
+      tl.from("#share-pill", { scale: 0.9, opacity: 0, duration: 0.4 }, 14.5);
+      tl.to("#scene-4", { opacity: 0, y: -20, duration: 0.4 }, 17.6);
+
+      // SCENE 5: OUTRO (18.0s - 21.0s)
+      tl.to("#scene-5", { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 18.0);
+      tl.from("#outro-logo", { scale: 0.8, opacity: 0, duration: 0.5, ease: "back.out(1.7)" }, 18.2);
+      tl.from("#outro-sub", { y: 20, opacity: 0, duration: 0.4 }, 18.6);
+      tl.from("#outro-badges", { y: 30, opacity: 0, duration: 0.5 }, 19.0);
+
+      // Ambient glow pulsing
+      tl.to("#orb-1", { scale: 1.25, opacity: 0.6, duration: 1.5, repeat: 5, yoyo: true, ease: "sine.inOut" }, 0);
+      tl.to("#orb-2", { scale: 1.3, opacity: 0.55, duration: 1.8, repeat: 5, yoyo: true, ease: "sine.inOut" }, 0);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+Never lose a reusable code snippet again. Introducing Code Vault ⚡ — centralize, version & AI-analyze your code effortlessly. Powered by NestJS 11, React 19, Monaco Editor & Groq AI (openai/gpt-oss-120b).

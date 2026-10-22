@@ -1,6 +1,6 @@
 import ResultCard from "../../components/Snippet Result Card/ResultCard";
 import { useState } from "react";
-import "./searchByTitle.css";
+import "./SearchByTitle.css";
 import { searchByTitleApi } from "../../api/searchApi";
 import type { SnippetData } from "../../types/auth.types";
 

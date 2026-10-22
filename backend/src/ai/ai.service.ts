@@ -75,9 +75,7 @@ constructor(
                 }
                 return response;
             }
-
         }
-
         else if (snippetId && !versionId) {
             let snippet = await this.snippetRepository.findOne({
                 where: {
@@ -101,13 +99,9 @@ constructor(
                     console.log("response saved of snippetID");
                     
                 }
-
-
                 return response
             }
-
         }
-
     }
     //------------------this is actual implementation of ai backend
     async aiProcedure(code: string, prompt: string) {
@@ -128,7 +122,6 @@ constructor(
 
         const userPrompt = `
             Code:
-
                 \`\`\`
                  ${code}
                  \`\`\`
@@ -136,7 +129,6 @@ constructor(
         User question:
             ${prompt}
                  `;
-
         const groq = new Groq({ apiKey: apiKey });
 
 

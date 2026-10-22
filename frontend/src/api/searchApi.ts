@@ -9,13 +9,10 @@ export const searchAnySnippet=async(anyKeyword:string)=>{
     }
     catch(error){
         console.error("API Error:", error)
-        throw error;
-        
+        throw error; 
     }
 
 }
-
-
 
 //below is for search by title
 export const searchByTitleApi=async(anyKeyword:string)=>{

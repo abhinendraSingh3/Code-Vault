@@ -6,7 +6,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin:"http://localhost:5173"
+    origin:["http://localhost:5173",
+      "https://code-vault-2.onrender.com" //this is the render frontend 
+    ]
+
   });
 
   const configService=app.get(ConfigService);

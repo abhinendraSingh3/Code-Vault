@@ -3,7 +3,7 @@ import axios from "axios";
 // below is the axios instance for attaching this url with every api call
 const api = axios.create({
     //we are setting the local host from.env file
-    baseURL: import.meta.env.API_URL
+    baseURL: import.meta.env.VITE_API_URL
 })
 
 //request interceptor-request interceptor runs before Axios sends the request to your NestJS backend. Mainly for jwt 
@@ -35,7 +35,7 @@ api.interceptors.response.use((response) => {
 
         if (error.response?.status == 401) {
 
-            localStorage.removeItem("token");
+            localStorage.removeItem("accessToken");
             window.location.href = "/login";
             console.log("API ERROR:", error.response);
             console.log("API STATUS:", error.response?.status);

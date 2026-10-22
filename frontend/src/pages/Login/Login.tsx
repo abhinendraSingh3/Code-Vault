@@ -113,7 +113,7 @@ const Login = () => {
 
                         <div className="singup">
                             <p id="new-account">Don't have an account ?</p>
-                            <a href="/Signup">Sign up</a>
+                            <a href="/signup">Sign up</a>
                         </div>
 
                         <div className="loginError">

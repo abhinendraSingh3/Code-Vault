@@ -3,7 +3,7 @@ import axios from "axios";
 // below is the axios instance for attaching this url with every api call
 const api = axios.create({
     //we are setting the local host from.env file
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL: import.meta.env.API_URL
 })
 
 //request interceptor-request interceptor runs before Axios sends the request to your NestJS backend. Mainly for jwt 
